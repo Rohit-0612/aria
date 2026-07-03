@@ -12,3 +12,5 @@ ragas
 langchain-chroma
 qdrant-client
 langchain-qdrant
+fastapi
+uvicorn

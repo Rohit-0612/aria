@@ -33,6 +33,7 @@ load_dotenv()
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 # Real ARIA components (imported lazily inside handlers where heavy).
@@ -46,7 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Cache the reranking retriever (loads the embedding model + Chroma once).
+# Cache the reranking retriever (loads the embedding model + Qdrant once).
 _retriever = None
 _retriever_lock = asyncio.Lock()
 
@@ -298,6 +299,14 @@ async def consult(req: ConsultRequest):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+# Serve the built web frontend (web/dist) when it exists, so a single
+# process can host both the API and the UI in production. Registered after
+# the /api routes, so those keep precedence.
+_DIST = os.path.join(ROOT, "web", "dist")
+if os.path.isdir(_DIST):
+    app.mount("/", StaticFiles(directory=_DIST, html=True), name="web")
 
 
 if __name__ == "__main__":

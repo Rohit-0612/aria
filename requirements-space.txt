@@ -1,0 +1,14 @@
+# Slim dependency set for the deployed app (Hugging Face Space).
+# The full requirements.txt additionally covers local ingestion and
+# evaluation tooling that the running service does not need.
+fastapi
+uvicorn
+python-dotenv
+langchain
+langchain-classic
+langchain-huggingface
+langchain-groq
+langchain-cohere
+langchain-qdrant
+qdrant-client
+sentence-transformers
