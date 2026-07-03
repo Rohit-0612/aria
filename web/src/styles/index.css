@@ -1,0 +1,124 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: hsl(var(--line));
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'onum' 1;
+  }
+
+  body {
+    @apply bg-desk text-ink font-prose;
+    margin: 0;
+    /* The desk: a quiet woven neutral, no gradient blobs. */
+    background-image:
+      linear-gradient(hsl(var(--ink) / 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--ink) / 0.02) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.22);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    font-optical-sizing: auto;
+  }
+}
+
+@layer components {
+  /* The page: a physical sheet of journal stock resting on the desk. */
+  .sheet {
+    @apply bg-page;
+    box-shadow:
+      0 0 0 1px hsl(var(--ink) / 0.07),
+      0 1px 1px hsl(var(--shadow) / 0.04),
+      0 24px 60px -28px hsl(var(--shadow) / 0.4);
+  }
+
+  /* Section running head — small, letterspaced caps, journal style. */
+  .sec {
+    @apply font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-faint;
+  }
+
+  /* Identifier / metadata text — DOIs, manuscript ids. */
+  .ident {
+    @apply font-mono text-[0.62rem] tracking-tight text-ink-faint;
+  }
+
+  /* Journal double rule. */
+  .rule-double {
+    border-top: 3px double hsl(var(--rule) / 0.85);
+  }
+  .rule-hair {
+    border-top: 1px solid hsl(var(--rule) / 0.55);
+  }
+
+  /* Justified, hyphenated academic body copy. */
+  .copy {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  /* Drop cap on the first paragraph of an article body. */
+  .dropcap::first-letter {
+    float: left;
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 3.1em;
+    line-height: 0.78;
+    padding: 0.04em 0.09em 0 0;
+    color: hsl(var(--ink));
+  }
+
+  /* Superscript citation reference number, journal-set. */
+  .supref {
+    font-feature-settings: 'sups' 1;
+  }
+}
+
+/* Slim, paper-toned scrollbar. */
+*::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--line-strong) / 0.7);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--ink-faint) / 0.85);
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

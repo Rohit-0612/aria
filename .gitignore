@@ -1,0 +1,21 @@
+# Secrets — never commit API keys
+.env
+
+# Python
+aria_env/
+__pycache__/
+*.pyc
+
+# Local vector store (embeddings now live in Qdrant Cloud)
+vectorstore/chroma_db/
+
+# Source textbooks — large, copyrighted PDFs stay local only
+data/
+
+# Node
+node_modules/
+web/dist/
+*.tsbuildinfo
+
+# macOS
+.DS_Store

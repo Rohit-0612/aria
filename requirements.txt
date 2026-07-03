@@ -1,0 +1,14 @@
+langchain
+langchain-community
+langchain-huggingface
+chromadb
+pypdf
+sentence-transformers
+streamlit
+python-dotenv
+groq
+cohere
+ragas
+langchain-chroma
+qdrant-client
+langchain-qdrant
