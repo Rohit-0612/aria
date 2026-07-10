@@ -21,6 +21,10 @@ realistic mock transport so it runs fully standalone.
 
 ## What makes it different
 
+- **The cover page.** Opening the app shows an animated title page: the ARIA
+  colophon draws itself in ink, the title rises off the baseline letter by
+  letter, and the cover lifts away into the consultation page (click or press
+  any key to skip; respects reduced-motion).
 - **The evidence margin.** Citations aren't `[1]` brackets — they're typographic
   superscripts that *dock into a side rail* as the answer streams, like footnotes
   settling into a textbook. Hover a marker → its DiPiro snippet peeks; the matching
