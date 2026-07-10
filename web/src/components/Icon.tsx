@@ -53,13 +53,12 @@ const paths: Record<IconName, JSX.Element> = {
       <path d="M19 8l-2.5 5a2.5 2.5 0 005 0L19 8z" />
     </>
   ),
-  // Brand mark — an aperture/iris suggesting focus + retrieval.
+  // Brand mark — a printer's colophon: the ARIA monogram sealed in a ring.
   aria: (
     <>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 3.5L12 12l7.4 4.3" />
-      <path d="M12 12L4.6 16.3" />
-      <circle cx="12" cy="12" r="2.1" />
+      <circle cx="12" cy="12" r="8.6" />
+      <path d="M7.9 16.3L12 6.4l4.1 9.9" />
+      <path d="M9.5 13.1h5" />
     </>
   ),
   send: <path d="M5 12h13M13 6l6 6-6 6" />,

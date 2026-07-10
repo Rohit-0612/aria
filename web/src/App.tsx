@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Masthead } from './components/Masthead';
 import { Nameplate } from './components/Nameplate';
+import { TitlePage } from './components/TitlePage';
 import { EmptyState } from './components/EmptyState';
 import { MessageTurn } from './components/MessageTurn';
 import { Composer } from './components/Composer';
@@ -15,6 +17,8 @@ export default function App() {
   const reduced = useReducedMotion();
   const { messages, busy, ask, stop, reset } = useConsultation(reduced);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [covered, setCovered] = useState(true);
+  const uncover = useCallback(() => setCovered(false), []);
   const anchorRef = useRef<HTMLDivElement>(null);
   const lastCount = useRef(0);
 
@@ -54,6 +58,10 @@ export default function App() {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <AnimatePresence>
+        {covered && <TitlePage reduced={reduced} onDone={uncover} />}
+      </AnimatePresence>
+
       <Masthead
         theme={theme}
         onToggleTheme={toggle}
@@ -63,6 +71,12 @@ export default function App() {
       />
 
       <main className="relative flex-1 px-3 pb-2 pt-5 sm:px-6 sm:pt-8">
+        {/* The page rises to meet the reader as the cover lifts away. */}
+        <motion.div
+          initial={false}
+          animate={covered ? { opacity: 0, y: 22 } : { opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }}
+        >
         <BorderGlow
           backgroundColor="hsl(var(--page))"
           borderRadius={12}
@@ -78,7 +92,7 @@ export default function App() {
           }
           className="mx-auto max-w-[62rem]"
         >
-          <article className="relative px-6 pb-16 pt-8 sm:px-12 sm:pt-12 lg:px-16">
+          <article className="relative px-6 pb-16 pt-8 sm:px-12 sm:pt-10 lg:px-16">
             <Nameplate />
 
             {!hasConversation ? (
@@ -105,6 +119,7 @@ export default function App() {
             </footer>
           </article>
         </BorderGlow>
+        </motion.div>
       </main>
 
       <Composer onSend={send} onStop={stop} busy={busy} onOpenPalette={() => setPaletteOpen(true)} />
