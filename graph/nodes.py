@@ -1,13 +1,7 @@
-import sys
-import os
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'agents'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'llm'))
-
-from guardrail_agent import check_guardrail
-from navigator_agent import navigator         
-from generator import generate_answer
-from judge_agent import judge_answer
+from agents.guardrail_agent import check_guardrail
+from agents.navigator_agent import navigator
+from agents.judge_agent import judge_answer
+from llm.generator import generate_answer
 
 
 def guardrail_node(state):

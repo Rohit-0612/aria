@@ -9,11 +9,9 @@ locally — it's only used to embed the *query* text at search time.
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from dotenv import load_dotenv
-import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'ingestion'))
-from embedder import load_embedding_model
+from ingestion.embedder import load_embedding_model
 
 COLLECTION_NAME = "aria_medical"
 

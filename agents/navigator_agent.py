@@ -1,15 +1,12 @@
-import sys
-import os
+from llm.llm_setup import get_llm
+from retrieval.reranker import get_balanced_retriever
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'llm'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'retrieval'))
+# Built once and reused: creating it loads the embedding model and opens
+# the Qdrant connection, which is far too slow to repeat per query.
+_retriever = None
 
 
-from llm_setup import get_llm
-from reranker import get_reranking_retriever
-
-def optimize_query (query: str) -> str:
-
+def optimize_query(query: str) -> str:
     llm = get_llm(temperature=0)
 
     prompt = f"""You are a medical search query optimizer.
@@ -22,42 +19,35 @@ User question: {query}
 
 Optimized query:"""
 
-    response = llm.invoke (prompt)
+    response = llm.invoke(prompt)
     optimized = response.content.strip()
 
-    print (f"original : {query}")
-    print (f"optimized : {optimized}")
+    print(f"original : {query}")
+    print(f"optimized : {optimized}")
 
     return optimized
 
 
-
-def navigator (query: str, k: int = 10, top_n: int = 3):
+def navigator(query: str):
+    global _retriever
+    if _retriever is None:
+        _retriever = get_balanced_retriever()
 
     optimized_query = optimize_query(query)
+    chunks = _retriever.invoke(optimized_query)
 
-    retriever = get_reranking_retriever (k=k, top_n = top_n)
-
-    chunks = retriever.invoke (optimized_query)
-
-    print (f"\n {len(chunks)} relevent chunks retrieved")
+    print(f"\n {len(chunks)} relevant chunks retrieved")
 
     return chunks
-
 
 
 if __name__ == "__main__":
     user_query = "My grandmother has high blood pressure, what treatment is there?"
 
-    print ("-------Navigator testing------\n")
-
+    print("-------Navigator testing------\n")
     chunks = navigator(user_query)
 
-
-    print ("--------Retrieved chunks--------\n")
-
-    for i, doc in enumerate (chunks):
-        print (f"\nchunk {i+1} (page {doc.metadata.get('page', '?')}):")
-        print (f"{doc.page_content[:500]}")
-
-
+    print("--------Retrieved chunks--------\n")
+    for i, doc in enumerate(chunks):
+        print(f"\nchunk {i+1} (page {doc.metadata.get('page', '?')}):")
+        print(f"{doc.page_content[:500]}")

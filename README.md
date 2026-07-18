@@ -81,7 +81,7 @@ A LangGraph state machine routes every query through four specialised agents:
 | Embeddings | `all-MiniLM-L6-v2` (384-dim, normalised) |
 | Vector store | Qdrant Cloud — collection `aria_medical`, cosine distance |
 | Corpus | 31,000+ chunks across both books, with source/book/page metadata |
-| First-stage search | Dense similarity + MMR, source-balanced across books |
+| First-stage search | Dense similarity, source-balanced across books |
 | Second-stage rerank | Cohere `rerank-english-v3.0` cross-encoder |
 
 Embeddings are computed once during ingestion and served from Qdrant Cloud, which
@@ -110,6 +110,7 @@ See [`web/README.md`](web/README.md) for the full design notes.
 aria/
 ├── agents/              # Guardrail, Navigator and Judge agents
 ├── api/                 # FastAPI bridge server (SSE streaming)
+├── evals/               # Evaluation suite (guardrail, retrieval, answer quality)
 ├── graph/               # LangGraph pipeline: state, nodes, routing
 ├── ingestion/           # PDF loading, OCR, cleaning, chunking, embedding
 ├── llm/                 # LLM setup (Groq), prompts, answer generator
@@ -148,8 +149,18 @@ npm run dev                # http://localhost:5183
 You can also exercise the pipeline directly from the command line:
 
 ```bash
-python graph/aria_graph.py       # runs the full agent graph on test queries
-python retrieval/retriever.py    # retrieval smoke test
+python -m graph.aria_graph       # runs the full agent graph on test queries
+python -m retrieval.reranker     # retrieval smoke test
+```
+
+## Evaluation
+
+A lightweight eval suite exercises the real pipeline over a labelled query set and
+scores guardrail accuracy, retrieval source balance, and answer groundedness /
+relevance via an independent LLM judge:
+
+```bash
+python evals/run_evals.py        # prints a summary, saves evals/results.json
 ```
 
 **Deployment.** The included `Dockerfile` builds the frontend and serves API + UI

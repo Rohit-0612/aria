@@ -1,17 +1,14 @@
-import sys
-import os
+from typing import TypedDict
 
-sys.path.append(os.path.dirname(__file__))
-from nodes import (
+from langgraph.graph import StateGraph, START, END
+
+from graph.nodes import (
     guardrail_node,
     navigator_node,
     generator_node,
     judge_node,
     reject_node
 )
-
-from typing import TypedDict
-from langgraph.graph import StateGraph, START, END
 
 
 class AriaState(TypedDict):
@@ -81,8 +78,14 @@ def build_aria():
     return app
 
 
+# Compiled once and reused across calls
+_app = None
+
+
 def ask_aria(question: str):
-    app = build_aria()
+    global _app
+    if _app is None:
+        _app = build_aria()
 
     initial_state = {
         "query": question,
@@ -93,7 +96,7 @@ def ask_aria(question: str):
         "retry_count": 0
     }
 
-    final_state = app.invoke(initial_state)
+    final_state = _app.invoke(initial_state)
     return final_state["answer"]
 
 

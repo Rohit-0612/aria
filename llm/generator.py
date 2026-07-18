@@ -1,14 +1,9 @@
-import sys
-import os 
+from llm.llm_setup import get_llm
+from llm.prompts import ANSWER_PROMPT
 
-sys.path.append(os.path.dirname(__file__))
+def generate_answer (query: str, chunks: list) -> str:
 
-from llm_setup import get_llm
-from prompts import ANSWER_PROMPT
-
-def generate_answer (query: str, chunks: list) -> str: 
-
-    context = "\n\n". join([chunks.page_content for chunks in chunks])
+    context = "\n\n".join(chunk.page_content for chunk in chunks)
 
     prompt = ANSWER_PROMPT.format (context = context, question= query)
 
@@ -23,8 +18,7 @@ def generate_answer (query: str, chunks: list) -> str:
 
 
 if __name__=="__main__":
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'agents'))
-    from navigator_agent import navigator    
+    from agents.navigator_agent import navigator
 
 
 

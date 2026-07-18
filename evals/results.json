@@ -1,0 +1,110 @@
+{
+  "guardrail": [
+    {
+      "query": "What is the first-line treatment for hypertension?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "How does metformin work and what are its main adverse effects?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "What antibiotics are used for community-acquired pneumonia?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "What monitoring is required for a patient on warfarin?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "How should statin therapy be selected for a diabetic patient?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "What are the treatment options for acute asthma exacerbation?",
+      "expected": true,
+      "got": true
+    },
+    {
+      "query": "What is the price of Bitcoin today?",
+      "expected": false,
+      "got": false
+    },
+    {
+      "query": "Who won the last football World Cup?",
+      "expected": false,
+      "got": false
+    },
+    {
+      "query": "Write me a poem about the ocean.",
+      "expected": false,
+      "got": false
+    },
+    {
+      "query": "How do I fix a segmentation fault in C++?",
+      "expected": false,
+      "got": false
+    }
+  ],
+  "answers": [
+    {
+      "query": "What is the first-line treatment for hypertension?",
+      "n_chunks": 5,
+      "n_rxprep": 0,
+      "groundedness": 1.0,
+      "relevance": 1.0,
+      "app_confidence": 1.0,
+      "note": "The answer accurately reflects the context."
+    },
+    {
+      "query": "How does metformin work and what are its main adverse effects?",
+      "n_chunks": 5,
+      "n_rxprep": 2,
+      "groundedness": 0.9,
+      "relevance": 1.0,
+      "app_confidence": 0.9,
+      "note": "The answer is mostly supported by the provided context."
+    },
+    {
+      "query": "What antibiotics are used for community-acquired pneumonia?",
+      "n_chunks": 5,
+      "n_rxprep": 0,
+      "groundedness": 0.9,
+      "relevance": 1.0,
+      "app_confidence": 0.9,
+      "note": "The answer is well-supported by the context, but minor inferences are made."
+    },
+    {
+      "query": "What monitoring is required for a patient on warfarin?",
+      "n_chunks": 5,
+      "n_rxprep": 1,
+      "groundedness": 0.9,
+      "relevance": 1.0,
+      "app_confidence": 0.9,
+      "note": "The answer is mostly supported by the context with minor inferences."
+    },
+    {
+      "query": "How should statin therapy be selected for a diabetic patient?",
+      "n_chunks": 5,
+      "n_rxprep": 1,
+      "groundedness": 0.9,
+      "relevance": 1.0,
+      "app_confidence": 0.9,
+      "note": "The answer is largely supported by the provided context with minor inferences."
+    },
+    {
+      "query": "What are the treatment options for acute asthma exacerbation?",
+      "n_chunks": 5,
+      "n_rxprep": 1,
+      "groundedness": 0.9,
+      "relevance": 1.0,
+      "app_confidence": 0.9,
+      "note": "Answer is mostly supported by the context with minor inferences."
+    }
+  ]
+}

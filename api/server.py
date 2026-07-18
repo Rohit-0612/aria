@@ -18,13 +18,10 @@ import time
 import asyncio
 import re
 
-# --- Make the existing (sys.path-based) modules importable -----------------
+# Allow running as `python api/server.py` as well as `uvicorn api.server:app`
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.chdir(ROOT)  # retriever/vectorstore use paths relative to the project root
-for sub in ("", "agents", "llm", "retrieval", "vectorstore", "ingestion", "graph"):
-    p = os.path.join(ROOT, sub)
-    if p not in sys.path:
-        sys.path.insert(0, p)
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 from dotenv import load_dotenv
 
@@ -36,8 +33,10 @@ from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-# Real ARIA components (imported lazily inside handlers where heavy).
-from guardrail_agent import check_guardrail  # noqa: E402
+from agents.guardrail_agent import check_guardrail
+from agents.navigator_agent import navigator
+from agents.judge_agent import judge_answer
+from llm.generator import generate_answer
 
 app = FastAPI(title="ARIA Bridge")
 app.add_middleware(
@@ -46,23 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Cache the reranking retriever (loads the embedding model + Qdrant once).
-_retriever = None
-_retriever_lock = asyncio.Lock()
-
-
-async def get_retriever():
-    global _retriever
-    async with _retriever_lock:
-        if _retriever is None:
-            from reranker import get_balanced_retriever
-
-            # Source-balanced: pull a global set + a guaranteed RxPrep set,
-            # then Cohere-rerank to the best 5 across both books.
-            _retriever = await asyncio.to_thread(get_balanced_retriever, 14, 8, 5)
-    return _retriever
-
 
 class ConsultRequest(BaseModel):
     query: str
@@ -201,15 +183,11 @@ async def run_consultation(query: str):
         yield sse({"type": "done"})
         return
 
-    # 2 — Navigator (retrieve + Cohere rerank)
+    # 2 — Navigator (query rewrite + source-balanced retrieve + Cohere rerank)
     patch("navigator", status="active")
     yield steps_event()
     t0 = time.time()
-    from navigator_agent import optimize_query
-
-    retriever = await get_retriever()
-    optimized = await asyncio.to_thread(optimize_query, query)
-    chunks = await asyncio.to_thread(retriever.invoke, optimized)
+    chunks = await asyncio.to_thread(navigator, query)
     patch(
         "navigator",
         status="done",
@@ -223,8 +201,6 @@ async def run_consultation(query: str):
     patch("generator", status="active")
     yield steps_event()
     t0 = time.time()
-    from generator import generate_answer
-
     answer = await asyncio.to_thread(generate_answer, query, chunks)
     patch(
         "generator",
@@ -239,8 +215,6 @@ async def run_consultation(query: str):
     patch("judge", status="active")
     yield steps_event()
     t0 = time.time()
-    from judge_agent import judge_answer
-
     try:
         judgment = await asyncio.to_thread(judge_answer, query, answer, chunks)
         confidence = float(judgment.get("confidence", 0.5))

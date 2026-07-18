@@ -1,9 +1,4 @@
-import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'llm'))
-
-from llm_setup import get_llm
+from llm.llm_setup import get_llm
 
 
 def check_guardrail(query: str) -> bool:
