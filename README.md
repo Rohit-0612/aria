@@ -163,6 +163,16 @@ relevance via an independent LLM judge:
 python evals/run_evals.py        # prints a summary, saves evals/results.json
 ```
 
+Latest run (July 2026, full pipeline against Qdrant Cloud + Groq + Cohere):
+
+| Metric | Score |
+|---|---|
+| Guardrail accuracy (6 in-scope + 4 out-of-scope) | **10/10 (100%)** |
+| Groundedness (independent LLM judge, mean) | **0.92** |
+| Relevance (mean) | **1.00** |
+| Pass rate (groundedness & relevance ≥ 0.7) | **6/6** |
+| Both books cited in the evidence set | 4/6 queries |
+
 **Deployment.** The included `Dockerfile` builds the frontend and serves API + UI
 from a single container on port 7860 — the exact image running on
 [Hugging Face Spaces](https://mohitrks-aria.hf.space). Runtime dependencies live in
