@@ -8,7 +8,7 @@ A multi-agent, retrieval-augmented clinical assistant that answers pharmacothera
 questions strictly from the textbook evidence — with page-level citations, a graded
 evidence tier, and an independently judged confidence score on every answer.
 
-[How it works](#how-it-works) · [Retrieval stack](#retrieval-stack) · [Getting started](#getting-started)
+[**▶ Live demo**](https://mohitrks-aria.hf.space) · [How it works](#how-it-works) · [Retrieval stack](#retrieval-stack) · [Getting started](#getting-started)
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-React_18-3178C6?logo=typescript&logoColor=white)
@@ -239,8 +239,8 @@ Latest run (July 2026, full pipeline against Qdrant Cloud + Groq + Cohere):
 | Both books cited in the evidence set | 4/6 queries |
 
 **Deployment.** The included `Dockerfile` builds the frontend and serves API + UI
-from a single container on port 7860, ready to deploy as a Docker
-[Hugging Face Space](https://huggingface.co/docs/hub/spaces-sdks-docker). Runtime dependencies live in
+from a single container on port 7860 — the image behind the
+[live demo on Hugging Face Spaces](https://mohitrks-aria.hf.space). Runtime dependencies live in
 `requirements-space.txt`; the full `requirements.txt` additionally covers local
 ingestion tooling.
 
