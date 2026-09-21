@@ -1,0 +1,76 @@
+/*
+  ARIA design tokens — "The Journal"
+  ------------------------------------------------------------------
+  Concept: a clinical research journal. Each answer is typeset as a
+  peer-reviewed article on a physical page (the "sheet") resting on a
+  desk. Ink on warm ivory, black hairline rules, a single saffron accent
+  used like a printer's spot color, oxblood reserved for the evidence
+  spine and cautions. Evidence tiers map to GRADE certainty levels.
+
+  Values are HSL channels ("H S% L%") so Tailwind alpha modifiers work.
+*/
+
+:root {
+  /* The desk the page sits on, and the page itself */
+  --desk: 34 17% 75%;
+  --page: 44 46% 97%;
+  --paper: 44 46% 97%; /* alias: page */
+  --surface: 42 36% 94%;
+  --surface-raised: 44 48% 98%;
+
+  /* Ink — warm near-black printer's ink */
+  --ink: 28 22% 11%;
+  --ink-soft: 30 13% 31%;
+  --ink-faint: 32 11% 50%;
+
+  /* Structure — journal rules are darker/crisper than UI borders */
+  --line: 36 20% 78%;
+  --line-strong: 33 16% 64%;
+  --rule: 28 18% 18%; /* the black-ish double rules of a masthead */
+
+  /* Accent — saffron spot color, used sparingly */
+  --accent: 26 68% 42%;
+  --accent-soft: 30 50% 86%;
+
+  /* Caution + evidence spine */
+  --oxblood: 6 56% 36%;
+
+  /* GRADE evidence levels */
+  --tier-strong: 152 30% 32%; /* high certainty */
+  --tier-moderate: 30 62% 44%; /* moderate */
+  --tier-limited: 30 10% 46%; /* low */
+
+  --shadow: 30 28% 24%;
+
+  /* Motion — physical, weighted */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.dark {
+  --desk: 30 9% 5%;
+  --page: 35 13% 11%;
+  --paper: 35 13% 11%;
+  --surface: 33 12% 14%;
+  --surface-raised: 32 12% 17%;
+
+  --ink: 41 34% 87%;
+  --ink-soft: 38 15% 64%;
+  --ink-faint: 36 12% 47%;
+
+  --line: 35 13% 21%;
+  --line-strong: 35 12% 30%;
+  --rule: 40 24% 80%;
+
+  --accent: 34 80% 62%;
+  --accent-soft: 32 26% 19%;
+
+  --oxblood: 8 62% 60%;
+
+  --tier-strong: 152 36% 56%;
+  --tier-moderate: 36 76% 60%;
+  --tier-limited: 36 13% 56%;
+
+  --shadow: 0 0% 0%;
+}

@@ -1,0 +1,10 @@
+aria_env/
+data/
+vectorstore/chroma_db/
+web/node_modules/
+web/dist/
+**/__pycache__/
+*.pyc
+.env
+.git/
+.DS_Store
