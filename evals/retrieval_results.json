@@ -1,0 +1,247 @@
+{
+  "run_at": "2026-10-20T04:49:45+00:00",
+  "reranker": "rerank-english-v3.0",
+  "summary": {
+    "all": {
+      "questions": "24",
+      "candidate recall": "67%",
+      "hit rate (reaches generator)": "62%",
+      "MRR": "0.58",
+      "dense recall (global top-k)": "67%"
+    },
+    "dipiro": {
+      "questions": "12",
+      "candidate recall": "67%",
+      "hit rate (reaches generator)": "67%",
+      "MRR": "0.62",
+      "dense recall (global top-k)": "67%"
+    },
+    "rxprep": {
+      "questions": "12",
+      "candidate recall": "67%",
+      "hit rate (reaches generator)": "58%",
+      "MRR": "0.54",
+      "dense recall (global top-k)": "67%"
+    }
+  },
+  "rows": [
+    {
+      "book": "dipiro",
+      "page": 1186,
+      "question": "Which volume of distribution term should be used to compare drug distribution between patients with chronic kidney disease and those with normal kidney function?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2545,
+      "question": "How can whole\u2011genome sequencing of Mycobacterium tuberculosis isolates aid public health efforts in identifying and managing transmission chains and outbreaks?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 3
+    },
+    {
+      "book": "dipiro",
+      "page": 671,
+      "question": "Which anti\u2011arrhythmic medication is contraindicated in patients with permanent atrial fibrillation?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 744,
+      "question": "What are the most effective coaching techniques for ensuring a child can perform a reliable spirometry test?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 3100,
+      "question": "What factors should a clinician evaluate to determine whether a patient with myelodysplastic syndrome should receive allogeneic hematopoietic stem cell transplantation versus a risk\u2011adapted palliative therapy?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2011,
+      "question": "Which cells act as antigen\u2011presenting cells that process drug antigens for recognition by T and B lymphocytes?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2712,
+      "question": "What is the recommended antifungal agent for treating histoplasmosis, and why is fluconazole not considered an acceptable alternative?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 197,
+      "question": "What was the percentage point change in the proportion of adults aged 45 and over who have moderate or severe periodontitis between the two reported periods?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2048,
+      "question": "What is the recommended schedule for monitoring serum creatinine, liver function tests, and lipid panels in kidney transplant recipients?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 1209,
+      "question": "What are the key drug\u2013drug interactions and patient conditions that contraindicate or require dose adjustment when prescribing tolvaptan?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 2
+    },
+    {
+      "book": "dipiro",
+      "page": 3049,
+      "question": "What dose of oral tretinoin is recommended for induction therapy in patients with acute promyelocytic leukemia?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2863,
+      "question": "What are the approved clinical uses of lenvatinib and the most common adverse effects clinicians should monitor for?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 61,
+      "question": "Which antiepileptic drugs are known to induce CYP enzymes and thereby lower the plasma concentrations of other medications metabolized by those enzymes?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 96,
+      "question": "What counseling points should I give a patient who is prescribed a medication that can cause constipation?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 74,
+      "question": "What quick clues can a pharmacist use to spot drug\u2011induced hyperkalemia when reviewing a patient\u2019s lab results?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 86,
+      "question": "Should a long\u2011acting capsule such as Xtampza ER be crushed or chewed before ingestion?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 71,
+      "question": "What is the normal reference range for serum albumin, and how does a low albumin level affect the interpretation of highly protein\u2011bound drug concentrations such as phenytoin and calcium?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 98,
+      "question": "What signs should I look for that indicate this medication might be causing suicidal thoughts, urinary tract infection symptoms, or vision changes?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 4
+    },
+    {
+      "book": "rxprep",
+      "page": 898,
+      "question": "When should the medication be stopped if a patient shows no improvement by week 14?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 88,
+      "question": "What are the main differences between subcutaneous and intramuscular injections regarding needle length and patient discomfort?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 83,
+      "question": "What are some reputable drug\u2011information resources that pharmacists and clinicians can consult for drug safety, therapeutic guidance, and poison\u2011control information?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 8,
+      "question": "What is the correct way to convert a medication dose from milligrams to milligrams per kilogram for a pediatric patient?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 803,
+      "question": "What is the recommended first\u2011line intravenous therapy for treating moderate to severe hypercalcemia?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 53,
+      "question": "What does the FDA\u2019s boxed warning say about prescribing opioids and benzodiazepines together?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    }
+  ],
+  "k_global": 20,
+  "k_rxprep": 8
+}

@@ -1,16 +1,17 @@
-langchain
-langchain-community
-langchain-huggingface
-chromadb
-pypdf
-sentence-transformers
-streamlit
-python-dotenv
-groq
-cohere
-ragas
-langchain-chroma
-qdrant-client
-langchain-qdrant
-fastapi
-uvicorn
+# Everything: the served app, the dev tooling, and the one-off tooling that
+# built and restores the evidence base. The running service only needs
+# requirements-space.txt.
+-r requirements-dev.txt
+
+# Ingestion (ingestion/): PDF parsing, OCR for scanned pages, chunking.
+langchain-community==0.4.2
+langchain-text-splitters==1.1.2
+pypdf==6.13.0
+pymupdf==1.27.2.3
+pytesseract==0.3.13
+pillow==12.2.0
+
+# Restoring the evidence base from the Chroma backup (migrate_to_qdrant.py,
+# vectorstore/chroma_store.py).
+chromadb==1.5.9
+langchain-chroma==1.1.0

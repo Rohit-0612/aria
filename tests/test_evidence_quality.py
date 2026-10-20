@@ -108,3 +108,89 @@ def test_guardrail_reads_the_first_whole_word(
 
     monkeypatch.setattr(ga, "invoke_role", lambda role, prompt: reply)
     assert ga.check_guardrail("does it matter") is expected
+
+
+# ── Reference lists ────────────────────────────────────────────────────
+# Real chunks from the collection (OCR splits initial capitals: "T urnbull").
+
+BIBLIOGRAPHY = (
+    ". 2016;31(12):182 187. 95. B lackmer AB, Oertel MD, Valgus JM. Fondaparinux and "
+    "the management of heparin-induced thrombocytopenia: The journey continues. Ann "
+    "Pharmacother. 2009;43(10):1636 1646. 96. W arkentin TE, Pai M, Sheppard JI, et al. "
+    "Fondaparinux treatment of acute heparin-induced thrombocytopenia confirmed by the "
+    "serotonin-release assay. J Thromb Haemost. 2011;9(12):2389 2396. 97. L insenmeyer K, "
+    "et al. Fondaparinux in HIT. Thromb Res. 2018;164:33 38. 10.1016/j.thromres.2018.02.001 "
+    "29475123."
+)
+PROSE = (
+    "Argatroban is a direct thrombin inhibitor given by continuous infusion. It is "
+    "hepatically eliminated, so it is preferred in renal impairment, and the aPTT is "
+    "monitored to a target of 1.5 to 3 times baseline. Warfarin should not be started "
+    "until the platelet count has recovered to at least 150,000/mm3, because protein C "
+    "depletion can precipitate venous limb gangrene (Warkentin et al., 2011)."
+)
+
+
+def test_a_reference_list_is_recognised() -> None:
+    from retrieval.reranker import is_bibliography
+
+    assert is_bibliography(BIBLIOGRAPHY)
+
+
+def test_clinical_prose_with_an_inline_citation_is_kept() -> None:
+    from retrieval.reranker import is_bibliography
+
+    assert not is_bibliography(PROSE)
+
+
+def test_reference_lists_never_reach_the_reranker() -> None:
+    """The HIT failure: five reference lists, each scored 1.00 by the reranker."""
+    seen: list[str] = []
+
+    class Recording(FakeReranker):
+        def compress_documents(self, docs: list[Any], query: str) -> list[Any]:
+            seen.extend(d.page_content for d in docs)
+            return docs
+
+    docs = [
+        FakeDoc(BIBLIOGRAPHY, {"relevance_score": 1.0}),
+        FakeDoc(PROSE, {"relevance_score": 0.9}),
+    ]
+    kept = BalancedRetriever(FakeStore(docs), Recording()).invoke("how is HIT managed?")
+
+    assert seen == [PROSE]
+    assert [d.page_content for d in kept] == [PROSE]
+
+
+def test_only_reference_lists_is_an_empty_retrieval() -> None:
+    docs = [FakeDoc(BIBLIOGRAPHY, {"relevance_score": 1.0})]
+    with pytest.raises(AriaRetrievalError) as err:
+        retriever_over(docs).invoke("how is HIT managed?")
+    assert err.value.code == EMPTY_RETRIEVAL_CODE
+    assert "reference lists and index pages" in str(err.value)
+
+
+INDEX_PAGE = (
+    "INDEX 2597 Hemorrhagic stroke, 283 etiology of, 283 284 pathophysiology of, 285 "
+    "treatment of, 288 Heparin, 412, 415t, 418 low-molecular-weight, 420, 1717 1725 "
+    "unfractionated, 413 Heparin-induced thrombocytopenia, 2361, 2364 Hepatitis B, 1022"
+)
+DOSAGE_TABLE = (
+    "Sodium citrate/citric acid 1 mL contains 1 mEq sodium and is equivalent to 1 mEq "
+    "bicarbonate. Solution, sodium citrate 500 mg, citric acid 334 mg per 5 mL. Dose 10 "
+    "to 30 mL, 4 times daily, diluted in water, after meals and at bedtime."
+)
+
+
+def test_an_index_page_is_recognised() -> None:
+    from retrieval.reranker import is_index_page
+
+    assert is_index_page(INDEX_PAGE)
+
+
+def test_a_dosage_table_is_not_an_index() -> None:
+    """The densest numeric prose in the corpus, and real clinical content."""
+    from retrieval.reranker import is_reference_matter
+
+    assert not is_reference_matter(DOSAGE_TABLE)
+    assert not is_reference_matter(PROSE)

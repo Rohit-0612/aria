@@ -55,3 +55,20 @@ def test_provider_failure_propagates(monkeypatch: pytest.MonkeyPatch, chunks: li
     monkeypatch.setattr("agents.judge_agent.invoke_role", boom)
     with pytest.raises(AriaLLMError):
         judge_answer("q", "a", chunks)
+
+
+def test_an_unparseable_reply_is_asked_once_more(
+    monkeypatch: pytest.MonkeyPatch, chunks: list[Any]
+) -> None:
+    replies = iter(["I think it is fine.", '{"confidence": 0.8, "reason": "ok"}'])
+    monkeypatch.setattr("agents.judge_agent.invoke_role", lambda role, prompt: next(replies))
+    assert judge_answer("q", "a", chunks).confidence == 0.8
+
+
+def test_the_retry_is_bounded(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
+    calls: list[str] = []
+    monkeypatch.setattr(
+        "agents.judge_agent.invoke_role", lambda role, prompt: calls.append(prompt) or "no"
+    )
+    assert judge_answer("q", "a", chunks).confidence is None
+    assert len(calls) == 2

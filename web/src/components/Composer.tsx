@@ -94,6 +94,9 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
               ref={taRef}
               value={value}
               rows={1}
+              /* The server rejects longer questions; stop them here instead
+                 of failing the turn after the reader presses send. */
+              maxLength={2000}
               /* A phone can't fit the long invitation without eating a third
                  of the screen before a word is typed. */
               placeholder={

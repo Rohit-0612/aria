@@ -11,7 +11,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # CPU-only PyTorch keeps the image small (no CUDA libraries)
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir torch==2.12.0 --index-url https://download.pytorch.org/whl/cpu
 COPY requirements-space.txt .
 RUN pip install --no-cache-dir -r requirements-space.txt
 

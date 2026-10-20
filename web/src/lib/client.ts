@@ -3,6 +3,7 @@ import type {
   Citation,
   ConsultationError,
   EvidenceTier,
+  HistoryTurn,
   SafetyNote,
 } from './types';
 import { recipeFor, OUT_OF_SCOPE } from './mockData';
@@ -41,6 +42,11 @@ const USE_MOCK =
 
 export type ConsultationEvent =
   | { type: 'steps'; steps: AgentStep[] }
+  /**
+   * The passages the answer will cite, sent before the prose so its inline
+   * `[[n]]` markers resolve while it streams. Ungraded: no tier, no score.
+   */
+  | { type: 'sources'; citations: Citation[] }
   | {
       type: 'meta';
       /** Null when the Judge could not grade the answer. */
@@ -49,6 +55,8 @@ export type ConsultationEvent =
       confidence: number | null;
       citations: Citation[];
       safety?: SafetyNote[];
+      /** The question was declined as out of scope. */
+      outOfScope?: boolean;
     }
   /**
    * Answer prose only. The backend must never send a failure on this
@@ -86,7 +94,7 @@ function baseSteps(): AgentStep[] {
     {
       id: 'navigator',
       label: 'Navigator',
-      detail: 'Retrieving & reranking DiPiro passages',
+      detail: 'Retrieving & reranking passages from both books',
       status: 'pending',
     },
     {
@@ -108,6 +116,8 @@ function baseSteps(): AgentStep[] {
 export interface ConsultOptions {
   speed?: number; // multiplier; 1 = normal, 0 = instant
   signal?: AbortSignal;
+  /** Earlier turns, oldest first, so a follow-up can be resolved. */
+  history?: HistoryTurn[];
 }
 
 async function* mockConsult(
@@ -145,10 +155,11 @@ async function* mockConsult(
     yield emit();
     yield {
       type: 'meta',
-      evidenceTier: OUT_OF_SCOPE.evidenceTier,
-      confidence: OUT_OF_SCOPE.confidence,
-      citations: OUT_OF_SCOPE.citations,
+      evidenceTier: null,
+      confidence: null,
+      citations: [],
       safety: OUT_OF_SCOPE.safety,
+      outOfScope: true,
     };
     yield* streamTokens(OUT_OF_SCOPE.content, k, signal);
     yield { type: 'done' };
@@ -221,7 +232,7 @@ async function* apiConsult(
   const res = await fetch('/api/consult', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, history: opts.history ?? [] }),
     signal: opts.signal,
   });
   if (!res.ok || !res.body) throw new Error(`ARIA backend responded ${res.status}`);

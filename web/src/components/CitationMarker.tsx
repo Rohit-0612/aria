@@ -1,5 +1,6 @@
-import { useId, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Fragment, useId, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { motion } from 'framer-motion';
 import { useCitations } from './citationContext';
 import { shortSource } from './SourceRail';
 import { useIsTouch } from '../hooks/useViewport';
@@ -9,13 +10,45 @@ import { cn } from '../lib/utils';
 /*
   Inline citation marker — a small superscript numeral, not an ugly bracket.
   Hovering peeks at the grounded passage; clicking opens that passage in the
-  source rail beneath the answer. On touch there is no hover to peek with, so
+  source rail beneath the answer. The peek is portalled to <body> with fixed
+  coordinates: markers also sit inside table cells, whose scrolling wrapper
+  clipped an absolutely positioned popover to a sliver. On touch there is no hover to peek with, so
   a tap goes straight to the rail instead of flashing a popover first.
 */
 
+/**
+ * A run of markers, e.g. `[[1]][[3]]`, set as ¹,³. Markers that point at no
+ * retrieved passage are dropped rather than drawn as dead superscripts — the
+ * generator is told to cite only numbers it was given, and this is the
+ * second lock on that door.
+ */
+export function CitationGroup({ markers }: { markers: number[] }) {
+  const { byMarker } = useCitations();
+  const known = [...new Set(markers)].filter((n) => byMarker.has(n));
+  if (!known.length) return null;
+  return (
+    <>
+      {known.map((n, i) => (
+        <Fragment key={n}>
+          {i > 0 && (
+            <span aria-hidden className="align-super font-mono text-[0.66em] text-accent/60">
+              ,
+            </span>
+          )}
+          <CitationMarker marker={n} />
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/** Matches the peek's `w-[min(264px,…)]`, for keeping it on screen. */
+const PEEK_WIDTH = 264;
+
 export function CitationMarker({ marker }: { marker: number }) {
   const { byMarker, active, setActive, reveal } = useCitations();
-  const [peek, setPeek] = useState(false);
+  const [peek, setPeek] = useState<{ x: number; y: number } | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const touch = useIsTouch();
   const id = useId();
   const cite = byMarker.get(marker);
@@ -26,19 +59,25 @@ export function CitationMarker({ marker }: { marker: number }) {
 
   const open = () => {
     setActive(marker);
-    if (!touch) setPeek(true);
+    const rect = buttonRef.current?.getBoundingClientRect();
+    if (touch || !rect) return;
+    // Centred over the numeral, kept inside the viewport on both sides.
+    const half = Math.min(PEEK_WIDTH, window.innerWidth - 48) / 2;
+    const x = Math.min(Math.max(rect.left + rect.width / 2, half + 8), window.innerWidth - half - 8);
+    setPeek({ x, y: rect.top });
   };
   const close = () => {
     setActive(null);
-    setPeek(false);
+    setPeek(null);
   };
 
   return (
     <span className="relative inline-block">
       <button
+        ref={buttonRef}
         type="button"
         aria-describedby={peek ? id : undefined}
-        aria-label={`Source ${marker}: ${cite.section}, ${meta.label}`}
+        aria-label={`Source ${marker}: ${shortSource(cite)}, ${cite.page}`}
         onMouseEnter={open}
         onMouseLeave={close}
         onFocus={open}
@@ -46,33 +85,37 @@ export function CitationMarker({ marker }: { marker: number }) {
         onClick={(e) => {
           e.preventDefault();
           reveal(marker);
-          setPeek(false);
+          setPeek(null);
         }}
         className={cn(
-          /* A wider hit area on touch without disturbing the typography. */
-          'mx-[0.5px] inline-flex align-super font-mono text-[0.66em] font-medium leading-none tabular-nums transition-colors',
-          'px-[3px] py-[2px] -my-[2px] -mx-[2px]',
+          /* A taller hit area for touch without disturbing the line; the
+             horizontal padding is cancelled by an equal negative margin so the
+             numeral sits against its word like a printed superscript. */
+          'inline-flex align-super font-mono text-[0.66em] font-medium leading-none tabular-nums transition-colors',
+          'px-[2px] py-[2px] -my-[2px] -mx-[2px]',
           isActive ? 'text-accent underline' : 'text-accent/90 hover:underline',
         )}
       >
         {marker}
       </button>
 
-      <AnimatePresence>
-        {peek && (
+      {peek &&
+        createPortal(
           <motion.span
             id={id}
             role="tooltip"
-            initial={{ opacity: 0, y: 6, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 4, scale: 0.98 }}
+            // Anchored at the numeral's top-centre and lifted by its own
+            // height; framer owns `transform`, so the offset is set here.
+            style={{ left: peek.x, top: peek.y - 8 }}
+            initial={{ opacity: 0, scale: 0.97, x: '-50%', y: '-96%' }}
+            animate={{ opacity: 1, scale: 1, x: '-50%', y: '-100%' }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-[calc(100%+8px)] left-1/2 z-30 block w-[min(264px,calc(100vw-3rem))] -translate-x-1/2 rounded-[10px] border border-line-strong bg-surface-raised p-3 text-left shadow-peek"
+            className="pointer-events-none fixed z-50 block w-[min(264px,calc(100vw-3rem))] rounded-[10px] border border-line-strong bg-surface-raised p-3 text-left shadow-peek"
           >
             <span className="flex items-center justify-between gap-2">
               <span className="label">{shortSource(cite)}</span>
               <span className={cn('font-mono text-[0.56rem] uppercase', meta.color)}>
-                Tier {meta.numeral}
+                {meta.relevanceLabel}
               </span>
             </span>
             <span className="mt-1 block font-mono text-[0.6rem] text-ink-soft">
@@ -96,9 +139,9 @@ export function CitationMarker({ marker }: { marker: number }) {
             <span className="mt-2 block text-center font-mono text-[0.52rem] uppercase tracking-[0.12em] text-ink-faint/70">
               click to pin below
             </span>
-          </motion.span>
+          </motion.span>,
+          document.body,
         )}
-      </AnimatePresence>
     </span>
   );
 }

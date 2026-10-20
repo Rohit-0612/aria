@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from typing import Any, TypedDict
 
+from agents.context_agent import Turn
 from llm.errors import AriaStageError
 
 __all__ = ["AriaFailure", "AriaState", "initial_state", "record_failure"]
@@ -33,6 +34,13 @@ class AriaFailure(TypedDict):
 class AriaState(TypedDict):
     """State object for the compiled LangGraph app."""
 
+    #: The question exactly as the reader asked it.
+    asked: str
+    #: Earlier turns of the conversation, oldest first. Used only to resolve
+    #: a follow-up into `query`; never shown to the generator as evidence.
+    history: list[Turn]
+    #: The standalone question every stage works on. Equal to `asked` unless
+    #: `asked` was a follow-up that needed the conversation to make sense.
     query: str
     chunks: list[Any]
     answer: str
@@ -46,9 +54,11 @@ class AriaState(TypedDict):
     judge_failed: bool
 
 
-def initial_state(question: str) -> AriaState:
+def initial_state(question: str, history: list[Turn] | None = None) -> AriaState:
     """A clean state for one consultation."""
     return AriaState(
+        asked=question,
+        history=list(history or []),
         query=question,
         chunks=[],
         answer="",

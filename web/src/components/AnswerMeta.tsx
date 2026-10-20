@@ -10,7 +10,7 @@ import { cn } from '../lib/utils';
 
 /*
   The footing of a reply — everything the old margin box carried, compressed
-  into one quiet row of instruments: GRADE certainty, the Judge's score, the
+  into one quiet row of instruments: how well grounded the Judge found it, its score, the
   count of grounded sources, and copy. It arrives after the prose has landed,
   each element stepping in a beat behind the last.
 */
@@ -29,9 +29,11 @@ export function AnswerMeta({ message }: { message: AssistantMessage }) {
   // Last line of defence. A failed turn must never reach this component,
   // but if one ever does, it leaves without a certainty claim attached.
   if (message.phase === 'failed') return null;
+  // A refusal is not an answer: there is nothing to grade and nothing to cite.
+  if (message.outOfScope) return null;
 
   // `null` tier means the Judge never graded this answer. Render the row
-  // without a GRADE chip rather than inventing one — the answer and its
+  // without a grounding chip rather than inventing one — the answer and its
   // citations are real, only the adjudication is missing.
   const meta = message.evidenceTier ? tierOf(message.evidenceTier) : null;
   const adjudicated = message.confidence !== null;
@@ -43,7 +45,7 @@ export function AnswerMeta({ message }: { message: AssistantMessage }) {
       variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
       className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-line/70 pt-3"
     >
-      {/* GRADE certainty — only when the Judge actually graded the answer */}
+      {/* Grounding — only when the Judge actually graded the answer */}
       {meta && (
         <motion.span variants={item} className="group relative">
           <span className="chip !cursor-default gap-2">
@@ -121,10 +123,17 @@ export function AnswerMeta({ message }: { message: AssistantMessage }) {
       )}
 
       <motion.span variants={item} className="ml-auto">
-        <CopyButton text={message.content} />
+        <CopyButton text={plainCitations(message.content)} />
       </motion.span>
     </motion.div>
   );
+}
+
+/** Copied text reads `[1, 3]` rather than the wire format `[[1]][[3]]`. */
+function plainCitations(content: string): string {
+  return content
+    .replace(/\]\]\s*\[\[/g, ', ')
+    .replace(/\[\[(\d+(?:\s*,\s*\d+)*)\]\]/g, '[$1]');
 }
 
 /** A hairline tooltip that appears on hover or keyboard focus. */

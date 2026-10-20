@@ -1,0 +1,7 @@
+# Test and static-analysis tooling, on top of requirements-space.txt.
+-r requirements-space.txt
+
+pytest==9.1.1
+pytest-asyncio==1.4.0
+ruff==0.16.3
+mypy==2.3.1

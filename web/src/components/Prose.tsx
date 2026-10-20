@@ -1,12 +1,12 @@
 import { Fragment, type ReactNode } from 'react';
-import { CitationMarker } from './CitationMarker';
+import { CitationGroup } from './CitationMarker';
 
 /*
   Dependency-free markdown for clinical prose, parsed line-by-line so mixed
   blocks (a heading immediately followed by text and bullets) render correctly:
   headings (#..######), thematic breaks (---), unordered lists (-, *, +),
-  ordered lists (1. / 1)), GitHub tables, **bold**, *italic*, backslash
-  escapes, and [[n]] citation markers. Typeset for the journal: section
+  ordered lists (1. / 1)), blockquotes (>), GitHub tables, **bold**,
+  *italic*, backslash escapes, and [[n]] citation markers. Typeset for the journal: section
   subheads in small caps, numbered journal tables.
 
   Anything this parser does not recognise is printed verbatim, so every gap
@@ -19,6 +19,8 @@ import { CitationMarker } from './CitationMarker';
             escapes were never consumed (`\*All doses are with meals`).
     <br>    models emit these inside table cells; with no handling the tag
             itself was printed as text.
+    >       the generator closes many answers with "> **Note:** …", which
+            printed its angle bracket at the start of the paragraph.
 
   Handled here rather than upstream: the generator is free to write ordinary
   Markdown, and the renderer is the one place that decides how it looks.
@@ -62,10 +64,33 @@ function fold(text: string): string {
   wrong and ugly. Note `<[a-zA-Z/]` cannot match a comparison like `<30`.
 */
 const INLINE =
-  /\\(.)|<br\s*\/?>|<\/?(?:b|i|u|em|strong|sub|sup|span|p|div|code)(?:\s[^>]*)?\/?>|\*\*(.+?)\*\*|__(.+?)__|\*(.+?)\*|\[\[(\d+)\]\]/gi;
+  /\\(.)|<br\s*\/?>|<\/?(?:b|i|u|em|strong|sub|sup|span|p|div|code)(?:\s[^>]*)?\/?>|\*\*(.+?)\*\*|__(.+?)__|\*(.+?)\*|\[\[(\d+(?:\s*,\s*\d+)*)\]\]/gi;
 
-function renderInline(raw: string, keyBase: string): ReactNode[] {
-  const text = fold(raw);
+/*
+  Citation runs. The generator cites several passages as `[[1]][[3]]`; set
+  as two bare superscripts that reads as "13". Adjacent markers are merged
+  into one group first, so they render as ¹,³ — one group, one hover target
+  per passage.
+*/
+const MARKER_RUN = /\]\]\s*\[\[/g;
+// The generator writes "occurs [[5]]." — a superscript sits against its
+// word, so the space before it goes.
+const SPACE_BEFORE_MARKER = /\s+(?=\[\[\d)/g;
+
+/*
+  While an answer streams, a marker arrives in pieces: "[[", then "1", then
+  "]]". For that moment the reader would see raw brackets at the end of the
+  line, so an unfinished marker at the very end is held back until it
+  completes. Only the tail is touched — a finished answer renders verbatim.
+*/
+const PARTIAL_MARKER = /\[(?:\[[\d,\s]*\]?)?$/;
+
+export function holdPartialMarker(content: string): string {
+  return content.replace(PARTIAL_MARKER, '');
+}
+
+export function renderInline(raw: string, keyBase: string): ReactNode[] {
+  const text = fold(raw).replace(MARKER_RUN, ',').replace(SPACE_BEFORE_MARKER, '');
   const out: ReactNode[] = [];
   const re = new RegExp(INLINE.source, 'gi');
   let last = 0;
@@ -93,7 +118,8 @@ function renderInline(raw: string, keyBase: string): ReactNode[] {
         </em>,
       );
     } else if (m[5] !== undefined) {
-      out.push(<CitationMarker key={`${keyBase}-c${i}`} marker={Number(m[5])} />);
+      const markers = m[5].split(',').map((n) => Number(n.trim()));
+      out.push(<CitationGroup key={`${keyBase}-c${i}`} markers={markers} />);
     }
     last = m.index + m[0].length;
     i++;
@@ -141,6 +167,7 @@ type Block =
   | { kind: 'ul'; items: UlItem[] }
   | { kind: 'ol'; items: { num: string; text: string }[] }
   | { kind: 'table'; table: ParsedTable }
+  | { kind: 'quote'; paragraphs: string[] }
   | { kind: 'p'; text: string };
 
 const UL = /^[-*+]\s+(.*)$/;
@@ -149,8 +176,11 @@ const HEAD = /^(#{1,6})\s+(.*)$/;
 // A thematic break. Cannot collide with a list item (those need a space
 // after the marker) or a table separator (those contain a pipe).
 const HR = /^(?:-{3,}|\*{3,}|_{3,})$/;
+// A `>` followed by a number or `=` opens a comparison ("> 140 mm Hg",
+// ">= 60"), not a quote.
+const QUOTE = /^>(?!\s*[\d=])\s?(.*)$/;
 
-function tokenize(content: string): Block[] {
+export function tokenize(content: string): Block[] {
   const lines = content.replace(/\r/g, '').split('\n');
   const blocks: Block[] = [];
   let para: string[] = [];
@@ -202,6 +232,26 @@ function tokenize(content: string): Block[] {
       }
     }
 
+    if (QUOTE.test(t)) {
+      flush();
+      // Consecutive `>` lines form one quote; a bare `>` splits paragraphs.
+      const paragraphs: string[] = [];
+      let current: string[] = [];
+      while (i < lines.length && QUOTE.test(lines[i].trim())) {
+        const inner = lines[i].trim().match(QUOTE)![1].trim();
+        if (inner === '') {
+          if (current.length) paragraphs.push(current.join(' '));
+          current = [];
+        } else {
+          current.push(inner);
+        }
+        i++;
+      }
+      if (current.length) paragraphs.push(current.join(' '));
+      if (paragraphs.length) blocks.push({ kind: 'quote', paragraphs });
+      continue;
+    }
+
     if (UL.test(t)) {
       flush();
       const items: UlItem[] = [];
@@ -234,7 +284,7 @@ function tokenize(content: string): Block[] {
 }
 
 export function Prose({ content, streaming }: { content: string; streaming?: boolean }) {
-  const blocks = tokenize(content);
+  const blocks = tokenize(streaming ? holdPartialMarker(content) : content);
   let tableNo = 0;
 
   return (
@@ -284,6 +334,20 @@ export function Prose({ content, streaming }: { content: string; streaming?: boo
                   </li>
                 ))}
               </ol>
+            );
+
+          case 'quote':
+            return (
+              <blockquote
+                key={bi}
+                className="my-4 border-l-2 border-line-strong pl-3.5 text-[0.94em] text-ink-soft"
+              >
+                {b.paragraphs.map((para, pi) => (
+                  <p key={pi} className="my-1.5">
+                    {renderInline(para, `q-${bi}-${pi}`)}
+                  </p>
+                ))}
+              </blockquote>
             );
 
           case 'table': {

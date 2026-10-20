@@ -260,7 +260,7 @@ export const OUT_OF_SCOPE: Recipe = {
   role: 'assistant',
   evidenceTier: 'limited',
   confidence: 0,
-  content: `That falls outside my scope. I'm **ARIA**, a clinical pharmacotherapy assistant — I can help with drug selection, dosing, monitoring, interactions, and the evidence behind therapeutic decisions, all grounded in *DiPiro's Pharmacotherapy*.
+  content: `That falls outside my scope. I'm **ARIA**, a clinical pharmacotherapy assistant — I can help with drug selection, dosing, monitoring, interactions, and the evidence behind therapeutic decisions, all grounded in *DiPiro's Pharmacotherapy* and the *RxPrep NAPLEX Course Book*.
 
 Try asking about a medication, a dosing strategy, or how to manage a specific therapeutic problem.`,
   citations: [],

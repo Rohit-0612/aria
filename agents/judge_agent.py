@@ -21,15 +21,19 @@ from dataclasses import dataclass
 from typing import Any
 
 from llm.config import Role
+from llm.generator import format_passages
 from llm.llm_setup import invoke_role
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["Judgment", "judge_answer"]
 
-JUDGE_PROMPT = """You are a quality judge for a medical assistant's answers. Evaluate the ANSWER based on two criteria:
-1. GROUNDEDNESS: Is the answer supported by the CONTEXT? (not made up)
-2. RELEVANCE: Does the answer actually address the QUESTION?
+JUDGE_PROMPT = """You are a quality judge for a medical assistant's answers. The CONTEXT is a numbered list of source passages, and the ANSWER cites them inline as [[n]]. Evaluate the ANSWER on three criteria:
+1. GROUNDEDNESS: Is every clinical claim supported by the CONTEXT? (not made up, not from outside knowledge)
+2. CITATION ACCURACY: Does each [[n]] marker point to a passage that actually supports the claim it is attached to?
+3. RELEVANCE: Does the answer actually address the QUESTION?
+
+Lower the score for unsupported claims and for markers attached to passages that do not say what the answer claims.
 
 CONTEXT:
 {context}
@@ -84,13 +88,18 @@ def judge_answer(query: str, answer: str, chunks: list[Any]) -> Judgment:
     Raises:
         AriaLLMError: if the judge model cannot be reached.
     """
-    context = "\n\n".join(chunk.page_content for chunk in chunks)
-    raw = invoke_role(
-        Role.JUDGE,
-        JUDGE_PROMPT.format(context=context, query=query, answer=answer),
-    )
+    prompt = JUDGE_PROMPT.format(context=format_passages(chunks), query=query, answer=answer)
 
-    judgment = _parse(raw)
+    # Asked twice at most. An unparseable reply is intermittent, not a
+    # property of the answer: in the eval suite about one judgment in ten
+    # came back without its JSON, and the same prompt re-asked parsed fine.
+    # One retry (~0.5s on the small model) turns most "Not adjudicated"
+    # turns into scored ones; a second failure is reported, not hidden.
+    judgment = _parse(invoke_role(Role.JUDGE, prompt))
+    if not judgment.adjudicated:
+        logger.info("judge reply unparseable (%s) — asking once more", judgment.reason)
+        judgment = _parse(invoke_role(Role.JUDGE, prompt))
+
     if judgment.adjudicated:
         logger.info("judge confidence: %s - %s", judgment.confidence, judgment.reason)
     else:

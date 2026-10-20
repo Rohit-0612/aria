@@ -64,6 +64,12 @@ DEFAULT_GENERATOR_MODEL: Final = "openai/gpt-oss-120b"
 DEFAULT_SMALL_MODEL: Final = "openai/gpt-oss-20b"
 DEFAULT_FALLBACK_MODEL: Final = "openai/gpt-oss-20b"
 DEFAULT_RERANK_MODEL: Final = "rerank-english-v3.0"
+# The offline eval judge is deliberately a different model family from the
+# app's own Judge (gpt-oss), so the suite is not one family grading itself —
+# LLM judges measurably favour their own family's output. qwen3.8, unlike
+# the qwen3.6 noted above, returns clean JSON in `.content` (checked
+# 2026-10-20 against Groq).
+DEFAULT_EVAL_JUDGE_MODEL: Final = "qwen/qwen3.8-27b"
 DEFAULT_EMBEDDING_MODEL: Final = "all-MiniLM-L6-v2"
 
 # Token budgets are bounded by Groq's per-minute limit, not just by how long
@@ -133,10 +139,12 @@ _REGISTRY: Final[dict[Role, tuple[str, str, float, int, str]]] = {
     ),
     Role.EVAL_JUDGE: (
         "ARIA_EVAL_JUDGE_MODEL",
-        DEFAULT_SMALL_MODEL,
+        DEFAULT_EVAL_JUDGE_MODEL,
         0.0,
         _JUDGE_MAX_TOKENS,
-        "medium",
+        # qwen accepts "none" | "default"; gpt-oss accepts "low" | "medium" |
+        # "high". Set ARIA_EVAL_JUDGE_EFFORT along with the model.
+        "default",
     ),
 }
 
@@ -161,7 +169,9 @@ def spec_for(role: Role) -> ModelSpec:
         model=_env(env_var, default_model),
         temperature=temperature,
         max_tokens=max_tokens,
-        reasoning_effort=effort,
+        # ARIA_<ROLE>_EFFORT, beside ARIA_<ROLE>_MODEL: swapping a model
+        # across families can mean swapping the effort vocabulary too.
+        reasoning_effort=_env(env_var.removesuffix("_MODEL") + "_EFFORT", effort),
         env_var=env_var,
     )
 
@@ -186,14 +196,23 @@ def embedding_model() -> str:
     return _env("ARIA_EMBEDDING_MODEL", DEFAULT_EMBEDDING_MODEL)
 
 
-def configured_groq_models() -> tuple[str, ...]:
-    """Every distinct Groq model ID ARIA might call, including the fallback.
+#: Roles only the offline eval suite calls. The served app never uses them,
+#: so a retired eval model must not mark /api/health degraded. Listed
+#: explicitly, so a newly added role is verified unless someone says not to.
+OFFLINE_ROLES: Final = frozenset({Role.EVAL_JUDGE})
+
+
+def configured_groq_models(*, include_offline: bool = False) -> tuple[str, ...]:
+    """Every distinct Groq model ID the app might call, including the fallback.
 
     This is exactly the set the startup preflight validates against the
-    provider, so a newly added role can never escape verification.
+    provider, so a newly added serving role can never escape verification.
+    `include_offline` adds the eval-only roles, for the eval suite's own check.
     """
     seen: dict[str, None] = {}
     for spec in all_specs():
+        if spec.role in OFFLINE_ROLES and not include_offline:
+            continue
         seen[spec.model] = None
     seen[fallback_model()] = None
     return tuple(seen)

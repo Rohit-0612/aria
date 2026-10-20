@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from typing import Any
 
 from dotenv import load_dotenv
@@ -31,7 +32,14 @@ from vectorstore.qdrant_store import collection_name, load_vectorstore
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["DEFAULT_RELEVANCE_FLOOR", "BalancedRetriever", "get_balanced_retriever"]
+__all__ = [
+    "DEFAULT_RELEVANCE_FLOOR",
+    "BalancedRetriever",
+    "get_balanced_retriever",
+    "is_bibliography",
+    "is_index_page",
+    "is_reference_matter",
+]
 
 #: Minimum Cohere relevance a passage needs to be shown as evidence.
 #:
@@ -58,6 +66,69 @@ def relevance_floor() -> float:
     except ValueError:
         logger.warning("ARIA_RELEVANCE_FLOOR=%r is not a number — using default", raw)
         return DEFAULT_RELEVANCE_FLOOR
+
+
+# ── Reference lists ────────────────────────────────────────────────────
+# About 11% of the DiPiro chunks are chapter bibliographies: lists of paper
+# titles. To a reranker they are perfect matches — "Fondaparinux and the
+# management of heparin-induced thrombocytopenia" scores 1.00 against "how is
+# HIT managed?" — while containing no clinical content at all. Measured on the
+# eval suite, a HIT question retrieved five of them and nothing else; the
+# generator, with no real evidence, answered from memory and cited reference
+# numbers from inside the list ([[11]], [[12]]) that pointed at nothing.
+#
+# A citation entry has a recognisable shape (year;volume, DOI, PMID, "et al.",
+# a numbered "38. T urnbull F," lead — the OCR splits initial capitals). The
+# corpus is bimodal on the density of those shapes: real prose sits near 0
+# per 1,000 characters, reference lists above 6. The threshold is set at the
+# top of the gap, where a hand-checked sample was ~90% bibliography, because
+# dropping a real passage is worse than keeping a junk one the reranker may
+# still demote.
+_CITATION_ENTRY = re.compile(
+    r"""
+      \b(?:19|20)\d{2}\s?(?:[A-Z][a-z]{2})?\s?;\s?\d+     # 2019;39  2019 Nov;18
+    | \b(?:19|20)\d{2}:\s?\d+                             # 2021:12
+    | \bdoi:?\s?10\.\d{4,}/ | \b10\.\d{4,}/\S+          # DOIs
+    | \bPMID:?\s?\d{7,8} | \b\d{8}\b                     # PubMed IDs
+    | \bet\ al\.                                        # author lists
+    | (?:^|\.\s)\d{1,3}\.\s[A-Z]\s?[a-z]+\s[A-Z]{1,3}[,.]  # "38. T urnbull F,"
+    """,
+    re.VERBOSE | re.MULTILINE,
+)
+BIBLIOGRAPHY_DENSITY = 6.0  # citation entries per 1,000 characters
+_BIBLIOGRAPHY_MIN_ENTRIES = 4
+
+
+def is_bibliography(text: str) -> bool:
+    """True when a passage is a reference list rather than clinical prose."""
+    entries = len(_CITATION_ENTRY.findall(text))
+    if entries < _BIBLIOGRAPHY_MIN_ENTRIES:
+        return False
+    return entries / max(len(text), 1) * 1000 >= BIBLIOGRAPHY_DENSITY
+
+
+# The back-of-book index is the same problem in another shape (~2% of chunks,
+# both books): "Hemorrhagic stroke, 283 etiology of, 283 284 treatment of,
+# 288" names every condition and drug in the question and says nothing about
+# any of them. Its signature is page locators — a comma, then page numbers.
+# Index chunks run 30-100 per 1,000 characters; the densest real prose in a
+# 3,000-chunk sample (dosage-form tables) stayed under 18.
+_PAGE_LOCATOR = re.compile(r",\s(?:\d{1,4}[tf]?\s?)+(?=[A-Za-z,]|$)")
+INDEX_DENSITY = 20.0  # page locators per 1,000 characters
+_INDEX_MIN_LOCATORS = 8
+
+
+def is_index_page(text: str) -> bool:
+    """True when a passage is a back-of-book index rather than clinical prose."""
+    locators = len(_PAGE_LOCATOR.findall(text))
+    if locators < _INDEX_MIN_LOCATORS:
+        return False
+    return locators / max(len(text), 1) * 1000 >= INDEX_DENSITY
+
+
+def is_reference_matter(text: str) -> bool:
+    """A reference list or an index: matches the query's words, says nothing."""
+    return is_bibliography(text) or is_index_page(text)
 
 
 def _relevance_of(doc: Any) -> float:
@@ -90,7 +161,7 @@ class BalancedRetriever:
         self,
         vectorstore: Any,
         reranker: CohereRerank,
-        k_global: int = 14,
+        k_global: int = 20,
         k_rxprep: int = 8,
         floor: float | None = None,
     ) -> None:
@@ -117,12 +188,18 @@ class BalancedRetriever:
 
         seen: set[str] = set()
         candidates: list[Any] = []
+        n_reference = 0
         for d in glob + rx:
             key = d.page_content[:120]
             if key in seen:
                 continue
             seen.add(key)
+            if is_reference_matter(d.page_content):
+                n_reference += 1
+                continue
             candidates.append(d)
+        if n_reference:
+            logger.info("Dropped %d reference-list/index passage(s) before reranking", n_reference)
 
         if not candidates:
             # Reachable but empty: an un-restored or wrongly named collection
@@ -130,7 +207,11 @@ class BalancedRetriever:
             raise AriaRetrievalError(
                 stage="navigator",
                 source=collection_name(),
-                message="the vector store returned no candidate passages",
+                message=(
+                    "only reference lists and index pages matched the query"
+                    if n_reference
+                    else "the vector store returned no candidate passages"
+                ),
                 code=EMPTY_RETRIEVAL_CODE,
             )
 
@@ -168,7 +249,7 @@ class BalancedRetriever:
 
 
 def get_balanced_retriever(
-    k_global: int = 14,
+    k_global: int = 20,
     k_rxprep: int = 8,
     top_n: int = 5,
     floor: float | None = None,

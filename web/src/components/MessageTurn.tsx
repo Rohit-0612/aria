@@ -95,7 +95,9 @@ function AssistantTurn({ message }: { message: AssistantMessage }) {
                 ? 'consulting the evidence'
                 : failed
                   ? 'no answer produced'
-                  : 'grounded reply'}
+                  : message.outOfScope
+                    ? 'outside clinical scope'
+                    : 'grounded reply'}
             </span>
           </div>
 

@@ -5,7 +5,8 @@
   peer-reviewed article on a physical page (the "sheet") resting on a
   desk. Ink on warm ivory, black hairline rules, a single saffron accent
   used like a printer's spot color, oxblood reserved for the evidence
-  spine and cautions. Evidence tiers map to GRADE certainty levels.
+  spine and cautions. Tiers grade grounding (Judge) and relevance
+  (reranker) on one three-step scale — see lib/tiers.ts.
 
   Values are HSL channels ("H S% L%") so Tailwind alpha modifiers work.
 */
@@ -35,10 +36,10 @@
   /* Caution + evidence spine */
   --oxblood: 6 56% 36%;
 
-  /* GRADE evidence levels */
-  --tier-strong: 152 30% 32%; /* high certainty */
-  --tier-moderate: 30 62% 44%; /* moderate */
-  --tier-limited: 30 10% 46%; /* low */
+  /* Three-step tier scale (grounding / relevance) */
+  --tier-strong: 152 30% 32%;
+  --tier-moderate: 30 62% 44%;
+  --tier-limited: 30 10% 46%;
 
   --shadow: 30 28% 24%;
 

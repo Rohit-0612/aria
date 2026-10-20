@@ -58,16 +58,21 @@ def test_blank_env_var_falls_back_to_default(monkeypatch: pytest.MonkeyPatch) ->
     assert spec_for(Role.GENERATOR).model == DEFAULT_GENERATOR_MODEL
 
 
-def test_preflight_set_covers_every_role_plus_fallback(
+def test_preflight_set_covers_every_serving_role_plus_fallback(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    from llm.config import OFFLINE_ROLES
+
     monkeypatch.setenv("ARIA_GENERATOR_MODEL", "a/one")
     monkeypatch.setenv("ARIA_FALLBACK_MODEL", "a/two")
     configured = configured_groq_models()
     assert "a/one" in configured
     assert "a/two" in configured
     for spec in all_specs():
-        assert spec.model in configured
+        if spec.role not in OFFLINE_ROLES:
+            assert spec.model in configured
+    every = configured_groq_models(include_offline=True)
+    assert all(spec.model in every for spec in all_specs())
 
 
 def test_generator_budget_fits_the_provider_rate_limit() -> None:
@@ -81,3 +86,28 @@ def test_generator_budget_fits_the_provider_rate_limit() -> None:
 
 def test_fallback_defaults_to_the_small_model() -> None:
     assert fallback_model() == DEFAULT_FALLBACK_MODEL
+
+
+def test_eval_judge_is_a_different_family_from_the_app_judge() -> None:
+    """The suite must not be gpt-oss grading gpt-oss."""
+    from llm.config import Role, spec_for
+
+    app = spec_for(Role.JUDGE).model
+    offline = spec_for(Role.EVAL_JUDGE).model
+    assert app.split("/")[0] != offline.split("/")[0]
+
+
+def test_eval_only_models_do_not_gate_serving_health() -> None:
+    from llm.config import Role, configured_groq_models, spec_for
+
+    assert spec_for(Role.EVAL_JUDGE).model not in configured_groq_models()
+    assert spec_for(Role.EVAL_JUDGE).model in configured_groq_models(include_offline=True)
+
+
+def test_reasoning_effort_is_overridable_per_role(monkeypatch: pytest.MonkeyPatch) -> None:
+    from llm.config import Role, spec_for
+
+    monkeypatch.setenv("ARIA_EVAL_JUDGE_MODEL", "openai/gpt-oss-120b")
+    monkeypatch.setenv("ARIA_EVAL_JUDGE_EFFORT", "high")
+    assert spec_for(Role.EVAL_JUDGE).reasoning_effort == "high"
+    assert spec_for(Role.JUDGE).reasoning_effort == "medium"

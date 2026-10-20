@@ -31,6 +31,7 @@ from typing import Any
 
 from langgraph.graph import END, START, StateGraph
 
+from agents.context_agent import Turn
 from graph.nodes import (
     generator_node,
     guardrail_node,
@@ -102,15 +103,22 @@ def _get_app() -> Any:
     return _app
 
 
-async def stream_aria(question: str) -> AsyncIterator[dict[str, Any]]:
+async def stream_aria(
+    question: str, history: list[Turn] | None = None
+) -> AsyncIterator[dict[str, Any]]:
     """Run one consultation, yielding its progress as it happens.
 
-    This is the serving path. It emits three kinds of event, and the caller
+    This is the serving path. It emits four kinds of event, and the caller
     needs no knowledge of the pipeline to render them:
 
         {"type": "step",  ...}       an agent step changed status
+        {"type": "sources", "chunks": [...]}  the passages the answer will
+                                     be grounded in, before it is written
         {"type": "token", "text": s} a fragment of reply prose
         {"type": "final", "state": AriaState}  the finished state
+
+    `sources` comes before the prose so that the answer's inline citation
+    markers can resolve to their passages while it is still being written.
 
     Reply prose comes from whichever node produced it — the generator
     streaming a grounded answer, or `reject_node` declining an out-of-scope
@@ -122,13 +130,15 @@ async def stream_aria(question: str) -> AsyncIterator[dict[str, Any]]:
     final: AriaState | None = None
 
     async for mode, payload in _get_app().astream(
-        initial_state(question),
+        initial_state(question, history),
         stream_mode=["custom", "values"],
     ):
         if mode == "custom":
             kind = payload.get("kind")
             if kind == "step":
                 yield {"type": "step", **{k: v for k, v in payload.items() if k != "kind"}}
+            elif kind == "sources":
+                yield {"type": "sources", "chunks": payload["chunks"]}
             elif kind == "token":
                 yield {"type": "token", "text": payload["text"]}
 
@@ -136,18 +146,18 @@ async def stream_aria(question: str) -> AsyncIterator[dict[str, Any]]:
             final = payload
 
     if final is None:  # pragma: no cover - astream always emits values
-        final = initial_state(question)
+        final = initial_state(question, history)
     yield {"type": "final", "state": final}
 
 
-def run_aria(question: str) -> AriaState:
+def run_aria(question: str, history: list[Turn] | None = None) -> AriaState:
     """Run one consultation and return the full final state.
 
     The batch form, for callers with nothing to stream to. Prefer this over
     `ask_aria` when the caller needs to distinguish an answer from a
     failure — which is every caller that renders to a user.
     """
-    final: AriaState = _get_app().invoke(initial_state(question))
+    final: AriaState = _get_app().invoke(initial_state(question, history))
     return final
 
 

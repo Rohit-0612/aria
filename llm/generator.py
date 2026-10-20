@@ -24,7 +24,33 @@ from llm.prompts import ANSWER_PROMPT
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["generate_answer", "stream_answer"]
+__all__ = ["format_passages", "generate_answer", "passage_label", "stream_answer"]
+
+#: Short names the model cites by. Chunks ingested before the `book` tag
+#: existed are all DiPiro, so that is the default.
+_BOOK_LABELS = {"dipiro": "DiPiro's Pharmacotherapy 12e", "rxprep": "RxPrep NAPLEX 2025"}
+
+
+def passage_label(chunk: Any) -> str:
+    """'Book, p. N' for one passage."""
+    meta = getattr(chunk, "metadata", {}) or {}
+    book = _BOOK_LABELS.get(meta.get("book", "dipiro"), _BOOK_LABELS["dipiro"])
+    page = meta.get("page")
+    return f"{book}, p. {page}" if page is not None else book
+
+
+def format_passages(chunks: list[Any]) -> str:
+    """Number the passages the way the reader will see them.
+
+    Passage `n` here is citation `n` in the UI: both follow the order of
+    `chunks`. That shared numbering is the whole contract behind an inline
+    `[[n]]` marker opening the passage the claim rests on, so it must not be
+    re-sorted anywhere between retrieval and the browser.
+    """
+    return "\n\n".join(
+        f"[{i}] {passage_label(chunk)}\n{chunk.page_content.strip()}"
+        for i, chunk in enumerate(chunks, start=1)
+    )
 
 
 def _prompt_for(query: str, chunks: list[Any]) -> str:
@@ -42,8 +68,7 @@ def _prompt_for(query: str, chunks: list[Any]) -> str:
             code=EMPTY_RETRIEVAL_CODE,
         )
 
-    context = "\n\n".join(chunk.page_content for chunk in chunks)
-    return ANSWER_PROMPT.format(context=context, question=query)
+    return ANSWER_PROMPT.format(context=format_passages(chunks), question=query)
 
 
 def stream_answer(query: str, chunks: list[Any]) -> Iterator[str]:

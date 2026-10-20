@@ -14,6 +14,10 @@ applied to one silently missed the other.
 Event contract, and the reason it looks like this:
 
   steps  — agent trace; a step may end `done`, `skipped` or `failed`
+  sources — the passages the answer will cite, numbered as the generator
+           was told to cite them. Sent before the prose so inline `[[n]]`
+           markers resolve while the answer is still streaming. Carries no
+           tier or confidence: nothing has been graded yet.
   meta   — evidence tier, confidence, citations. Emitted ONLY when a real
            grounded answer exists, and emitted AFTER the prose: the answer
            streams as it is written, and the Judge can only score it once it
@@ -47,7 +51,7 @@ import time
 from collections import defaultdict, deque
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import Any, Literal
 
 # Allow running as `python api/server.py` as well as `uvicorn api.server:app`
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,8 +66,9 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
+from agents.context_agent import MAX_TURN_CHARS, Turn
 from graph.aria_graph import stream_aria
 from graph.state import AriaFailure
 from llm.errors import AriaStageError, wrap_provider_error
@@ -113,8 +118,39 @@ if _CORS_ORIGINS:
     )
 
 
+#: Longest question accepted. Generous for a clinical vignette, and a hard
+#: stop on pasting a document into an endpoint that spends model quota.
+MAX_QUERY_CHARS = 2000
+#: Earlier turns kept for resolving follow-ups (two exchanges). Older ones
+#: rarely change what "it" refers to and cost tokens on every request.
+MAX_HISTORY_TURNS = 4
+
+
+class HistoryTurn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(max_length=20_000)
+
+
 class ConsultRequest(BaseModel):
-    query: str
+    query: str = Field(min_length=1, max_length=MAX_QUERY_CHARS)
+    history: list[HistoryTurn] = Field(default_factory=list, max_length=20)
+
+    @field_validator("query")
+    @classmethod
+    def _not_blank(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("query is blank")
+        return value
+
+    def turns(self) -> list[Turn]:
+        """The recent conversation, clipped to what follow-up resolution needs."""
+        recent = self.history[-MAX_HISTORY_TURNS:]
+        return [
+            Turn(role=t.role, content=t.content[: MAX_TURN_CHARS * 2])
+            for t in recent
+            if t.content.strip()
+        ]
 
 
 # ── Rate limiting ──────────────────────────────────────────────────────
@@ -181,7 +217,7 @@ def base_steps() -> list[dict[str, Any]]:
         {
             "id": "navigator",
             "label": "Navigator",
-            "detail": "Retrieving & reranking DiPiro passages",
+            "detail": "Retrieving & reranking passages from both books",
             "status": "pending",
         },
         {
@@ -288,7 +324,10 @@ def error_from_state(failure: AriaFailure) -> dict[str, Any]:
 
 SCOPE_NOTE = {
     "kind": "scope",
-    "text": ("ARIA answers pharmacotherapy questions only, grounded in DiPiro's Pharmacotherapy."),
+    "text": (
+        "ARIA answers pharmacotherapy questions only, grounded in DiPiro's "
+        "Pharmacotherapy and the RxPrep NAPLEX Course Book."
+    ),
 }
 CAUTION_NOTE = {
     "kind": "caution",
@@ -298,7 +337,24 @@ CAUTION_NOTE = {
 }
 
 
-async def run_consultation(query: str) -> AsyncIterator[str]:
+#: Below this Judge score the answer still renders — it is real, and its
+#: sources are shown — but the reader is told plainly that the Judge found
+#: it weakly supported. Same boundary as the "limited" tier.
+LOW_CONFIDENCE = 0.6
+
+
+def low_confidence_note(confidence: float) -> dict[str, str]:
+    return {
+        "kind": "caution",
+        "text": (
+            f"The Judge scored this answer {confidence:.2f}: parts of it may not be "
+            "supported by the cited passages. Check each claim against its source "
+            "before relying on it."
+        ),
+    }
+
+
+async def run_consultation(query: str, history: list[Turn] | None = None) -> AsyncIterator[str]:
     """Drive the graph and translate its events into SSE.
 
     The only pipeline fact this function knows is which steps exist, so it
@@ -313,7 +369,7 @@ async def run_consultation(query: str) -> AsyncIterator[str]:
 
     final: dict[str, Any] | None = None
 
-    async for event in stream_aria(query):
+    async for event in stream_aria(query, history):
         kind = event["type"]
 
         if kind == "step":
@@ -322,6 +378,9 @@ async def run_consultation(query: str) -> AsyncIterator[str]:
                 continue
             step.update({k: v for k, v in event.items() if k != "type" and k != "id"})
             yield steps_event()
+
+        elif kind == "sources":
+            yield sse({"type": "sources", "citations": build_citations(event["chunks"])})
 
         elif kind == "token":
             yield sse({"type": "token", "chunk": event["text"]})
@@ -345,26 +404,33 @@ async def run_consultation(query: str) -> AsyncIterator[str]:
         return
 
     if not final["is_medical"]:
+        # A refusal is not an answer, so it gets no grounding tier and no
+        # score — a "low certainty" badge on "that is outside my scope"
+        # claimed the refusal had been graded, and graded badly.
         yield sse(
             {
                 "type": "meta",
-                "evidenceTier": "limited",
-                "confidence": 0,
+                "evidenceTier": None,
+                "confidence": None,
                 "citations": [],
                 "safety": [SCOPE_NOTE],
+                "outOfScope": True,
             }
         )
         yield sse({"type": "done"})
         return
 
     confidence = final["confidence"]
+    safety = [CAUTION_NOTE]
+    if confidence is not None and confidence < LOW_CONFIDENCE:
+        safety.insert(0, low_confidence_note(confidence))
     yield sse(
         {
             "type": "meta",
             "evidenceTier": tier_from_confidence(confidence) if confidence is not None else None,
             "confidence": confidence,
             "citations": build_citations(final["chunks"]),
-            "safety": [CAUTION_NOTE],
+            "safety": safety,
         }
     )
     yield sse({"type": "done"})
@@ -426,7 +492,7 @@ async def consult(req: ConsultRequest, request: Request) -> StreamingResponse:
 
         try:
             async with _consult_slots:
-                async for ev in run_consultation(req.query.strip()):
+                async for ev in run_consultation(req.query, req.turns()):
                     yield ev
         except Exception as exc:  # last resort — still never a token
             # The old code streamed `str(exc)` as a `token`, so the browser

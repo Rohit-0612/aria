@@ -113,17 +113,7 @@ def navigator(query: str) -> list[Any]:
             would have no way to tell "nothing matched" from "nothing was
             asked", and the generator would answer ungrounded either way.
     """
-    global _retriever
-    if _retriever is None:
-        try:
-            _retriever = get_balanced_retriever()
-        except Exception as exc:
-            # Left as None so a later request retries rather than latching
-            # the process into a permanently broken state.
-            logger.error("could not open the evidence base: %s", exc)
-            raise wrap_retrieval_error(exc, "navigator", collection_name()) from exc
-
-    chunks = _retriever.invoke(optimize_query(query))
+    chunks = _get_retriever().invoke(optimize_query(query))
     if not chunks:
         raise AriaRetrievalError(
             stage="navigator",

@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import type { AssistantMessage, Message } from '../lib/types';
+import type { AssistantMessage, HistoryTurn, Message } from '../lib/types';
 import { consult } from '../lib/client';
 import { uid } from '../lib/utils';
 
@@ -14,6 +14,32 @@ import { uid } from '../lib/utils';
  * them as clinical certainty claims — a seeded 'moderate' is what stamped
  * "MODERATE CERTAINTY" onto provider error text.
  */
+/** Exchanges sent back for follow-up resolution. The server keeps the same. */
+const HISTORY_EXCHANGES = 2;
+const HISTORY_CHARS = 1200;
+
+/**
+ * The recent conversation, as the backend needs it to understand a
+ * follow-up. Only exchanges that produced a real answer are sent: a failed
+ * turn has no content, and a refusal says nothing about what "it" means.
+ * Citation markers are stripped — they mean nothing outside their turn.
+ */
+export function historyFrom(messages: Message[]): HistoryTurn[] {
+  const pairs: HistoryTurn[][] = [];
+  for (let i = 0; i + 1 < messages.length; i++) {
+    const q = messages[i];
+    const a = messages[i + 1];
+    if (q.role !== 'user' || a.role !== 'assistant') continue;
+    if (a.phase !== 'complete' || a.outOfScope || !a.content.trim()) continue;
+    const answer = a.content.replace(/\[\[\d+(?:\s*,\s*\d+)*\]\]/g, '').trim();
+    pairs.push([
+      { role: 'user', content: q.content },
+      { role: 'assistant', content: answer.slice(0, HISTORY_CHARS) },
+    ]);
+  }
+  return pairs.slice(-HISTORY_EXCHANGES).flat();
+}
+
 export function useConsultation(reducedMotion: boolean) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
@@ -54,6 +80,7 @@ export function useConsultation(reducedMotion: boolean) {
         phase: 'reasoning',
       };
 
+      const history = historyFrom(messages);
       setMessages((prev) => [...prev, userMsg, assistantMsg]);
       setBusy(true);
 
@@ -64,10 +91,17 @@ export function useConsultation(reducedMotion: boolean) {
         for await (const ev of consult(q, {
           speed: reducedMotion ? 0 : 1,
           signal: ac.signal,
+          history,
         })) {
           switch (ev.type) {
             case 'steps':
               patchAssistant(assistantId, { agentSteps: ev.steps });
+              break;
+            case 'sources':
+              // Ungraded passages, early, so inline markers resolve while
+              // the answer streams. `meta` later replaces them with the
+              // same list; the tier and score still wait for the Judge.
+              patchAssistant(assistantId, { citations: ev.citations });
               break;
             case 'meta':
               // Arrives after the prose: the Judge can only score a
@@ -78,6 +112,7 @@ export function useConsultation(reducedMotion: boolean) {
                 confidence: ev.confidence,
                 citations: ev.citations,
                 safety: ev.safety,
+                outOfScope: ev.outOfScope ?? false,
               });
               break;
             case 'token':
@@ -142,7 +177,7 @@ export function useConsultation(reducedMotion: boolean) {
         }
       }
     },
-    [busy, patchAssistant, reducedMotion],
+    [busy, messages, patchAssistant, reducedMotion],
   );
 
   const stop = useCallback(() => {

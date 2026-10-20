@@ -23,6 +23,7 @@ from typing import Any
 
 from langgraph.config import get_stream_writer
 
+from agents.context_agent import resolve_followup
 from agents.guardrail_agent import check_guardrail
 from agents.judge_agent import judge_answer
 from agents.navigator_agent import navigator
@@ -45,7 +46,7 @@ REJECTION_MESSAGE = (
     "That falls outside my scope. I'm **ARIA**, a clinical pharmacotherapy "
     "assistant — I can help with drug selection, dosing, monitoring, "
     "interactions, and the evidence behind therapeutic decisions, grounded "
-    "in *DiPiro's Pharmacotherapy*."
+    "in *DiPiro's Pharmacotherapy* and the *RxPrep NAPLEX Course Book*."
 )
 
 
@@ -103,8 +104,15 @@ def _failed(
 
 
 def guardrail_node(state: AriaState) -> AriaState:
+    """Resolve a follow-up against the conversation, then check its scope.
+
+    The follow-up is resolved here, before the scope check, because the
+    check needs it too: "and for children?" is not recognisably clinical on
+    its own, and would be refused as out of scope.
+    """
     write, t0 = _start("guardrail", "Confirming the query is in clinical scope")
     try:
+        state["query"] = resolve_followup(state["asked"], state["history"])
         state["is_medical"] = check_guardrail(state["query"])
     except Exception as raw:  # noqa: BLE001 - normalised on the next line
         exc = wrap_provider_error(raw, "guardrail", "guardrail model")
@@ -115,13 +123,19 @@ def guardrail_node(state: AriaState) -> AriaState:
         return state
 
     in_scope = state["is_medical"]
+    if not in_scope:
+        detail = "Query is outside clinical scope"
+    elif state["query"] != state["asked"]:
+        # Show the reader how their follow-up was understood: if the rewrite
+        # picked the wrong drug, this is where they can see it.
+        detail = f"Follow-up read as: {state['query']}"
+    else:
+        detail = "Clinical pharmacotherapy query"
     _done(
         write,
         "guardrail",
         t0,
-        detail=(
-            "Clinical pharmacotherapy query" if in_scope else "Query is outside clinical scope"
-        ),
+        detail=detail,
         metric="medical · in scope" if in_scope else "out of scope",
     )
     return state
@@ -143,6 +157,10 @@ def navigator_node(state: AriaState) -> AriaState:
         _failed(write, "navigator", t0, exc)
         return state
 
+    # Published before the answer is written, so the inline citation markers
+    # in the streamed prose have passages to resolve to as they arrive. The
+    # order of this list is the numbering the generator is told to cite by.
+    write({"kind": "sources", "chunks": state["chunks"]})
     _done(
         write,
         "navigator",

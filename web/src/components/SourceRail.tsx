@@ -74,7 +74,7 @@ export function SourceRail({ citations }: { citations: Citation[] }) {
               <span className="font-mono text-[0.58rem] text-ink-faint">{c.page}</span>
               <span
                 className={cn('h-1.5 w-1.5 rounded-full', meta.tint)}
-                title={meta.label}
+                title={meta.relevanceLabel}
                 aria-hidden
               />
             </motion.button>
@@ -110,7 +110,7 @@ function Passage({ cite }: { cite: Citation }) {
           {cite.section} · {cite.page}
         </span>
         <span className={cn('ml-auto font-mono text-[0.58rem] uppercase tracking-[0.1em]', meta.color)}>
-          {meta.label}
+          {meta.relevanceLabel}
         </span>
       </figcaption>
 

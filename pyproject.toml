@@ -34,8 +34,10 @@ ignore = ["E402"]
 # would silently change what the model is asked.
 "llm/prompts.py" = ["E501", "RUF001"]
 "agents/guardrail_agent.py" = ["E501"]
+"agents/context_agent.py" = ["E501"]
 "agents/judge_agent.py" = ["E501"]
-"evals/run_evals.py" = ["E501"]
+# Eval prompts and labelled cases are data, for the same reason.
+"evals/*.py" = ["E501"]
 # Ingestion and the vector-store adapters are outside the scope of the model
 # refactor — untouched, and not on the request path. Same boundary as the
 # mypy overrides below.

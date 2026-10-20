@@ -11,7 +11,10 @@
   drop-in interchangeable.
 */
 
-/** Evidence strength, after the Judge weighs source quality. */
+/**
+ * Three-step tier. On an answer: how well the Judge found it grounded in its
+ * passages. On a citation: how relevant the reranker found the passage.
+ */
 export type EvidenceTier = 'strong' | 'moderate' | 'limited';
 
 /** The four real nodes of the ARIA graph. */
@@ -32,7 +35,7 @@ export interface AgentStep {
   metric?: string;
 }
 
-/** A resolved DiPiro citation. `marker` is the in-text superscript number. */
+/** A resolved citation. `marker` is the in-text superscript number. */
 export interface Citation {
   id: string;
   marker: number;
@@ -88,8 +91,8 @@ export interface AssistantMessage {
   /**
    * Null until the Judge has actually graded the answer. It must never be
    * seeded with a placeholder tier: a non-null value here is rendered as a
-   * GRADE certainty badge, so a default of 'moderate' put a
-   * "MODERATE CERTAINTY" stamp on ungraded text — including error text.
+   * grounding badge, so a default of 'moderate' once stamped a certainty
+   * claim on ungraded text — including error text.
    */
   evidenceTier: EvidenceTier | null;
   /** Judge confidence, 0..1. Null means "not adjudicated" — never 0.5. */
@@ -102,6 +105,17 @@ export interface AssistantMessage {
   phase: 'reasoning' | 'streaming' | 'complete' | 'failed';
   /** Set only when the turn failed. Mutually exclusive with real content. */
   error?: ConsultationError;
+  /**
+   * The guardrail declined the question. The reply is a refusal, not an
+   * answer, so it carries no grounding badge and no Judge score.
+   */
+  outOfScope?: boolean;
+}
+
+/** A prior turn, sent so a follow-up can be understood in context. */
+export interface HistoryTurn {
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 export type Message = UserMessage | AssistantMessage;
