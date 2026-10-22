@@ -225,6 +225,27 @@ medication* be stopped?" has no right answer. Synthetic questions share their
 passage's vocabulary, so treat these numbers as an upper bound, useful for
 comparing runs rather than for comparing systems.
 
+### RAGAS
+
+The standard metrics map onto the suite above: RAGAS *faithfulness* is
+groundedness, *answer relevancy* is relevance, and *context recall* needs
+expert-written reference answers, which this project does not have — the
+retrieval eval's synthetic hit rate stands in for it. `evals/ragas_eval.py`
+runs RAGAS (reference-free metrics, Qwen as judge) in its own environment.
+
+RAGAS's faithfulness splits an answer into small claims, which made it
+stricter than the suite's judge — and it showed the generator padding answers
+with what no passage said: example drugs ("an ACE inhibitor" became "e.g.,
+lisinopril, ramipril") and "consult a healthcare professional" lines in 7 of
+10 answers. The generator prompt now forbids both. On the questions scored on
+both sides, faithfulness went from 0.69 to 0.93 (outpatient pneumonia: 0.32 →
+1.00), with answer relevancy unchanged (0.84 → 0.83).
+
+That result is directional, not a headline: Groq caps the judge at 1,000
+output tokens a minute, so even scored in sections some parts of the longer
+answers could not be judged, and only three questions scored cleanly on both
+sides. Running it on a judge without that cap is the next measurement.
+
 ## Design decisions
 
 The choices an interviewer is most likely to ask about, and why they went the
@@ -377,7 +398,7 @@ for the restore procedure.
 aria/
 ├── agents/              # Guardrail, Navigator and Judge agents
 ├── api/                 # FastAPI bridge server (SSE streaming)
-├── evals/               # Eval suites: end-to-end (cases.py, run_evals.py) and retrieval
+├── evals/               # Eval suites: end-to-end, retrieval, and RAGAS (own env)
 ├── tests/               # 100+ offline tests — no test touches a live provider
 ├── graph/               # LangGraph pipeline: state, nodes, routing
 ├── ingestion/           # PDF loading, OCR, cleaning, chunking, embedding

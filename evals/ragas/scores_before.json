@@ -1,0 +1,37 @@
+{
+  "What is the first-line treatment for hypertension in a patient with type 2 diabetes and albuminuria?": {
+    "faithfulness_sections": "1/3",
+    "faithfulness": 0.75,
+    "faithfulness_tokens": 11586,
+    "answer_relevancy": 0.9209251970967128,
+    "answer_relevancy_tokens": 902
+  },
+  "How does metformin work and what are its main adverse effects?": {
+    "faithfulness_sections": "0/3",
+    "faithfulness": NaN,
+    "faithfulness_tokens": 12586,
+    "answer_relevancy": 0.9292154424070247,
+    "answer_relevancy_tokens": 971
+  },
+  "What antibiotics are recommended for outpatient community-acquired pneumonia?": {
+    "faithfulness_sections": "2/4",
+    "faithfulness": 0.3232198142414861,
+    "faithfulness_tokens": 14933,
+    "answer_relevancy": 0.7350977008333678,
+    "answer_relevancy_tokens": 1173
+  },
+  "What monitoring is required for a patient on warfarin?": {
+    "faithfulness_sections": "1/4",
+    "faithfulness": 1.0,
+    "faithfulness_tokens": 16615,
+    "answer_relevancy": 0.8833558882796622,
+    "answer_relevancy_tokens": 1378
+  },
+  "How is vancomycin dosed and monitored using AUC?": {
+    "faithfulness_sections": "1/4",
+    "faithfulness": 0.6,
+    "faithfulness_tokens": 16375,
+    "answer_relevancy": 0.7145491532607955,
+    "answer_relevancy_tokens": 1333
+  }
+}

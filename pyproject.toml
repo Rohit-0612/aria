@@ -52,7 +52,9 @@ ignore = ["E402"]
 python_version = "3.11"
 strict = true
 files = ["agents", "api", "graph", "llm", "evals", "retrieval", "ingestion"]
-exclude = "aria_env"
+# ragas_eval.py runs in its own env (evals/requirements-ragas.txt) against
+# LangChain 0.3; checking it against the app's LangChain 1.x stubs is noise.
+exclude = ["aria_env", "evals/ragas_eval\\.py"]
 
 # LangChain, Qdrant, Cohere and sentence-transformers ship partial or absent
 # type information; ARIA's own code stays strict regardless.

@@ -1,0 +1,12 @@
+# Separate environment for evals/ragas_eval.py only — never install into the
+# app's env. RAGAS 0.4.3 imports `langchain_community.chat_models.vertexai`,
+# which LangChain 1.x removed, so it needs the 0.3 line the app has left.
+ragas==0.4.3
+langchain==0.3.30
+langchain-core==0.3.86
+langchain-community==0.3.31
+langchain-groq==0.3.8
+langchain-huggingface==0.3.1
+langchain-openai==0.3.35
+sentence-transformers==6.2.0
+python-dotenv==1.2.4
