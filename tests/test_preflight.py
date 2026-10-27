@@ -29,7 +29,12 @@ class FakeClient:
         self.models = FakeModels(ids)
 
 
-LIVE = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b"]
+LIVE = [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-safeguard-20b",
+    "qwen/qwen3.6-27b",
+]
 
 
 def test_all_models_present_is_ok() -> None:

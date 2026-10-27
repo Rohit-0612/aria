@@ -4,6 +4,7 @@ import type {
   ConsultationError,
   EvidenceTier,
   HistoryTurn,
+  Refusal,
   SafetyNote,
 } from './types';
 import { recipeFor, OUT_OF_SCOPE } from './mockData';
@@ -55,8 +56,10 @@ export type ConsultationEvent =
       confidence: number | null;
       citations: Citation[];
       safety?: SafetyNote[];
-      /** The question was declined as out of scope. */
+      /** The question was declined, for any reason. */
       outOfScope?: boolean;
+      /** Why it was declined. */
+      refusal?: Refusal;
     }
   /**
    * Answer prose only. The backend must never send a failure on this

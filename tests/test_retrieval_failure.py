@@ -19,6 +19,7 @@ from typing import Any
 
 import pytest
 
+from agents.guardrail_agent import Intent
 from api.server import run_consultation
 from llm.errors import (
     EMPTY_RETRIEVAL_CODE,
@@ -136,7 +137,7 @@ async def test_dead_vector_store_streams_a_retrieval_error(
     def dead(q: str) -> list[Any]:
         raise ConnectionResetError(54, "Connection reset by peer")
 
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", dead)
 
     events = await collect()
@@ -158,7 +159,7 @@ async def test_empty_retrieval_never_reaches_the_reader_as_an_answer(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """An un-restored (empty) collection must fail, not produce prose."""
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: [])
 
     events = await collect()

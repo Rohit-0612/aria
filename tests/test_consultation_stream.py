@@ -18,6 +18,7 @@ from typing import Any
 
 import pytest
 
+from agents.guardrail_agent import Intent
 from api.server import run_consultation
 from llm.errors import AriaLLMError
 
@@ -46,7 +47,7 @@ def steps_at_end(events: list[dict[str, Any]]) -> dict[str, str]:
 def happy_path(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
     from agents.judge_agent import Judgment
 
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
     monkeypatch.setattr(
         "graph.nodes.stream_answer", lambda q, c: iter(["Thiazides ", "are first-line."])
@@ -79,7 +80,7 @@ async def test_generator_failure_emits_no_token_and_no_meta(
     `meta`, so the UI kept its seeded 'moderate' tier and stamped
     "MODERATE CERTAINTY · grounded reply" onto a provider error.
     """
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
 
     def dead(q: str, c: list[Any]) -> Any:
@@ -120,7 +121,7 @@ async def test_guardrail_failure_does_not_fail_open(
         reached["navigator"] = True
         return []
 
-    monkeypatch.setattr("graph.nodes.check_guardrail", dead)
+    monkeypatch.setattr("graph.nodes.classify_query", dead)
     monkeypatch.setattr("graph.nodes.navigator", spy)
 
     events = await collect()
@@ -138,7 +139,7 @@ async def test_judge_failure_keeps_the_answer_but_drops_the_score(
 
     Confidence must be null rather than the old fabricated 0.5.
     """
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
     monkeypatch.setattr(
         "graph.nodes.stream_answer", lambda q, c: iter(["Thiazides ", "are first-line."])
@@ -165,7 +166,7 @@ async def test_unparseable_judge_reply_also_yields_no_tier(
 ) -> None:
     from agents.judge_agent import Judgment
 
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
     monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c: iter(["Thiazides."]))
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(None, "unparseable"))
@@ -178,7 +179,7 @@ async def test_unparseable_judge_reply_also_yields_no_tier(
 @pytest.mark.asyncio
 async def test_out_of_scope_is_not_an_error(monkeypatch: pytest.MonkeyPatch) -> None:
     """A rejected query is a valid outcome, not a failure."""
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: False)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.OUT_OF_SCOPE)
 
     events = await collect("What is the price of Bitcoin?")
     kinds = types_of(events)

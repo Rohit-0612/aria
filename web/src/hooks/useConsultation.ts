@@ -113,6 +113,7 @@ export function useConsultation(reducedMotion: boolean) {
                 citations: ev.citations,
                 safety: ev.safety,
                 outOfScope: ev.outOfScope ?? false,
+                refusal: ev.refusal,
               });
               break;
             case 'token':

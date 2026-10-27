@@ -22,6 +22,7 @@ from pydantic import ValidationError
 
 from agents import context_agent
 from agents.context_agent import resolve_followup
+from agents.guardrail_agent import Intent
 from api.server import (
     MAX_HISTORY_TURNS,
     MAX_QUERY_CHARS,
@@ -47,9 +48,9 @@ def pipeline(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> dict[str, li
 
     seen: dict[str, list[str]] = {"guardrail": [], "navigator": [], "generator": []}
 
-    def guard(q: str) -> bool:
+    def guard(q: str) -> Intent:
         seen["guardrail"].append(q)
-        return True
+        return Intent.CLINICAL
 
     def nav(q: str) -> list[Any]:
         seen["navigator"].append(q)
@@ -59,7 +60,7 @@ def pipeline(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> dict[str, li
         seen["generator"].append(q)
         return iter(["Thiazides are first-line [[1]].", " ACE inhibitors help [[2]]."])
 
-    monkeypatch.setattr("graph.nodes.check_guardrail", guard)
+    monkeypatch.setattr("graph.nodes.classify_query", guard)
     monkeypatch.setattr("graph.nodes.navigator", nav)
     monkeypatch.setattr("graph.nodes.stream_answer", gen)
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(0.9, "ok"))
@@ -187,7 +188,7 @@ async def test_first_question_reports_no_rewrite(pipeline: dict[str, list[str]])
 
 @pytest.mark.asyncio
 async def test_refusal_carries_no_grade(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: False)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.OUT_OF_SCOPE)
     events = await collect("What is the price of Bitcoin?")
     meta = next(e for e in events if e["type"] == "meta")
     assert meta["outOfScope"] is True
@@ -266,3 +267,32 @@ def test_concurrent_first_requests_build_one_retriever(
         t.join()
 
     assert len(built) == 1
+
+
+# ── Retrieval strength, reported separately from faithfulness ──────────
+
+
+def test_thin_retrieval_is_flagged_even_when_the_judge_is_happy() -> None:
+    """A question about a drug that does not exist: best passage 0.21."""
+    from api.server import weak_evidence_note
+
+    note = weak_evidence_note([{"relevance": r} for r in (0.21, 0.18, 0.17)])
+    assert note is not None and "None of the passages" in note["text"]
+    assert weak_evidence_note([]) is not None
+
+
+def test_one_strong_passage_is_enough() -> None:
+    """The sitagliptin dosing table, found and ranked first: no warning."""
+    from api.server import weak_evidence_note
+
+    assert weak_evidence_note([{"relevance": r} for r in (0.72, 0.69, 0.19, 0.15)]) is None
+
+
+def test_citations_use_the_page_printed_in_the_book() -> None:
+    """DiPiro's PDF index runs 36 pages ahead of its printed numbers."""
+    from api.server import build_citations
+
+    dipiro = FakeDoc("x", {"page": 1651, "page_label": "1615", "relevance_score": 0.9})
+    rxprep = FakeDoc("y", {"page": 604, "book": "rxprep", "relevance_score": 0.9})
+    assert [c["page"] for c in build_citations([dipiro, rxprep])] == ["p. 1615", "p. 604"]
+    assert format_passages([dipiro]).startswith("[1] DiPiro's Pharmacotherapy 12e, p. 1615")

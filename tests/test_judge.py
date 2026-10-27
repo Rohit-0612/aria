@@ -11,7 +11,7 @@ from llm.errors import AriaLLMError
 
 
 def _patch_judge(monkeypatch: pytest.MonkeyPatch, reply: str) -> None:
-    monkeypatch.setattr("agents.judge_agent.invoke_role", lambda role, prompt: reply)
+    monkeypatch.setattr("agents.judge_agent.invoke_role", lambda role, prompt, **_: reply)
 
 
 def test_valid_json_is_parsed(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
@@ -49,7 +49,7 @@ def test_confidence_is_clamped(monkeypatch: pytest.MonkeyPatch, chunks: list[Any
 
 
 def test_provider_failure_propagates(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
-    def boom(role: object, prompt: str) -> str:
+    def boom(role: object, prompt: str, **_: object) -> str:
         raise AriaLLMError("judge", "m", "down", "model_not_found")
 
     monkeypatch.setattr("agents.judge_agent.invoke_role", boom)
@@ -61,14 +61,27 @@ def test_an_unparseable_reply_is_asked_once_more(
     monkeypatch: pytest.MonkeyPatch, chunks: list[Any]
 ) -> None:
     replies = iter(["I think it is fine.", '{"confidence": 0.8, "reason": "ok"}'])
-    monkeypatch.setattr("agents.judge_agent.invoke_role", lambda role, prompt: next(replies))
+    monkeypatch.setattr("agents.judge_agent.invoke_role", lambda role, prompt, **_: next(replies))
     assert judge_answer("q", "a", chunks).confidence == 0.8
 
 
 def test_the_retry_is_bounded(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
     calls: list[str] = []
     monkeypatch.setattr(
-        "agents.judge_agent.invoke_role", lambda role, prompt: calls.append(prompt) or "no"
+        "agents.judge_agent.invoke_role", lambda role, prompt, **_: calls.append(prompt) or "no"
     )
     assert judge_answer("q", "a", chunks).confidence is None
     assert len(calls) == 2
+
+
+def test_the_judge_asks_for_json_mode(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
+    """Constrained decoding, rather than hoping the reply parses."""
+    modes: list[bool] = []
+
+    def fake(role: Any, prompt: str, *, json_mode: bool = False) -> str:
+        modes.append(json_mode)
+        return '{"confidence": 0.9, "reason": "ok"}'
+
+    monkeypatch.setattr("agents.judge_agent.invoke_role", fake)
+    judge_answer("q", "a", chunks)
+    assert modes == [True]

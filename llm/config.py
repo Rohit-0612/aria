@@ -32,6 +32,7 @@ __all__ = [
     "DEFAULT_FALLBACK_MODEL",
     "DEFAULT_GENERATOR_MODEL",
     "DEFAULT_RERANK_MODEL",
+    "DEFAULT_SAFETY_MODEL",
     "DEFAULT_SMALL_MODEL",
     "ModelSpec",
     "Role",
@@ -51,6 +52,7 @@ class Role(StrEnum):
     NAVIGATOR = "navigator"
     GENERATOR = "generator"
     JUDGE = "judge"
+    SAFETY = "safety"
     EVAL_JUDGE = "eval_judge"
 
 
@@ -63,13 +65,24 @@ class Role(StrEnum):
 DEFAULT_GENERATOR_MODEL: Final = "openai/gpt-oss-120b"
 DEFAULT_SMALL_MODEL: Final = "openai/gpt-oss-20b"
 DEFAULT_FALLBACK_MODEL: Final = "openai/gpt-oss-20b"
-DEFAULT_RERANK_MODEL: Final = "rerank-english-v3.0"
+# rerank-english-v3.0 ranked a bivalirudin passage first for "Can
+# sitagliptin be used in renal impairment?"; every newer Cohere reranker put
+# the sitagliptin dosing table first. On the retrieval eval (same 39
+# questions, hybrid collection) v5.0-fast raised hit rate 92% -> 97% and MRR
+# 0.79 -> 0.86 at the same latency (~0.45 s); v5.0-pro scored within noise
+# of it, so the cheaper model was kept.
+DEFAULT_RERANK_MODEL: Final = "rerank-v5.0-fast"
 # The offline eval judge is deliberately a different model family from the
 # app's own Judge (gpt-oss), so the suite is not one family grading itself —
 # LLM judges measurably favour their own family's output. qwen3.8, unlike
 # the qwen3.6 noted above, returns clean JSON in `.content` (checked
 # 2026-10-20 against Groq).
 DEFAULT_EVAL_JUDGE_MODEL: Final = "qwen/qwen3.8-27b"
+# A policy-following safety classifier: it reads a written policy and labels
+# a message against it. Used only as a second opinion on messages the
+# guardrail flags (see agents/guardrail_agent.py) — its free tier allows
+# 2,000 tokens a minute, far too few to put in front of every question.
+DEFAULT_SAFETY_MODEL: Final = "openai/gpt-oss-safeguard-20b"
 DEFAULT_EMBEDDING_MODEL: Final = "all-MiniLM-L6-v2"
 
 # Token budgets are bounded by Groq's per-minute limit, not just by how long
@@ -82,6 +95,10 @@ DEFAULT_EMBEDDING_MODEL: Final = "all-MiniLM-L6-v2"
 _GENERATOR_MAX_TOKENS: Final = 4096
 _JUDGE_MAX_TOKENS: Final = 2048
 _SMALL_MAX_TOKENS: Final = 1024
+# Groq reserves prompt + max_tokens against the per-minute budget up front;
+# with a 2,000 TPM cap, a ~450-token policy plus 300 leaves room for two
+# reviews a minute. A one-word label after low-effort reasoning fits in 300.
+_SAFETY_MAX_TOKENS: Final = 300
 
 
 @dataclass(frozen=True)
@@ -136,6 +153,13 @@ _REGISTRY: Final[dict[Role, tuple[str, str, float, int, str]]] = {
         0.0,
         _JUDGE_MAX_TOKENS,
         "medium",
+    ),
+    Role.SAFETY: (
+        "ARIA_SAFETY_MODEL",
+        DEFAULT_SAFETY_MODEL,
+        0.0,
+        _SAFETY_MAX_TOKENS,
+        "low",
     ),
     Role.EVAL_JUDGE: (
         "ARIA_EVAL_JUDGE_MODEL",

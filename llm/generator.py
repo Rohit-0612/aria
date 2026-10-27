@@ -24,18 +24,29 @@ from llm.prompts import ANSWER_PROMPT
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["format_passages", "generate_answer", "passage_label", "stream_answer"]
+__all__ = ["format_passages", "generate_answer", "passage_label", "printed_page", "stream_answer"]
 
 #: Short names the model cites by. Chunks ingested before the `book` tag
 #: existed are all DiPiro, so that is the default.
 _BOOK_LABELS = {"dipiro": "DiPiro's Pharmacotherapy 12e", "rxprep": "RxPrep NAPLEX 2025"}
 
 
+def printed_page(meta: dict[str, Any]) -> Any:
+    """The page number printed in the book, which is what a reader looks up.
+
+    DiPiro's chunks carry both the PDF index (`page`, e.g. 1651) and the
+    printed label (`page_label`, 1615) — front matter puts them 36 apart, so
+    citing the index sent readers to the wrong page. RxPrep was OCR'd page by
+    page and has only `page`, which is already the printed number.
+    """
+    return meta.get("page_label") or meta.get("page")
+
+
 def passage_label(chunk: Any) -> str:
     """'Book, p. N' for one passage."""
     meta = getattr(chunk, "metadata", {}) or {}
     book = _BOOK_LABELS.get(meta.get("book", "dipiro"), _BOOK_LABELS["dipiro"])
-    page = meta.get("page")
+    page = printed_page(meta)
     return f"{book}, p. {page}" if page is not None else book
 
 

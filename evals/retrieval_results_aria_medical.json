@@ -1,0 +1,383 @@
+{
+  "run_at": "2026-10-26T12:10:09+00:00",
+  "collection": "aria_medical",
+  "reranker": "rerank-english-v3.0",
+  "summary": {
+    "all": {
+      "questions": "39",
+      "first-stage recall": "95%",
+      "candidate recall": "95%",
+      "hit rate (reaches generator)": "90%",
+      "MRR": "0.80"
+    },
+    "dipiro": {
+      "questions": "20",
+      "first-stage recall": "90%",
+      "candidate recall": "90%",
+      "hit rate (reaches generator)": "90%",
+      "MRR": "0.78"
+    },
+    "rxprep": {
+      "questions": "19",
+      "first-stage recall": "100%",
+      "candidate recall": "100%",
+      "hit rate (reaches generator)": "89%",
+      "MRR": "0.82"
+    }
+  },
+  "rows": [
+    {
+      "book": "dipiro",
+      "page": 3043,
+      "question": "What is the recommended length of maintenance therapy for male and female children with acute leukemia in the most recent Children\u2019s Oncology Group trial?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 204,
+      "question": "What are the key risk factors that increase a patient\u2019s likelihood of developing periodontal disease?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 664,
+      "question": "What clinical factors should be evaluated to determine the appropriate anticoagulation strategy and rhythm\u2011control therapy for a patient with atrial fibrillation?",
+      "dense_hit": false,
+      "candidate_hit": false,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2412,
+      "question": "What are the three primary routes by which Bacillus anthracis spores can enter the human body?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 2
+    },
+    {
+      "book": "dipiro",
+      "page": 373,
+      "question": "Why does the duration of action of midazolam become markedly prolonged when it is infused for more than 48 hours?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 464,
+      "question": "What role does HDL play in removing excess cholesterol from tissues?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 3,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2203,
+      "question": "What factors should a clinician consider when selecting a topical therapy for acne?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 1677,
+      "question": "Which psychotherapeutic approaches have been shown to be more effective than stress\u2011management or group therapy for reducing PTSD symptoms?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 3104,
+      "question": "What is the evidence for a survival benefit when using rabbit or horse antithymocyte globulin (ATG) in patients with aplastic anemia?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 3159,
+      "question": "At what time point after a stem\u2011cell transplant does hyperacute graft\u2011versus\u2011host disease usually present?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2179,
+      "question": "Does prescribing statins, such as simvastatin or atorvastatin, help prevent or slow the progression of age\u2011related macular degeneration in patients?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2585,
+      "question": "When should a surgeon consider leaving the abdomen open after an operation, and can percutaneous catheter drainage be used instead to avoid this approach?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 3
+    },
+    {
+      "book": "dipiro",
+      "page": 2816,
+      "question": "When should secondary prophylaxis for Pneumocystis pneumonia be continued in an HIV\u2011infected patient?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 1257,
+      "question": "How long should magnesium replacement therapy be continued in patients with severe magnesium depletion?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2786,
+      "question": "What is the recommended schedule and dosage for measles vaccination in the United States?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 4,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 1578,
+      "question": "Which second\u2011generation antipsychotics are considered evidence\u2011based options for treating first\u2011episode schizophrenia while minimizing weight gain and metabolic side effects?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 3156,
+      "question": "What is the likelihood of achieving a durable molecular remission with donor lymphocyte infusion in patients who relapse after a stem\u2011cell transplant for chronic myeloid leukemia versus those with acute myeloid leukemia or acute lymphoblastic leukemia?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 1978,
+      "question": "What is the most common in\u2011vivo test used to assess delayed\u2011type hypersensitivity and memory T\u2011cell function?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2571,
+      "question": "What antibiotic should a clinician consider for a patient with confirmed Salmonella Typhi infection who has recently traveled to Pakistan, given the high likelihood of extensive drug resistance?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "dipiro",
+      "page": 2750,
+      "question": "When is it appropriate to stop antibiotic therapy in a neutropenic patient whose absolute neutrophil count remains below 500 cells/mm\u00b3 but who is afebrile and clinically stable?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 206,
+      "question": "How do you calculate the mean, mode, and median from a set of diastolic blood\u2011pressure reductions, and what do the range and standard deviation tell you about the variability of those values?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 724,
+      "question": "What laboratory and clinical parameters should be monitored in a patient receiving cyclosporine therapy?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 947,
+      "question": "What dosing adjustment should be made for a patient with low or absent TPMT activity when prescribing a drug that can cause myelosuppression?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 553,
+      "question": "What is the recommended starting dose and titration schedule for riociguat, and what are the key safety precautions that must be observed during therapy?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 398,
+      "question": "When should zidovudine be given intravenously during labor and delivery to prevent perinatal HIV transmission?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 336,
+      "question": "Should meropenem/vaborbactam be used in patients who have a penicillin allergy?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 183,
+      "question": "How does the ratio of protonated to deprotonated drug change when the environmental pH equals the drug\u2019s pKa?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 2,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 893,
+      "question": "What diagnostic tests and procedures are typically required to confirm a diagnosis of inflammatory bowel disease?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 612,
+      "question": "What are the most common adverse effects associated with metformin therapy?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": null,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 603,
+      "question": "When should a clinician add prandial insulin to a basal insulin regimen?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 531,
+      "question": "Which topical retinoid can be purchased over the counter for treating acne?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 843,
+      "question": "What precautions should I take when prescribing an orexin receptor antagonist to a patient who is also taking a strong CYP3A4 inhibitor?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 671,
+      "question": "Which selective serotonin reuptake inhibitor is FDA\u2011approved for treating moderate\u2011to\u2011severe menopausal vasomotor symptoms, and what are the key dosing and drug\u2011interaction cautions associated with its use?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 264,
+      "question": "What type of containment enclosure is required for nonsterile compounding that uses HEPA\u2011filtered air and negative pressure, and how does it differ from the closed\u2011front glovebox used for sterile compounding?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 216,
+      "question": "What criteria must be met for the individual outcomes in a composite endpoint to be considered appropriate and meaningful for patients?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 2
+    },
+    {
+      "book": "rxprep",
+      "page": 671,
+      "question": "What are the recommended application sites and dosing instructions for the topical estrogen\u2011progestin gels and sprays used for systemic absorption?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 745,
+      "question": "What are the key safety warnings and monitoring considerations that must be addressed when initiating methadone therapy for pain or opioid use disorder?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    },
+    {
+      "book": "rxprep",
+      "page": 219,
+      "question": "What is the difference between an equivalence trial and a non\u2011inferiority trial?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 3
+    },
+    {
+      "book": "rxprep",
+      "page": 69,
+      "question": "Which immature neutrophil type is released from the bone marrow and is referred to as a \u201cleft shift\u201d when its count is elevated?",
+      "dense_hit": true,
+      "candidate_hit": true,
+      "rank_after_rerank": 1,
+      "kept": 5
+    }
+  ],
+  "k_global": 20,
+  "k_rxprep": 8
+}

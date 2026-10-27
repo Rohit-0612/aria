@@ -85,31 +85,6 @@ def test_a_passage_with_no_score_is_kept() -> None:
 # ── Guardrail parsing ──────────────────────────────────────────────────
 
 
-@pytest.mark.parametrize(
-    ("reply", "expected"),
-    [
-        ("YES", True),
-        ("yes", True),
-        ("NO", False),
-        ("no", False),
-        ("Answer: YES", True),
-        ("Answer: NO", False),
-        # The substring test matched the "yes" inside this and let it through.
-        ("NO, this is not medical, yes it is off topic", False),
-        # Nothing parseable: the guardrail cannot vouch for the query.
-        ("I'm not sure what you mean", False),
-        ("", False),
-    ],
-)
-def test_guardrail_reads_the_first_whole_word(
-    monkeypatch: pytest.MonkeyPatch, reply: str, expected: bool
-) -> None:
-    import agents.guardrail_agent as ga
-
-    monkeypatch.setattr(ga, "invoke_role", lambda role, prompt: reply)
-    assert ga.check_guardrail("does it matter") is expected
-
-
 # ── Reference lists ────────────────────────────────────────────────────
 # Real chunks from the collection (OCR splits initial capitals: "T urnbull").
 
@@ -194,3 +169,53 @@ def test_a_dosage_table_is_not_an_index() -> None:
 
     assert not is_reference_matter(DOSAGE_TABLE)
     assert not is_reference_matter(PROSE)
+
+
+# ── Transient failures ─────────────────────────────────────────────────
+
+
+def test_a_dropped_connection_is_retried(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A TLS handshake timeout failed a whole consultation in testing."""
+    import ssl
+
+    monkeypatch.setattr("retrieval.reranker.time.sleep", lambda s: None)
+    calls = {"n": 0}
+
+    class Flaky(FakeStore):
+        def similarity_search(self, query: str, k: int, filter: Any = None) -> list[Any]:
+            calls["n"] += 1
+            if calls["n"] == 1:
+                raise ssl.SSLError("_ssl.c:999: The handshake operation timed out")
+            return super().similarity_search(query, k, filter)
+
+    docs = [FakeDoc("ARBs block the AT1 receptor.", {"relevance_score": 0.9})]
+    kept = BalancedRetriever(Flaky(docs), FakeReranker()).invoke("losartan")
+    assert [d.page_content for d in kept] == ["ARBs block the AT1 receptor."]
+
+
+def test_a_persistent_outage_still_fails_as_retrieval(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("retrieval.reranker.time.sleep", lambda s: None)
+    calls = {"n": 0}
+
+    class Down(FakeStore):
+        def similarity_search(self, query: str, k: int, filter: Any = None) -> list[Any]:
+            calls["n"] += 1
+            raise TimeoutError("timed out")
+
+    with pytest.raises(AriaRetrievalError):
+        BalancedRetriever(Down([]), FakeReranker()).invoke("losartan")
+    assert calls["n"] == 3  # tried, then two retries, then gave up
+
+
+def test_a_misconfiguration_is_not_retried(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Retrying a bad collection name only delays the error."""
+    calls = {"n": 0}
+
+    class Missing(FakeStore):
+        def similarity_search(self, query: str, k: int, filter: Any = None) -> list[Any]:
+            calls["n"] += 1
+            raise ValueError("Collection aria_medicl not found")
+
+    with pytest.raises(AriaRetrievalError):
+        BalancedRetriever(Missing([]), FakeReranker()).invoke("losartan")
+    assert calls["n"] == 1

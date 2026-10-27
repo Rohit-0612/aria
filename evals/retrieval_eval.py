@@ -11,7 +11,9 @@ isolates retrieval, using the standard synthetic set-up:
 
 Reported per stage, so a miss can be blamed on the right layer:
 
-  * dense recall     — plain vector search, the global candidate set alone
+  * first-stage recall — the global candidate set alone: plain dense search
+                       on a dense collection, dense + BM25 fused by RRF on a
+                       hybrid one
   * candidate recall — global + the RxPrep-filtered set (what the reranker
                        actually gets to see)
   * hit rate         — the source survives reranking and the relevance
@@ -77,7 +79,12 @@ def _looks_like_prose(text: str) -> bool:
     return letters / len(text) > 0.65
 
 
-def sample_passages(n_per_book: int) -> list[dict[str, Any]]:
+QUESTIONS_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "retrieval_questions.json"
+)
+
+
+def sample_passages(n_per_book: int, source: str) -> list[dict[str, Any]]:
     client = get_client()
     out: list[dict[str, Any]] = []
     for book, flt in (
@@ -86,7 +93,7 @@ def sample_passages(n_per_book: int) -> list[dict[str, Any]]:
         ("rxprep", RXPREP_FILTER),
     ):
         points = client.query_points(
-            collection_name(),
+            source,
             query=models.SampleQuery(sample=models.Sample.RANDOM),
             query_filter=flt,
             limit=n_per_book * 4,
@@ -106,11 +113,17 @@ def sample_passages(n_per_book: int) -> list[dict[str, Any]]:
     return out
 
 
-def run(n: int) -> dict[str, Any]:
-    retriever: BalancedRetriever = get_balanced_retriever()
-    passages = sample_passages(n // 2)
-    rows: list[dict[str, Any]] = []
+def build_questions(n: int, source: str) -> list[dict[str, Any]]:
+    """Sample passages and write the question each answers — once.
 
+    Saved to retrieval_questions.json and reused, so two collections (or
+    two retrieval designs) are compared on exactly the same questions.
+    Passages are sampled from the collection given, which should be the
+    smaller one: every passage of the hybrid collection also exists in the
+    dense one, not the other way round.
+    """
+    out: list[dict[str, Any]] = []
+    passages = sample_passages(n // 2, source)
     for i, item in enumerate(passages, start=1):
         question = invoke_role(
             Role.NAVIGATOR, QUESTION_PROMPT.format(passage=item["text"][:2500])
@@ -118,8 +131,27 @@ def run(n: int) -> dict[str, Any]:
         if not question or question.upper().startswith("SKIP"):
             print(f"  [{i}/{len(passages)}] skipped (no clinical substance)")
             continue
-        question = re.sub(r"\s+", " ", question)
-        source = _key(item["text"])
+        out.append(
+            {
+                "book": item["book"],
+                "page": item["page"],
+                "question": re.sub(r"\s+", " ", question),
+                "source_key": _key(item["text"]),
+            }
+        )
+        print(f"  [{i}/{len(passages)}] {item['book']:<6} {out[-1]['question'][:90]}")
+    with open(QUESTIONS_FILE, "w") as fh:
+        json.dump(out, fh, indent=2)
+    return out
+
+
+def run(questions: list[dict[str, Any]]) -> dict[str, Any]:
+    retriever: BalancedRetriever = get_balanced_retriever()
+    rows: list[dict[str, Any]] = []
+
+    for i, item in enumerate(questions, start=1):
+        question = item["question"]
+        source = item["source_key"]
 
         glob = retriever.vs.similarity_search(question, k=retriever.k_global)
         rx = retriever.vs.similarity_search(question, k=retriever.k_rxprep, filter=RXPREP_FILTER)
@@ -139,10 +171,13 @@ def run(n: int) -> dict[str, Any]:
                 "candidate_hit": candidate_hit,
                 "rank_after_rerank": rank,
                 "kept": len(kept),
+                "kept_scores": [
+                    round(float(d.metadata.get("relevance_score", 0)), 3) for d in kept
+                ],
             }
         )
         print(
-            f"  [{i}/{len(passages)}] {item['book']:<6} p.{item['page']!s:<5} "
+            f"  [{i}/{len(questions)}] {item['book']:<6} p.{item['page']!s:<5} "
             f"dense {'Y' if dense_hit else '-'} cand {'Y' if candidate_hit else '-'} "
             f"rank {rank or '-'}  {question[:80]}"
         )
@@ -160,7 +195,7 @@ def summarise(rows: list[dict[str, Any]]) -> dict[str, dict[str, str]]:
         mrr = sum(1 / r["rank_after_rerank"] for r in sub if r["rank_after_rerank"]) / n
         return {
             "questions": str(n),
-            "dense recall (global top-k)": f"{sum(r['dense_hit'] for r in sub) / n:.0%}",
+            "first-stage recall": f"{sum(r['dense_hit'] for r in sub) / n:.0%}",
             "candidate recall": f"{sum(r['candidate_hit'] for r in sub) / n:.0%}",
             "hit rate (reaches generator)": f"{hit / n:.0%}",
             "MRR": f"{mrr:.2f}",
@@ -174,12 +209,25 @@ def summarise(rows: list[dict[str, Any]]) -> dict[str, dict[str, str]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--n", type=int, default=24, help="passages to sample (split per book)")
+    parser.add_argument("--n", type=int, default=40, help="passages to sample (split per book)")
+    parser.add_argument(
+        "--new-questions",
+        metavar="COLLECTION",
+        help="sample fresh passages from COLLECTION and rewrite the question set",
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
 
+    if args.new_questions or not os.path.exists(QUESTIONS_FILE):
+        print(f"Writing {args.n} questions from {args.new_questions or collection_name()}")
+        questions = build_questions(args.n, args.new_questions or collection_name())
+    else:
+        with open(QUESTIONS_FILE) as fh:
+            questions = json.load(fh)
+    print(f"Scoring {len(questions)} questions against {collection_name()}")
+
     started = datetime.now(UTC)
-    result = run(args.n)
+    result = run(questions)
     summary = summarise(result["rows"])
 
     print("\nRETRIEVAL SUMMARY")
@@ -188,11 +236,14 @@ def main() -> None:
 
     out = {
         "run_at": started.isoformat(timespec="seconds"),
+        "collection": collection_name(),
         "reranker": rerank_model(),
         "summary": summary,
         **result,
     }
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrieval_results.json")
+    path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), f"retrieval_results_{collection_name()}.json"
+    )
     with open(path, "w") as fh:
         json.dump(out, fh, indent=2)
     print(f"\nSaved to {path}")

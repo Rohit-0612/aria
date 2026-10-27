@@ -32,6 +32,7 @@ from typing import Any
 from langgraph.graph import END, START, StateGraph
 
 from agents.context_agent import Turn
+from agents.guardrail_agent import Intent
 from graph.nodes import (
     generator_node,
     guardrail_node,
@@ -49,7 +50,7 @@ __all__ = ["AriaState", "ask_aria", "build_aria", "run_aria", "stream_aria"]
 def guardrail_decision(state: AriaState) -> str:
     if state["failure"] is not None:
         return "fail"
-    return "navigator" if state["is_medical"] else "reject"
+    return "navigator" if state["intent"] == Intent.CLINICAL else "reject"
 
 
 def navigator_decision(state: AriaState) -> str:

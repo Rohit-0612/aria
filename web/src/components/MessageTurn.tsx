@@ -95,9 +95,13 @@ function AssistantTurn({ message }: { message: AssistantMessage }) {
                 ? 'consulting the evidence'
                 : failed
                   ? 'no answer produced'
-                  : message.outOfScope
-                    ? 'outside clinical scope'
-                    : 'grounded reply'}
+                  : message.refusal === 'self_harm'
+                    ? 'here to help'
+                    : message.refusal === 'harm_others'
+                      ? 'declined'
+                      : message.outOfScope
+                        ? 'outside clinical scope'
+                        : 'grounded reply'}
             </span>
           </div>
 

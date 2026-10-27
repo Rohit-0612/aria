@@ -44,7 +44,9 @@ class AriaState(TypedDict):
     query: str
     chunks: list[Any]
     answer: str
-    is_medical: bool
+    #: What the guardrail decided this message is — an `Intent` value. Only
+    #: "clinical" reaches retrieval; every other intent is declined.
+    intent: str
     #: None means "not adjudicated" — never substitute a placeholder number.
     confidence: float | None
     #: Set only when a model call or retrieval failed. Mutually exclusive
@@ -62,7 +64,7 @@ def initial_state(question: str, history: list[Turn] | None = None) -> AriaState
         query=question,
         chunks=[],
         answer="",
-        is_medical=False,
+        intent="",
         confidence=None,
         failure=None,
         judge_failed=False,

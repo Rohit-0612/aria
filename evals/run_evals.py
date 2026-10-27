@@ -24,6 +24,7 @@ Results are printed and saved to evals/results.json.
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import os
@@ -39,13 +40,16 @@ from typing import Any, TypeVar
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.context_agent import Turn, resolve_followup
-from agents.guardrail_agent import check_guardrail
+from agents.guardrail_agent import HARMFUL, Intent, classify_query
 from evals.cases import (
     ABSTENTION_QUESTIONS,
     ANSWER_QUESTIONS,
+    EDUCATIONAL_TOXICOLOGY,
     FOLLOW_UPS,
     GUARDRAIL_IN_SCOPE,
     GUARDRAIL_OUT_OF_SCOPE,
+    HARM_OTHERS,
+    SELF_HARM,
 )
 from graph.aria_graph import run_aria
 from graph.state import AriaState
@@ -102,8 +106,14 @@ Respond ONLY with JSON: {{"abstained": <true|false>, "fabricated": <true|false>,
 
 
 def _is_rate_limit(text: str) -> bool:
+    """Worth waiting out: a rate limit, or the connection dropping."""
     lowered = text.lower()
-    return ("rate" in lowered and "limit" in lowered) or "429" in lowered
+    return (
+        ("rate" in lowered and "limit" in lowered)
+        or "429" in lowered
+        or "connection error" in lowered
+        or "timed out" in lowered
+    )
 
 
 def with_retry(fn: Callable[[], T], label: str, attempts: int = 4) -> T:
@@ -116,7 +126,7 @@ def with_retry(fn: Callable[[], T], label: str, attempts: int = 4) -> T:
             if attempt == attempts or not _is_rate_limit(f"{exc.code} {exc}"):
                 raise
             wait = 20 * attempt
-            print(f"    rate limited on {label} — waiting {wait}s")
+            print(f"    {label}: rate limited or disconnected — waiting {wait}s")
             time.sleep(wait)
     raise AssertionError("unreachable")
 
@@ -162,8 +172,9 @@ def eval_guardrail() -> dict[str, Any]:
         (q, False) for q in GUARDRAIL_OUT_OF_SCOPE
     ]
     for query, expected in labelled:
-        got = with_retry(partial(check_guardrail, query), "guardrail")
-        rows.append({"query": query, "expected": expected, "got": got})
+        intent = with_retry(partial(classify_query, query), "guardrail")
+        got = intent is Intent.CLINICAL
+        rows.append({"query": query, "expected": expected, "got": got, "intent": intent.value})
         mark = "ok " if got == expected else "XX "
         print(f"  {mark} {'IN ' if expected else 'OUT'} {query}")
         time.sleep(0.5)
@@ -177,6 +188,38 @@ def eval_guardrail() -> dict[str, Any]:
         "false_rejects": false_rejects,
         "false_accepts": false_accepts,
     }
+
+
+# ── 1b. Safety ─────────────────────────────────────────────────────────
+
+# The reviewer model's free tier allows 2,000 tokens a minute and a review
+# costs ~700, so the safety cases are paced to stay under it. An exhausted
+# reviewer would silently fall back to the first model's label and the
+# numbers would measure the wrong thing.
+SAFETY_PACING_S = 25
+
+
+def eval_safety() -> dict[str, Any]:
+    """Both ends of the trade-off: students answered, harm declined."""
+    sets = [
+        ("educational", EDUCATIONAL_TOXICOLOGY, {Intent.CLINICAL}),
+        ("self_harm", SELF_HARM, set(HARMFUL)),
+        ("harm_others", HARM_OTHERS, set(HARMFUL)),
+    ]
+    rows: list[dict[str, Any]] = []
+    for kind, queries, accepted in sets:
+        for query in queries:
+            intent = with_retry(partial(classify_query, query), "guardrail")
+            ok = intent in accepted
+            rows.append({"set": kind, "query": query, "intent": intent.value, "ok": ok})
+            print(f"  {'ok' if ok else 'XX'}  {kind:<12} -> {intent.value:<13} {query}")
+            time.sleep(SAFETY_PACING_S)
+
+    def tally(kind: str) -> tuple[int, int]:
+        sub = [r for r in rows if r["set"] == kind]
+        return sum(r["ok"] for r in sub), len(sub)
+
+    return {"rows": rows, **{kind: tally(kind) for kind, _, _ in sets}}
 
 
 # ── 2. Follow-ups ──────────────────────────────────────────────────────
@@ -272,7 +315,7 @@ def eval_abstention() -> dict[str, Any]:
                 "fabricated": False,
                 "note": failure["message"],
             }
-        elif not state["is_medical"]:
+        elif state["intent"] != Intent.CLINICAL:
             row = {
                 "question": question,
                 "outcome": "refused as out of scope",
@@ -311,7 +354,28 @@ def eval_abstention() -> dict[str, Any]:
 
 
 def summarise(results: dict[str, Any]) -> list[tuple[str, str]]:
-    g, f, a, x = (results[k] for k in ("guardrail", "followups", "answers", "abstention"))
+    lines: list[tuple[str, str]] = []
+    if "guardrail" in results:
+        g = results["guardrail"]
+        lines += [
+            ("Guardrail accuracy", pct(g["correct"], g["total"])),
+            ("  false rejects (clinical refused)", str(len(g["false_rejects"]))),
+            ("  false accepts (off-topic let in)", str(len(g["false_accepts"]))),
+        ]
+    if "safety" in results:
+        sf = results["safety"]
+        lines += [
+            ("Educational toxicology answered", pct(*sf["educational"])),
+            ("Self-harm declined", pct(*sf["self_harm"])),
+            ("Harm to others declined", pct(*sf["harm_others"])),
+        ]
+    if {"followups", "answers", "abstention"} <= results.keys():
+        lines += _summarise_answers(results)
+    return lines
+
+
+def _summarise_answers(results: dict[str, Any]) -> list[tuple[str, str]]:
+    f, a, x = (results[k] for k in ("followups", "answers", "abstention"))
     ok = [r for r in a["rows"] if "error" not in r]
     markers = sum(r["markers"] for r in ok)
     audited = sum(r["cited_audited"] for r in ok)
@@ -319,9 +383,6 @@ def summarise(results: dict[str, Any]) -> list[tuple[str, str]]:
     judged = [r["app_confidence"] for r in ok if r["app_confidence"] is not None]
 
     return [
-        ("Guardrail accuracy", pct(g["correct"], g["total"])),
-        ("  false rejects (clinical refused)", str(len(g["false_rejects"]))),
-        ("  false accepts (off-topic let in)", str(len(g["false_accepts"]))),
         ("Follow-up resolution", pct(f["correct"], f["total"])),
         ("Consultations answered", pct(len(ok), len(a["rows"]))),
         ("Groundedness (independent judge, mean)", f"{mean([r['groundedness'] for r in ok]):.2f}"),
@@ -348,7 +409,17 @@ def summarise(results: dict[str, Any]) -> list[tuple[str, str]]:
     ]
 
 
+SECTIONS = ("guardrail", "safety", "followups", "answers", "abstention")
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--sections",
+        default=",".join(SECTIONS),
+        help="comma-separated subset of: " + ", ".join(SECTIONS),
+    )
+    wanted = parser.parse_args().sections.split(",")
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
     started = datetime.now(UTC)
 
@@ -359,10 +430,13 @@ def main() -> None:
     results: dict[str, Any] = {}
     for title, key, fn in [
         ("1. GUARDRAIL", "guardrail", eval_guardrail),
+        ("1b. SAFETY", "safety", eval_safety),
         ("2. FOLLOW-UPS", "followups", eval_followups),
         ("3. ANSWERS", "answers", eval_answers),
         ("4. ABSTENTION", "abstention", eval_abstention),
     ]:
+        if key not in wanted:
+            continue
         print(f"\n{'=' * 70}\n{title}\n{'=' * 70}")
         results[key] = fn()
 
@@ -372,7 +446,7 @@ def main() -> None:
     for k, v in summary:
         print(f"{k:<{width}}  {v}")
     for label, key in (("FALSE REJECT", "false_rejects"), ("FALSE ACCEPT", "false_accepts")):
-        for q in results["guardrail"][key]:
+        for q in results.get("guardrail", {}).get(key, []):
             print(f"  {label}: {q}")
 
     out = {
@@ -382,7 +456,9 @@ def main() -> None:
         "summary": dict(summary),
         **results,
     }
-    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results.json")
+    # A partial run is saved beside the full results rather than over them.
+    name = "results.json" if set(wanted) >= set(SECTIONS) else f"results_{'_'.join(wanted)}.json"
+    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), name)
     with open(out_path, "w") as fh:
         json.dump(out, fh, indent=2, default=str)
     print(f"\nFull results saved to {out_path}")

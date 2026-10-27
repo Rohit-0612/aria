@@ -69,7 +69,7 @@ export interface ConsultationError {
 
 /** Soft scope/safety note. Present but never alarmist. */
 export interface SafetyNote {
-  kind: 'scope' | 'caution' | 'interaction';
+  kind: 'scope' | 'caution' | 'interaction' | 'support';
   text: string;
 }
 
@@ -110,7 +110,15 @@ export interface AssistantMessage {
    * answer, so it carries no grounding badge and no Judge score.
    */
   outOfScope?: boolean;
+  /** Why the question was declined, when it was. */
+  refusal?: Refusal;
 }
+
+/**
+ * The guardrail's reasons for declining. `self_harm` is answered with
+ * support and a helpline rather than a refusal notice.
+ */
+export type Refusal = 'out_of_scope' | 'self_harm' | 'harm_others';
 
 /** A prior turn, sent so a follow-up can be understood in context. */
 export interface HistoryTurn {

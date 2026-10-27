@@ -25,6 +25,7 @@ export type IconName =
   | 'corner'
   | 'caution'
   | 'scope'
+  | 'support'
   | 'link'
   | 'plus';
 
@@ -101,6 +102,8 @@ const paths: Record<IconName, JSX.Element> = {
       <path d="M12 3.5v17M3.5 12h17" />
     </>
   ),
+  // An open hand-drawn heart: support, not alarm.
+  support: <path d="M12 19.5s-7-4.3-7-9.4A3.8 3.8 0 0112 8a3.8 3.8 0 017 2.1c0 5.1-7 9.4-7 9.4z" />,
   link: (
     <>
       <path d="M10 13a3.5 3.5 0 005 0l3-3a3.5 3.5 0 00-5-5l-1.5 1.5" />

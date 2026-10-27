@@ -15,6 +15,7 @@ from typing import Any
 import pytest
 
 import api.server as server
+from agents.guardrail_agent import Intent
 from agents.judge_agent import Judgment
 from api.server import run_consultation
 
@@ -36,7 +37,7 @@ def types_of(events: list[dict[str, Any]]) -> list[str]:
 def working_pipeline(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> list[str]:
     """A graph whose generator yields several distinct fragments."""
     fragments = ["Thiazide ", "diuretics ", "are ", "first-line."]
-    monkeypatch.setattr("graph.nodes.check_guardrail", lambda q: True)
+    monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
     monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
     monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c: iter(fragments))
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(0.88, "grounded"))
@@ -53,7 +54,7 @@ def test_the_api_layer_owns_no_pipeline() -> None:
     one grew a retry loop and a judge_failed flag the other never had. This
     pins the server to transport only.
     """
-    for agent in ("check_guardrail", "navigator", "generate_answer", "judge_answer"):
+    for agent in ("classify_query", "navigator", "generate_answer", "judge_answer"):
         assert not hasattr(server, agent), (
             f"api.server re-imported {agent!r} — the pipeline belongs to graph.aria_graph"
         )

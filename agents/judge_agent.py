@@ -95,10 +95,10 @@ def judge_answer(query: str, answer: str, chunks: list[Any]) -> Judgment:
     # came back without its JSON, and the same prompt re-asked parsed fine.
     # One retry (~0.5s on the small model) turns most "Not adjudicated"
     # turns into scored ones; a second failure is reported, not hidden.
-    judgment = _parse(invoke_role(Role.JUDGE, prompt))
+    judgment = _parse(invoke_role(Role.JUDGE, prompt, json_mode=True))
     if not judgment.adjudicated:
         logger.info("judge reply unparseable (%s) — asking once more", judgment.reason)
-        judgment = _parse(invoke_role(Role.JUDGE, prompt))
+        judgment = _parse(invoke_role(Role.JUDGE, prompt, json_mode=True))
 
     if judgment.adjudicated:
         logger.info("judge confidence: %s - %s", judgment.confidence, judgment.reason)

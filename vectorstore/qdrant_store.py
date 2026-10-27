@@ -21,15 +21,20 @@ from dataclasses import dataclass
 from typing import Any
 
 from dotenv import load_dotenv
+from langchain_core.documents import Document
 from langchain_qdrant import QdrantVectorStore
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 
 from ingestion.embedder import load_embedding_model
 
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    "BM25_MODEL",
     "COLLECTION_NAME",
+    "DENSE_VECTOR",
+    "SPARSE_VECTOR",
+    "HybridStore",
     "StoreReport",
     "check_store",
     "collection_name",
@@ -39,7 +44,11 @@ __all__ = [
 #: Default collection. Overridable so a restored cluster can be pointed at a
 #: new collection without a code change — the same rule `llm.config` follows
 #: for model IDs.
-COLLECTION_NAME = "aria_medical"
+COLLECTION_NAME = "aria_medical_v2"
+#: The dense-only predecessor, kept intact as the rollback target
+#: (ARIA_QDRANT_COLLECTION=aria_medical) and as the source the hybrid
+#: collection is rebuilt from.
+LEGACY_COLLECTION = "aria_medical"
 
 #: Vectors are 384-dimensional (all-MiniLM-L6-v2). A collection built with a
 #: different embedding model will not error — it will silently return
@@ -47,6 +56,11 @@ COLLECTION_NAME = "aria_medical"
 EXPECTED_VECTOR_SIZE = 384
 
 _CONNECT_TIMEOUT = int(os.getenv("ARIA_QDRANT_TIMEOUT", "30"))
+
+#: Vector names in a hybrid collection (see build_hybrid_collection.py).
+DENSE_VECTOR = "dense"
+SPARSE_VECTOR = "bm25"
+BM25_MODEL = "Qdrant/bm25"
 
 
 def collection_name() -> str:
@@ -98,16 +112,84 @@ def get_client() -> QdrantClient:
     return QdrantClient(url=url, api_key=api_key, timeout=_CONNECT_TIMEOUT)
 
 
-def load_vectorstore() -> QdrantVectorStore:
-    """Open the Qdrant-backed store used for retrieval."""
+class HybridStore:
+    """Dense + BM25 search over a hybrid collection, fused by RRF in Qdrant.
+
+    Exposes the one method retrieval uses, `similarity_search`, so the
+    navigator's balancing, reference-matter filter, reranking and floor work
+    unchanged on either kind of collection.
+
+    Why both: dense embeddings match meaning but blur exact names —
+    "Can sitagliptin be used in renal impairment?" retrieved a bivalirudin
+    passage and nothing about sitagliptin. BM25 matches the literal term.
+    Reciprocal Rank Fusion merges the two rankings by position rather than
+    by score, so neither scale has to be calibrated against the other; both
+    searches and the fusion run inside one Qdrant request.
+    """
+
+    def __init__(
+        self, client: QdrantClient, name: str, embeddings: Any, bm25: Any | None = None
+    ) -> None:
+        self.client = client
+        self.name = name
+        self.embeddings = embeddings
+        if bm25 is None:
+            from fastembed import SparseTextEmbedding
+
+            bm25 = SparseTextEmbedding(BM25_MODEL)
+        self.bm25 = bm25
+
+    def similarity_search(self, query: str, k: int, filter: Any = None) -> list[Document]:
+        dense = self.embeddings.embed_query(query)
+        sparse = next(iter(self.bm25.query_embed(query)))
+        result = self.client.query_points(
+            self.name,
+            prefetch=[
+                models.Prefetch(query=dense, using=DENSE_VECTOR, limit=k, filter=filter),
+                models.Prefetch(
+                    query=models.SparseVector(
+                        indices=sparse.indices.tolist(), values=sparse.values.tolist()
+                    ),
+                    using=SPARSE_VECTOR,
+                    limit=k,
+                    filter=filter,
+                ),
+            ],
+            query=models.FusionQuery(fusion=models.Fusion.RRF),
+            limit=k,
+            with_payload=True,
+        )
+        return [
+            Document(
+                page_content=str((p.payload or {}).get("page_content", "")),
+                metadata=dict((p.payload or {}).get("metadata") or {}),
+            )
+            for p in result.points
+        ]
+
+
+def is_hybrid(client: QdrantClient, name: str) -> bool:
+    """True when the collection carries the BM25 sparse vectors."""
+    sparse = client.get_collection(name).config.params.sparse_vectors or {}
+    return SPARSE_VECTOR in sparse
+
+
+def load_vectorstore() -> QdrantVectorStore | HybridStore:
+    """Open the Qdrant-backed store used for retrieval.
+
+    The search mode follows the collection: one built with BM25 vectors is
+    searched hybrid, a dense-only one as before. Switching between them is
+    therefore a matter of `ARIA_QDRANT_COLLECTION`, with no code change and
+    an immediate way back.
+    """
     name = collection_name()
     embeddings = load_embedding_model()
-    store = QdrantVectorStore(
-        client=get_client(),
-        collection_name=name,
-        embedding=embeddings,
-    )
-    logger.info("Qdrant vector store loaded — collection: %s", name)
+    client = get_client()
+    if is_hybrid(client, name):
+        logger.info("Qdrant hybrid store loaded (dense + BM25, RRF) — collection: %s", name)
+        return HybridStore(client, name, embeddings)
+    store = QdrantVectorStore(client=client, collection_name=name, embedding=embeddings)
+    logger.info("Qdrant dense store loaded — collection: %s", name)
     return store
 
 

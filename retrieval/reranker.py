@@ -16,7 +16,9 @@ from __future__ import annotations
 import logging
 import os
 import re
-from typing import Any
+import time
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from dotenv import load_dotenv
 
@@ -24,6 +26,7 @@ load_dotenv()
 
 from langchain_cohere import CohereRerank
 from pydantic import SecretStr
+from qdrant_client.http.exceptions import ResponseHandlingException
 from qdrant_client.models import FieldCondition, Filter, MatchValue
 
 from llm.config import rerank_model
@@ -131,6 +134,37 @@ def is_reference_matter(text: str) -> bool:
     return is_bibliography(text) or is_index_page(text)
 
 
+# ── Transient failures ─────────────────────────────────────────────────
+# A dropped TLS handshake to Qdrant Cloud failed a whole consultation in
+# testing; the same request a second later succeeded. Network blips are
+# retried briefly. Anything else — a missing collection, a bad key, a 4xx
+# from the reranker — fails at once: retrying a misconfiguration only
+# delays the error the operator needs to see.
+_T = TypeVar("_T")
+TRANSIENT: tuple[type[BaseException], ...] = (
+    TimeoutError,
+    ConnectionError,
+    ResponseHandlingException,  # qdrant-client's wrapper for transport errors
+    OSError,  # ssl.SSLError ("handshake operation timed out") is an OSError
+)
+_BACKOFF_S = (0.5, 1.5)
+
+
+def with_transient_retry(call: Callable[[], _T], what: str) -> _T:
+    """Run `call`, retrying network-level failures with a short backoff."""
+    for attempt, pause in enumerate((*_BACKOFF_S, None), start=1):
+        try:
+            return call()
+        except TRANSIENT as exc:
+            if pause is None:
+                raise
+            logger.warning(
+                "%s: transient failure (%s) — retry %d in %.1fs", what, exc, attempt, pause
+            )
+            time.sleep(pause)
+    raise AssertionError("unreachable")  # pragma: no cover
+
+
 def _relevance_of(doc: Any) -> float:
     meta = getattr(doc, "metadata", {}) or {}
     score: Any = meta.get("relevance_score", meta.get("score"))
@@ -180,8 +214,13 @@ class BalancedRetriever:
                 generator answer with no evidence at all.
         """
         try:
-            glob = self.vs.similarity_search(query, k=self.k_global)
-            rx = self.vs.similarity_search(query, k=self.k_rxprep, filter=RXPREP_FILTER)
+            glob = with_transient_retry(
+                lambda: self.vs.similarity_search(query, k=self.k_global), "vector search"
+            )
+            rx = with_transient_retry(
+                lambda: self.vs.similarity_search(query, k=self.k_rxprep, filter=RXPREP_FILTER),
+                "vector search (RxPrep)",
+            )
         except Exception as exc:
             logger.error("vector store unreachable during retrieval: %s", exc)
             raise wrap_retrieval_error(exc, "navigator", collection_name()) from exc
@@ -216,7 +255,11 @@ class BalancedRetriever:
             )
 
         try:
-            reranked = list(self.reranker.compress_documents(candidates, query))
+            reranked = list(
+                with_transient_retry(
+                    lambda: self.reranker.compress_documents(candidates, query), "rerank"
+                )
+            )
         except Exception as exc:
             logger.error("reranker unavailable: %s", exc)
             raise wrap_retrieval_error(exc, "navigator", "reranker") from exc

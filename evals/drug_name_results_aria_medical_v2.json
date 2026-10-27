@@ -1,0 +1,152 @@
+{
+  "summary": {
+    "collection": "aria_medical_v2",
+    "questions": 20,
+    "retrieval failed outright": 0,
+    "answerable (a kept passage names the drug)": "20/20",
+    "kept passages naming the drug": "94%",
+    "reranker": "rerank-v5.0-fast"
+  },
+  "rows": [
+    {
+      "drug": "sitagliptin",
+      "question": "Can sitagliptin be used in renal impairment?",
+      "candidates_naming_it": 5,
+      "kept_naming_it": 4,
+      "kept": 5
+    },
+    {
+      "drug": "linagliptin",
+      "question": "Does linagliptin need a dose adjustment in kidney disease?",
+      "candidates_naming_it": 3,
+      "kept_naming_it": 2,
+      "kept": 5
+    },
+    {
+      "drug": "empagliflozin",
+      "question": "What are the adverse effects of empagliflozin?",
+      "candidates_naming_it": 12,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "dapagliflozin",
+      "question": "Is dapagliflozin used in heart failure?",
+      "candidates_naming_it": 11,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "semaglutide",
+      "question": "How is semaglutide dosed?",
+      "candidates_naming_it": 18,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "finerenone",
+      "question": "What is finerenone used for in diabetic kidney disease?",
+      "candidates_naming_it": 12,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "sacubitril",
+      "question": "When is sacubitril/valsartan preferred over an ACE inhibitor?",
+      "candidates_naming_it": 20,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "ivabradine",
+      "question": "What is the role of ivabradine in heart failure?",
+      "candidates_naming_it": 9,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "idarucizumab",
+      "question": "When is idarucizumab given?",
+      "candidates_naming_it": 11,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "andexanet",
+      "question": "What does andexanet alfa reverse?",
+      "candidates_naming_it": 11,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "apixaban",
+      "question": "How is apixaban dosed in atrial fibrillation?",
+      "candidates_naming_it": 10,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "ticagrelor",
+      "question": "What are the side effects of ticagrelor?",
+      "candidates_naming_it": 15,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "prasugrel",
+      "question": "Who should not receive prasugrel?",
+      "candidates_naming_it": 13,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "ezetimibe",
+      "question": "How does ezetimibe lower LDL cholesterol?",
+      "candidates_naming_it": 14,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "febuxostat",
+      "question": "What is the cardiovascular warning for febuxostat?",
+      "candidates_naming_it": 10,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "tolvaptan",
+      "question": "What monitoring is needed with tolvaptan?",
+      "candidates_naming_it": 10,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "dolutegravir",
+      "question": "What are the interactions of dolutegravir with antacids?",
+      "candidates_naming_it": 11,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "bedaquiline",
+      "question": "What are the QT effects of bedaquiline?",
+      "candidates_naming_it": 7,
+      "kept_naming_it": 3,
+      "kept": 5
+    },
+    {
+      "drug": "varenicline",
+      "question": "How is varenicline used for smoking cessation?",
+      "candidates_naming_it": 20,
+      "kept_naming_it": 5,
+      "kept": 5
+    },
+    {
+      "drug": "lacosamide",
+      "question": "What is lacosamide used for?",
+      "candidates_naming_it": 12,
+      "kept_naming_it": 5,
+      "kept": 5
+    }
+  ]
+}

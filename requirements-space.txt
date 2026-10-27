@@ -20,3 +20,5 @@ langchain-qdrant==1.1.0
 qdrant-client==1.18.0
 langchain-huggingface==1.2.2
 sentence-transformers==5.5.1
+# BM25 query encoding for hybrid search (word counts, not a neural model).
+fastembed==0.9.1

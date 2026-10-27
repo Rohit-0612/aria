@@ -24,7 +24,7 @@ from typing import Any
 from langgraph.config import get_stream_writer
 
 from agents.context_agent import resolve_followup
-from agents.guardrail_agent import check_guardrail
+from agents.guardrail_agent import Intent, classify_query
 from agents.judge_agent import judge_answer
 from agents.navigator_agent import navigator
 from graph.state import AriaState, record_failure
@@ -34,6 +34,7 @@ from llm.generator import stream_answer
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    "REFUSALS",
     "REJECTION_MESSAGE",
     "generator_node",
     "guardrail_node",
@@ -48,6 +49,42 @@ REJECTION_MESSAGE = (
     "interactions, and the evidence behind therapeutic decisions, grounded "
     "in *DiPiro's Pharmacotherapy* and the *RxPrep NAPLEX Course Book*."
 )
+
+# Written for someone who may be in crisis: no clinical content, no
+# lecture, no dead end — a person to talk to, now. Tele-MANAS is India's
+# national mental-health helpline (free, 24x7, in Indian languages); 112 is
+# the national emergency number.
+SELF_HARM_MESSAGE = (
+    "It sounds like you might be going through something really painful, and "
+    "I'm glad you reached out. I can't help with this question, but you don't "
+    "have to face this alone.\n\n"
+    "If you're in India, you can call **Tele-MANAS on 14416** — it's free, "
+    "confidential and open 24 hours, in many languages. Elsewhere, please contact "
+    "a local crisis line. If you might act on these thoughts right now, call "
+    "**112** or go to the nearest emergency department, and if you can, tell "
+    "someone you trust how you're feeling."
+)
+
+HARM_OTHERS_MESSAGE = (
+    "I can't help with that. ARIA answers pharmacotherapy questions for "
+    "learning and patient care, not questions about harming someone. If a "
+    "person is in danger, contact emergency services (112 in India)."
+)
+
+#: The reply for each declined intent.
+REFUSALS: dict[str, str] = {
+    Intent.OUT_OF_SCOPE: REJECTION_MESSAGE,
+    Intent.SELF_HARM: SELF_HARM_MESSAGE,
+    Intent.HARM_OTHERS: HARM_OTHERS_MESSAGE,
+}
+
+# What the trace shows for each intent. The safety cases say only that the
+# question was declined — the trace is not the place to label a reader.
+_GUARDRAIL_RESULT: dict[str, tuple[str, str]] = {
+    Intent.OUT_OF_SCOPE: ("Query is outside clinical scope", "out of scope"),
+    Intent.SELF_HARM: ("Declined — not a question ARIA can answer", "declined"),
+    Intent.HARM_OTHERS: ("Declined — not a question ARIA can answer", "declined"),
+}
 
 
 def _writer() -> Callable[[dict[str, Any]], None]:
@@ -113,7 +150,7 @@ def guardrail_node(state: AriaState) -> AriaState:
     write, t0 = _start("guardrail", "Confirming the query is in clinical scope")
     try:
         state["query"] = resolve_followup(state["asked"], state["history"])
-        state["is_medical"] = check_guardrail(state["query"])
+        state["intent"] = classify_query(state["query"])
     except Exception as raw:  # noqa: BLE001 - normalised on the next line
         exc = wrap_provider_error(raw, "guardrail", "guardrail model")
         # Deliberately NOT defaulting to in-scope: an unreachable guardrail
@@ -122,22 +159,15 @@ def guardrail_node(state: AriaState) -> AriaState:
         _failed(write, "guardrail", t0, exc)
         return state
 
-    in_scope = state["is_medical"]
-    if not in_scope:
-        detail = "Query is outside clinical scope"
+    if state["intent"] != Intent.CLINICAL:
+        detail, metric = _GUARDRAIL_RESULT[state["intent"]]
     elif state["query"] != state["asked"]:
         # Show the reader how their follow-up was understood: if the rewrite
         # picked the wrong drug, this is where they can see it.
-        detail = f"Follow-up read as: {state['query']}"
+        detail, metric = f"Follow-up read as: {state['query']}", "medical · in scope"
     else:
-        detail = "Clinical pharmacotherapy query"
-    _done(
-        write,
-        "guardrail",
-        t0,
-        detail=detail,
-        metric="medical · in scope" if in_scope else "out of scope",
-    )
+        detail, metric = "Clinical pharmacotherapy query", "medical · in scope"
+    _done(write, "guardrail", t0, detail=detail, metric=metric)
     return state
 
 
@@ -262,15 +292,16 @@ def judge_node(state: AriaState) -> AriaState:
 
 
 def reject_node(state: AriaState) -> AriaState:
-    """Decline an out-of-scope query.
+    """Decline a query the guardrail did not classify as clinical.
 
     The refusal is emitted on the same token channel as a generated answer
     because that is what it is to the reader — prose in the reply. It is not
     grounded content, so nothing downstream attaches citations or a score.
     """
     write = _writer()
-    state["answer"] = REJECTION_MESSAGE
-    write({"kind": "token", "text": REJECTION_MESSAGE})
+    message = REFUSALS.get(state["intent"], REJECTION_MESSAGE)
+    state["answer"] = message
+    write({"kind": "token", "text": message})
     for step in ("navigator", "generator", "judge"):
-        write({"kind": "step", "id": step, "status": "skipped", "detail": "Skipped — out of scope"})
+        write({"kind": "step", "id": step, "status": "skipped", "detail": "Skipped — declined"})
     return state

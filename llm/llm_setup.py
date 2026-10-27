@@ -72,8 +72,15 @@ def _as_text(content: str | list[str | dict[str, Any]]) -> str:
     return "".join(parts)
 
 
-def _invoke_once(llm: ChatGroq, prompt: str) -> str:
-    message: BaseMessage = llm.invoke(prompt)
+#: Groq's JSON mode: the reply is constrained to a single valid JSON object.
+#: The prompt must still ask for JSON — the provider rejects JSON mode
+#: without it.
+_JSON_MODE = {"response_format": {"type": "json_object"}}
+
+
+def _invoke_once(llm: ChatGroq, prompt: str, json_mode: bool = False) -> str:
+    runnable = llm.bind(**_JSON_MODE) if json_mode else llm
+    message: BaseMessage = runnable.invoke(prompt)
     return _as_text(message.content)
 
 
@@ -100,7 +107,7 @@ def _fallback_spec(spec: ModelSpec, model: str) -> ModelSpec:
     )
 
 
-def invoke_role(role: Role, prompt: str) -> str:
+def invoke_role(role: Role, prompt: str, *, json_mode: bool = False) -> str:
     """Run `prompt` for `role` and return the model's text.
 
     Raises:
@@ -110,7 +117,7 @@ def invoke_role(role: Role, prompt: str) -> str:
     """
     spec = spec_for(role)
     try:
-        return _invoke_once(build_llm(spec), prompt)
+        return _invoke_once(build_llm(spec), prompt, json_mode)
     except Exception as exc:  # noqa: BLE001 - normalised immediately below
         primary_error = wrap_provider_error(exc, role.value, spec.model)
 
@@ -132,7 +139,7 @@ def invoke_role(role: Role, prompt: str) -> str:
 
     _warn_falling_back(spec, role, primary_error.code, secondary)
     try:
-        return _invoke_once(build_llm(_fallback_spec(spec, secondary)), prompt)
+        return _invoke_once(build_llm(_fallback_spec(spec, secondary)), prompt, json_mode)
     except Exception as exc:  # noqa: BLE001 - normalised immediately below
         fallback_error = wrap_provider_error(exc, role.value, secondary)
         logger.error(
