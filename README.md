@@ -9,7 +9,7 @@ questions strictly from the textbook evidence — with an inline citation on eve
 claim, an independently judged grounding score on every answer, and follow-up
 questions understood in context.
 
-[**▶ Live demo**](https://mohitrks-aria.hf.space) · [How it works](#how-it-works) · [Evaluation](#evaluation) · [Design decisions](#design-decisions) · [Getting started](#getting-started)
+[**▶ Live demo**](https://rks0612-aria.hf.space) · [How it works](#how-it-works) · [Evaluation](#evaluation) · [Design decisions](#design-decisions) · [Getting started](#getting-started)
 
 [![CI](https://github.com/Rohit-0612/aria/actions/workflows/ci.yml/badge.svg)](https://github.com/Rohit-0612/aria/actions/workflows/ci.yml)
 
