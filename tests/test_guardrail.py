@@ -20,6 +20,7 @@ from agents.guardrail_agent import Intent, classify_query, needs_review
 from api.server import run_consultation
 from llm.config import Role
 from llm.errors import AriaLLMError
+from tests.conftest import as_retrieval
 
 
 def route(guardrail: str, safety: str | Exception | None = None) -> Any:
@@ -148,7 +149,7 @@ async def test_a_refusal_never_reaches_retrieval(
         raise AssertionError("a declined question reached the evidence base")
 
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: intent)
-    monkeypatch.setattr("graph.nodes.navigator", no_retrieval)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(no_retrieval))
     events = await collect("a declined question")
 
     meta = next(e for e in events if e["type"] == "meta")

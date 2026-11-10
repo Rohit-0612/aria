@@ -30,7 +30,10 @@ from typing import Final
 __all__ = [
     "DEFAULT_EMBEDDING_MODEL",
     "DEFAULT_FALLBACK_MODEL",
+    "DEFAULT_GENERATOR_CASCADE",
     "DEFAULT_GENERATOR_MODEL",
+    "DEFAULT_JUDGE_MODEL",
+    "DEFAULT_JUDGE_SPARE_MODEL",
     "DEFAULT_RERANK_MODEL",
     "DEFAULT_SAFETY_MODEL",
     "DEFAULT_SMALL_MODEL",
@@ -40,6 +43,8 @@ __all__ = [
     "configured_groq_models",
     "embedding_model",
     "fallback_model",
+    "generator_cascade",
+    "judge_spare_model",
     "rerank_model",
     "spec_for",
 ]
@@ -65,6 +70,15 @@ class Role(StrEnum):
 DEFAULT_GENERATOR_MODEL: Final = "openai/gpt-oss-120b"
 DEFAULT_SMALL_MODEL: Final = "openai/gpt-oss-20b"
 DEFAULT_FALLBACK_MODEL: Final = "openai/gpt-oss-20b"
+# The Judge reads a teaching answer of ~800 words against up to 14 passages.
+# On the same saved answers, gpt-oss-20b scored a well-cited levothyroxine
+# answer 0.6 and a diabetes answer that said SGLT-2 inhibitors *increase*
+# glucose reabsorption also 0.6; gpt-oss-120b gave them 0.9 and 0.3, which
+# is what checking the passages by hand says. With Gemini writing most
+# answers, the large model's Groq quota is free for this. When it is rate
+# limited, the Judge falls back to the small model rather than not scoring.
+DEFAULT_JUDGE_MODEL: Final = "openai/gpt-oss-120b"
+DEFAULT_JUDGE_SPARE_MODEL: Final = "openai/gpt-oss-20b"
 # rerank-english-v3.0 ranked a bivalirudin passage first for "Can
 # sitagliptin be used in renal impairment?"; every newer Cohere reranker put
 # the sitagliptin dosing table first. On the retrieval eval (same 39
@@ -147,12 +161,16 @@ _REGISTRY: Final[dict[Role, tuple[str, str, float, int, str]]] = {
         _GENERATOR_MAX_TOKENS,
         "medium",
     ),
+    # "low", not "medium": a teaching answer plus its cited passages fills
+    # most of Groq's per-minute budget, leaving 2,048 tokens for the reply;
+    # at medium effort the reasoning used all of them and no JSON verdict was
+    # written (measured on a 1,169-word answer: three attempts, no score).
     Role.JUDGE: (
         "ARIA_JUDGE_MODEL",
-        DEFAULT_SMALL_MODEL,
+        DEFAULT_JUDGE_MODEL,
         0.0,
         _JUDGE_MAX_TOKENS,
-        "medium",
+        "low",
     ),
     Role.SAFETY: (
         "ARIA_SAFETY_MODEL",
@@ -205,9 +223,42 @@ def all_specs() -> tuple[ModelSpec, ...]:
     return tuple(spec_for(role) for role in Role)
 
 
+#: Gemini models tried in order to write the answer. Each has its own free
+#: daily quota (about 20 requests), so falling through them multiplies the
+#: day's capacity; the newest are also the most often overloaded on the free
+#: tier, which falling through absorbs. Pro-class models have no free quota.
+#: After the last one, the Groq generator writes from a trimmed passage set.
+#: Ordered by how reliably each answered on the free tier when measured
+#: (2026-11-08): 3.8 and 3.7 Flash, the newest, timed out or returned 503 on
+#: every attempt that day, which cost 20 s per fresh process before falling
+#: through; 3.6 Flash answered in ~2 s to first token.
+DEFAULT_GENERATOR_CASCADE: Final = (
+    "gemini-3.6-flash",
+    "gemini-3-flash-preview",
+    "gemini-3.8-flash",
+    "gemini-3.7-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+)
+
+
+def generator_cascade() -> tuple[str, ...]:
+    """The Gemini models to try, in order (`ARIA_GENERATOR_CASCADE`, comma-separated;
+    set it empty to write every answer on Groq)."""
+    raw = os.getenv("ARIA_GENERATOR_CASCADE")
+    if raw is None:
+        return DEFAULT_GENERATOR_CASCADE
+    return tuple(m.strip() for m in raw.split(",") if m.strip())
+
+
 def fallback_model() -> str:
     """Secondary model used when a primary model is decommissioned."""
     return _env("ARIA_FALLBACK_MODEL", DEFAULT_FALLBACK_MODEL)
+
+
+def judge_spare_model() -> str:
+    """The Judge's model when its own is rate limited."""
+    return _env("ARIA_JUDGE_SPARE_MODEL", DEFAULT_JUDGE_SPARE_MODEL)
 
 
 def rerank_model() -> str:
@@ -239,4 +290,5 @@ def configured_groq_models(*, include_offline: bool = False) -> tuple[str, ...]:
             continue
         seen[spec.model] = None
     seen[fallback_model()] = None
+    seen[judge_spare_model()] = None
     return tuple(seen)

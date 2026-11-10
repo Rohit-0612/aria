@@ -1,77 +1,92 @@
 /*
-  ARIA design tokens — "The Journal"
+  ARIA design tokens — "The Broadsheet"
   ------------------------------------------------------------------
-  Concept: a clinical research journal. Each answer is typeset as a
-  peer-reviewed article on a physical page (the "sheet") resting on a
-  desk. Ink on warm ivory, black hairline rules, a single saffron accent
-  used like a printer's spot color, oxblood reserved for the evidence
-  spine and cautions. Tiers grade grounding (Judge) and relevance
-  (reranker) on one three-step scale — see lib/tiers.ts.
+  Concept: a clinical broadsheet. The consultation is a printed sheet of
+  newsprint on a greige desk: ink-black type, reversed ink slabs for the
+  nameplate, hairline and double rules, a paper grain over everything, and
+  one vermilion spot colour used the way a printer uses a second plate.
+  Oxblood is reserved for cautions; the three tier inks grade grounding
+  (Judge) and relevance (reranker) — see lib/tiers.ts.
+
+  Light is the Day edition (ink on newsprint). Dark is the Night edition:
+  the sheet itself is printed in ink and the type in newsprint.
 
   Values are HSL channels ("H S% L%") so Tailwind alpha modifiers work.
 */
 
-:root {
-  /* The desk the page sits on, and the page itself */
-  --desk: 34 17% 75%;
-  --page: 44 46% 97%;
-  --paper: 44 46% 97%; /* alias: page */
-  --surface: 42 36% 94%;
-  --surface-raised: 44 48% 98%;
+/* `.edition-day` pins the Day edition's inks on one element (the cover looks
+   the same in both editions: ink ground, vermilion and newsprint capsule). */
+:root,
+.edition-day {
+  /* The desk the sheet sits on, and the sheet itself */
+  --desk: 32 14% 75%;
+  --page: 40 27% 90%;
+  --paper: 40 27% 90%; /* alias: page */
+  --surface: 38 20% 85%;
+  --surface-raised: 40 30% 93%;
 
-  /* Ink — warm near-black printer's ink */
-  --ink: 28 22% 11%;
-  --ink-soft: 30 13% 31%;
-  --ink-faint: 32 11% 50%;
+  /* Ink — printer's black, a touch warm */
+  --ink: 40 5% 11%;
+  --ink-soft: 36 6% 25%;
+  --ink-faint: 32 6% 41%;
 
-  /* Structure — journal rules are darker/crisper than UI borders */
-  --line: 36 20% 78%;
-  --line-strong: 33 16% 64%;
-  --rule: 28 18% 18%; /* the black-ish double rules of a masthead */
+  /* Structure — rules are printed in ink, UI borders are lighter */
+  --line: 34 14% 76%;
+  --line-strong: 32 10% 58%;
+  --rule: 40 5% 11%;
 
-  /* Accent — saffron spot color, used sparingly */
-  --accent: 26 68% 42%;
-  --accent-soft: 30 50% 86%;
+  /* Spot colour — vermilion, used sparingly */
+  --accent: 18 76% 40%;
+  --accent-soft: 22 50% 84%;
 
-  /* Caution + evidence spine */
-  --oxblood: 6 56% 36%;
+  /* Caution */
+  --oxblood: 356 56% 34%;
 
   /* Three-step tier scale (grounding / relevance) */
-  --tier-strong: 152 30% 32%;
-  --tier-moderate: 30 62% 44%;
-  --tier-limited: 30 10% 46%;
+  --tier-strong: 152 34% 27%;
+  --tier-moderate: 30 72% 36%;
+  --tier-limited: 30 8% 40%;
 
-  --shadow: 30 28% 24%;
+  --shadow: 30 20% 18%;
 
-  /* Motion — physical, weighted */
+  /* Motion — weighted, printerly */
   --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-io: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Paper grain blend */
+  --grain-blend: multiply;
+  --grain-opacity: 0.4;
 }
 
 .dark {
-  --desk: 30 9% 5%;
-  --page: 35 13% 11%;
-  --paper: 35 13% 11%;
-  --surface: 33 12% 14%;
-  --surface-raised: 32 12% 17%;
+  --desk: 40 4% 6%;
+  --page: 60 3% 11%;
+  --paper: 60 3% 11%;
+  --surface: 40 4% 14%;
+  --surface-raised: 40 4% 16%;
 
-  --ink: 41 34% 87%;
-  --ink-soft: 38 15% 64%;
-  --ink-faint: 36 12% 47%;
+  --ink: 38 22% 88%;
+  --ink-soft: 36 12% 70%;
+  --ink-faint: 34 8% 52%;
 
-  --line: 35 13% 21%;
-  --line-strong: 35 12% 30%;
-  --rule: 40 24% 80%;
+  --line: 40 4% 21%;
+  --line-strong: 38 5% 32%;
+  --rule: 38 22% 85%;
 
-  --accent: 34 80% 62%;
-  --accent-soft: 32 26% 19%;
+  --accent: 41 66% 57%;
+  --accent-soft: 38 30% 18%;
 
-  --oxblood: 8 62% 60%;
+  --oxblood: 8 62% 62%;
 
   --tier-strong: 152 36% 56%;
   --tier-moderate: 36 76% 60%;
   --tier-limited: 36 13% 56%;
 
   --shadow: 0 0% 0%;
+
+  --grain-blend: screen;
+  --grain-opacity: 0.16;
 }

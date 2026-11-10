@@ -129,6 +129,13 @@ export function useConsultation(reducedMotion: boolean) {
               });
               streamingStarted = true;
               break;
+            case 'restart':
+              // Not terminal: another model is about to write the answer
+              // from the start. The half answer goes now, so the two are
+              // never read as one.
+              buffer = '';
+              patchAssistant(assistantId, { content: '' });
+              break;
             case 'error':
               // Terminal. Drop anything already streamed and strip every
               // credibility marker: an error is not a partial answer. This

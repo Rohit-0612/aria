@@ -1,0 +1,139 @@
+{
+ "label": "teach-v4",
+ "grader": "gemini-3.5-flash",
+ "graded_at": "2026-11-09T16:34:08.261772+00:00",
+ "rows": {
+  "prostate-local-vs-advanced": {
+   "coverage": 1.0,
+   "structure": 5,
+   "explains_why": 5,
+   "defines_terms": 5,
+   "biggest_gap": "None; the answer thoroughly covers all aspects of the topic with excellent educational structure and detail.",
+   "facets": [
+    {
+     "facet": "Defines localized disease (confined to the prostate) versus locally advanced and metastatic disease",
+     "verdict": "covered",
+     "note": "Clearly contrasts disease confined to the prostate with locally advanced and metastatic disease."
+    },
+    {
+     "facet": "Explains how the stage/extent is established (e.g. PSA, Gleason/grade, imaging) or risk-stratified",
+     "verdict": "covered",
+     "note": "Explains histologic grade, PSA levels, DRE, and risk stratification into low, intermediate, and high risk."
+    },
+    {
+     "facet": "States the goal of therapy in each: curative intent for localized, control/survival/palliation for metastatic",
+     "verdict": "covered",
+     "note": "Explicitly contrasts curative intent for localized disease with palliation, symptom control, and delaying progression for metastatic disease."
+    },
+    {
+     "facet": "Covers options for localized disease: active surveillance, radical prostatectomy, radiation",
+     "verdict": "covered",
+     "note": "Covers active surveillance, radical prostatectomy, and radiation therapy (EBRT and brachytherapy)."
+    },
+    {
+     "facet": "Explains androgen deprivation therapy (ADT) and why it works (prostate cancer growth depends on androgens)",
+     "verdict": "covered",
+     "note": "Explains androgen dependence of prostate cancer cells and how GnRH agonists/antagonists work to achieve castrate testosterone levels."
+    },
+    {
+     "facet": "Explains castration-resistant disease and how treatment escalates (e.g. abiraterone, enzalutamide/apalutamide, docetaxel)",
+     "verdict": "covered",
+     "note": "Defines CRPC and lists appropriate second-line agents including abiraterone, enzalutamide, apalutamide, and docetaxel."
+    },
+    {
+     "facet": "Covers adverse effects of ADT and what to monitor (e.g. bone loss, hot flashes, metabolic/cardiovascular effects, testosterone/PSA)",
+     "verdict": "covered",
+     "note": "Details adverse effects (hot flashes, metabolic changes, bone loss) and monitoring requirements (DEXA, Ca/Vitamin D, testosterone, PSA)."
+    }
+   ]
+  },
+  "diabetes-t1-vs-t2": {
+   "coverage": 0.786,
+   "structure": 5,
+   "explains_why": 4,
+   "defines_terms": 5,
+   "biggest_gap": "It leaves out how Type 1 diabetes is actually treated with insulin (basal-bolus regimens or pumps) and omits the risk of diabetic ketoacidosis (DKA).",
+   "facets": [
+    {
+     "facet": "Explains the pathophysiology difference: autoimmune beta-cell destruction (absolute insulin deficiency) vs insulin resistance with relative deficiency",
+     "verdict": "covered",
+     "note": "Clearly contrasts autoimmune beta-cell destruction causing absolute insulin deficiency in T1D versus insulin resistance with relative deficiency in T2D."
+    },
+    {
+     "facet": "Contrasts typical presentation/onset and risk of DKA",
+     "verdict": "partial",
+     "note": "Contrasts age, prevalence, and risk factors, but fails to mention DKA risk or typical clinical presentation/onset."
+    },
+    {
+     "facet": "States that type 1 requires insulin and describes the basal-bolus (or pump) approach",
+     "verdict": "partial",
+     "note": "States Type 1 requires insulin therapy, but omits the basal-bolus or insulin pump approach completely."
+    },
+    {
+     "facet": "Describes type 2 first-line therapy (lifestyle plus metformin) and how therapy is intensified",
+     "verdict": "covered",
+     "note": "Outlines lifestyle plus metformin as first-line and describes stepwise intensification based on A1C."
+    },
+    {
+     "facet": "Explains when SGLT2 inhibitors or GLP-1 receptor agonists are preferred (cardiovascular or kidney disease)",
+     "verdict": "covered",
+     "note": "Explains that SGLT2 inhibitors and GLP-1 RAs are indicated for patients with ASCVD or CKD regardless of blood glucose."
+    },
+    {
+     "facet": "Gives glycemic targets/monitoring (A1C goal, glucose monitoring)",
+     "verdict": "partial",
+     "note": "Defines A1C and lists intensification thresholds, but does not state standard overall glycemic targets (e.g., A1C < 7%)."
+    },
+    {
+     "facet": "Covers hypoglycemia: which drugs cause it, recognition and treatment",
+     "verdict": "covered",
+     "note": "Identifies high vs low risk drugs for hypoglycemia and describes treatment using 15g simple carbohydrates."
+    }
+   ]
+  },
+  "seizures-focal-vs-generalized": {
+   "coverage": 0.857,
+   "structure": 5,
+   "explains_why": 4,
+   "defines_terms": 5,
+   "biggest_gap": "The answer fails to explicitly name standard narrow-spectrum focal drugs (like carbamazepine/oxcarbazepine) for focal seizures and doesn't directly link valproate to teratogenicity or lamotrigine to SJS rash.",
+   "facets": [
+    {
+     "facet": "Defines focal seizures (onset in one hemisphere/network) versus generalized (both hemispheres from onset)",
+     "verdict": "covered",
+     "note": "Clearly defines focal seizures (originating in one hemisphere) and generalized seizures (originating in both hemispheres simultaneously)."
+    },
+    {
+     "facet": "Names generalized seizure types (e.g. tonic-clonic, absence, myoclonic)",
+     "verdict": "covered",
+     "note": "Mentions generalized seizure types including absence (non-motor) and tonic-clonic (motor)."
+    },
+    {
+     "facet": "Explains that seizure type drives drug choice",
+     "verdict": "covered",
+     "note": "Explains clearly that seizure classification dictates whether narrow- or broad-spectrum ASMs are appropriate and prevents worsening of seizures."
+    },
+    {
+     "facet": "Gives first-line options for focal seizures (e.g. lamotrigine, levetiracetam, carbamazepine/oxcarbazepine)",
+     "verdict": "partial",
+     "note": "Mentions broad-spectrum agents (like levetiracetam) used for focal seizures, but fails to explicitly list and name key narrow-spectrum focal options (e.g., carbamazepine, oxcarbazepine)."
+    },
+    {
+     "facet": "Gives options for generalized seizures, including broad-spectrum agents (e.g. valproate, lamotrigine, levetiracetam) and ethosuximide for absence",
+     "verdict": "covered",
+     "note": "Lists broad-spectrum agents (lamotrigine, levetiracetam, topiramate, valproic acid) and highlights ethosuximide specifically for absence seizures."
+    },
+    {
+     "facet": "Explains drugs that can worsen certain generalized seizures (e.g. carbamazepine/phenytoin in absence or myoclonic)",
+     "verdict": "covered",
+     "note": "Explicitly notes that using narrow-spectrum drugs like carbamazepine for absence seizures can exacerbate generalized seizures."
+    },
+    {
+     "facet": "Covers key safety issues: teratogenicity (valproate), rash/SJS (lamotrigine), monitoring, drug interactions",
+     "verdict": "partial",
+     "note": "Mentions SJS/TEN, ECG monitoring for lacosamide, and avoidance in childbearing potential, but does not explicitly connect valproate to teratogenicity or lamotrigine to SJS rash."
+    }
+   ]
+  }
+ }
+}

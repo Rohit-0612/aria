@@ -54,6 +54,11 @@ class AriaState(TypedDict):
     failure: AriaFailure | None
     #: True when the answer is genuine but the Judge could not score it.
     judge_failed: bool
+    #: The teaching outline the passages were gathered for; empty when the
+    #: question was searched as a single query.
+    outline: list[str]
+    #: Which model wrote the answer (the generator cascade may fall through).
+    generator_model: str | None
 
 
 def initial_state(question: str, history: list[Turn] | None = None) -> AriaState:
@@ -68,6 +73,8 @@ def initial_state(question: str, history: list[Turn] | None = None) -> AriaState
         confidence=None,
         failure=None,
         judge_failed=False,
+        outline=[],
+        generator_model=None,
     )
 
 

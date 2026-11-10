@@ -110,7 +110,7 @@ export function CitationMarker({ marker }: { marker: number }) {
             initial={{ opacity: 0, scale: 0.97, x: '-50%', y: '-96%' }}
             animate={{ opacity: 1, scale: 1, x: '-50%', y: '-100%' }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-none fixed z-50 block w-[min(264px,calc(100vw-3rem))] rounded-[10px] border border-line-strong bg-surface-raised p-3 text-left shadow-peek"
+            className="pointer-events-none fixed z-50 block w-[min(264px,calc(100vw-3rem))] rounded-[2px] border border-rule/60 bg-surface-raised p-3 text-left shadow-[4px_5px_0_hsl(var(--ink)/0.1)]"
           >
             <span className="flex items-center justify-between gap-2">
               <span className="label">{shortSource(cite)}</span>

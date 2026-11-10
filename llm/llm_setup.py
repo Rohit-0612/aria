@@ -107,8 +107,13 @@ def _fallback_spec(spec: ModelSpec, model: str) -> ModelSpec:
     )
 
 
-def invoke_role(role: Role, prompt: str, *, json_mode: bool = False) -> str:
+def invoke_role(
+    role: Role, prompt: str, *, json_mode: bool = False, model: str | None = None
+) -> str:
     """Run `prompt` for `role` and return the model's text.
+
+    `model` runs the role's settings on a different model (the Judge's
+    spare, when its own model is rate limited).
 
     Raises:
         AriaLLMError: on any provider failure, including after the fallback
@@ -116,6 +121,8 @@ def invoke_role(role: Role, prompt: str, *, json_mode: bool = False) -> str:
             than substituting the message into an answer.
     """
     spec = spec_for(role)
+    if model and model != spec.model:
+        spec = _fallback_spec(spec, model)
     try:
         return _invoke_once(build_llm(spec), prompt, json_mode)
     except Exception as exc:  # noqa: BLE001 - normalised immediately below

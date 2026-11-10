@@ -1,0 +1,356 @@
+{
+ "label": "teach-v2",
+ "generated_at": "2026-11-08T08:40:06.174413+00:00",
+ "rows": {
+  "prostate-local-vs-advanced": {
+   "question": "What is the difference between localized and non-localized (advanced or metastatic) prostate cancer, and how is each treated?",
+   "answer": "**In short:** Localized prostate cancer is confined to the prostate and is often curable with surgery or radiation, whereas advanced or metastatic disease has spread and is currently considered incurable [[2]][[3]]. While localized disease may only require active surveillance, advanced disease is treated with systemic Androgen Deprivation Therapy (ADT) to lower testosterone to \"castrate\" levels [[7]][[10]].\n\n## Definition and Staging\n\nProstate cancer is the most common cancer in biological males in the United States [[2]]. Its prognosis is determined by the disease stage, tumor size, and histologic grade (how the cells look under a microscope) [[1]]. \n\n> **Background:** Staging describes how far a cancer has spread. Localized means it is still contained within the organ where it started, while metastatic means it has traveled to distant parts of the body.\n\nA key marker used in screening and monitoring is PSA (prostate-specific antigen), a substance produced by the prostate gland [[5]]. While screening is controversial, a PSA level above 4 ng/mL may indicate cancer and requires further evaluation, while a level above 10 ng/mL likely indicates cancer [[5]]. However, PSA levels can also be increased by BPH (benign prostatic hyperplasia\u2014an enlarged prostate) or decreased by 5-alpha reductase inhibitors [[5]].\n\n## Localized Treatment\n\nFor many patients, prostate cancer follows an indolent (slow-growing) course [[2]]. If the disease is localized and the risk of recurrence is low, observation or active surveillance is preferred [[5]]. If treatment is necessary, the following options are considered therapeutically equivalent [[6]]:\n\n*   **Radical prostatectomy:** Surgical removal of the prostate and pelvic lymph nodes [[6]].\n*   **Radiation therapy:** This may include external beam radiation or brachytherapy (implanting radioactive sources) [[6]].\n\n## Advanced and Metastatic Treatment\n\nAdvanced and metastatic cancers are not curable, but treatment can provide palliation (symptom relief) for several years [[2]]. The backbone of treatment is ADT (androgen deprivation therapy), which aims to reduce testosterone to \"castrate\" levels, defined as less than 50 ng/mL [[7]][[10]].\n\n> **Background:** Androgens are male sex hormones, like testosterone, that act as fuel for prostate cancer cells. By removing these hormones, the growth of the cancer can be slowed or paused.\n\nTreatment varies based on whether the cancer is \"castration-naive\" (has not yet been treated with ADT) or \"castration-resistant\" (progresses despite ADT) [[8]].\n\n| Feature | Localized Prostate Cancer | Advanced/Metastatic Prostate Cancer |\n| :--- | :--- | :--- |\n| **Curability** | Curable in more than 85% of cases [[1]]. | Not yet curable; less than 1% cure rate if metastatic [[1]][[2]]. |\n| **Primary Goal** | Cure or active surveillance [[2]][[5]]. | Palliation and survival extension [[2]][[8]]. |\n| **Treatment** | Surgery, radiation, or observation [[2]]. | ADT (LHRH agonists or GnRH antagonists) often combined with chemotherapy or novel hormones [[7]][[8]]. |\n\n## Mechanism of ADT\n\nADT, sometimes called chemical castration, works by blocking testosterone and its active metabolite, dihydrotestosterone [[10]]. This is achieved through several drug classes:\n\n1.  **LHRH (luteinizing hormone-releasing hormone) agonists:** These cause an initial surge in testosterone, followed by a gradual reduction through a negative feedback mechanism [[13]].\n2.  **Antiandrogens:** These are used to prevent a \"tumor flare\" (a temporary worsening of symptoms) caused by the initial testosterone surge from LHRH agonists [[13]].\n3.  **GnRH (gonadotropin-releasing hormone) antagonists:** These reduce testosterone without causing an initial surge [[10]].\n4.  **CAB (combined androgen blockade):** This involves using an LHRH agonist plus an antiandrogen to interfere with multiple hormonal pathways [[11]].\n\n## Adverse Effects and Monitoring\n\nBecause ADT significantly lowers hormone levels, it causes several systemic side effects.\n\n*   **Bone Health:** There is a high risk of osteoporosis and fractures [[13]]. Patients should be monitored with DEXA (dual-energy X-ray absorptiometry) scans and may require Calcium and Vitamin D supplementation [[13]].\n*   **Metabolic Changes:** ADT can cause dyslipidemia (abnormal cholesterol levels) and hyperglycemia (high blood sugar) [[13]].\n*   **Physical Symptoms:** Common effects include hot flashes, impotence, gynecomastia (enlarged breast tissue), and bone pain [[13]].\n*   **Cardiovascular:** Some agents carry a risk of QT prolongation (a heart rhythm disturbance) [[13]].\n\n## Key points to remember\n\n*   Localized disease is often curable with surgery or radiation, but low-risk patients may simply be observed [[2]][[5]].\n*   Advanced disease is treated with ADT to maintain testosterone levels below 50 ng/mL [[7]].\n*   LHRH agonists require the addition of an antiandrogen initially to prevent a \"tumor flare\" caused by a surge in testosterone [[13]].\n*   Long-term ADT requires monitoring for osteoporosis, diabetes, and heart rhythm changes [[13]].\n*   Castration-resistant prostate cancer is defined as disease that progresses even when testosterone is at castrate levels [[8]].",
+   "latency_s": 28.8,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "2933",
+     "chars": 998
+    },
+    {
+     "book": "dipiro",
+     "page": "2934",
+     "chars": 968
+    },
+    {
+     "book": "dipiro",
+     "page": "2950",
+     "chars": 744
+    },
+    {
+     "book": "dipiro",
+     "page": "2941",
+     "chars": 845
+    },
+    {
+     "book": "rxprep",
+     "page": 800,
+     "chars": 978
+    },
+    {
+     "book": "dipiro",
+     "page": "2939",
+     "chars": 920
+    },
+    {
+     "book": "dipiro",
+     "page": "2941",
+     "chars": 944
+    },
+    {
+     "book": "dipiro",
+     "page": "2933",
+     "chars": 958
+    },
+    {
+     "book": "dipiro",
+     "page": "2942",
+     "chars": 992
+    },
+    {
+     "book": "rxprep",
+     "page": 800,
+     "chars": 426
+    },
+    {
+     "book": "dipiro",
+     "page": "2947",
+     "chars": 773
+    },
+    {
+     "book": "dipiro",
+     "page": "2938",
+     "chars": 894
+    },
+    {
+     "book": "rxprep",
+     "page": 801,
+     "chars": 980
+    },
+    {
+     "book": "rxprep",
+     "page": 965,
+     "chars": 183
+    }
+   ],
+   "markers": 44,
+   "words": 751,
+   "app_confidence": 0.9,
+   "model": "gemini-3-flash-preview",
+   "outline": [
+    "Definition & staging",
+    "Localized treatment",
+    "Advanced treatment",
+    "Mechanism of ADT",
+    "Adverse effects & monitoring"
+   ]
+  },
+  "diabetes-t1-vs-t2": {
+   "question": "How do type 1 and type 2 diabetes differ, and how is each treated?",
+   "answer": "**In short:** Type 1 diabetes (T1D) is characterized by an absolute insulin deficiency, usually due to autoimmune destruction of pancreatic cells, while Type 2 diabetes (T2D) involves insulin resistance and a relative insulin deficiency [[2]][[3]]. T1D requires insulin therapy, whereas T2D is managed with lifestyle modifications and a stepwise approach starting with metformin, often followed by other oral or injectable agents [[4]][[5]][[14]].\n\n## Type 1 vs Type 2 Diabetes\n\nDiabetes mellitus (DM) is a metabolic disorder where defects in insulin secretion or action lead to elevated blood glucose [[2]].\n\n> **Background:** Insulin is a hormone produced by the pancreas that allows cells to take up glucose from the blood to use for energy. When insulin is missing or not working correctly, sugar builds up in the bloodstream instead.\n\n| Feature | Type 1 DM | Type 2 DM |\n| :--- | :--- | :--- |\n| **Primary Cause** | Autoimmune destruction of pancreatic $\\beta$-cells (beta-cells) [[3]]. | Insulin resistance and relative insulin deficiency due to $\\beta$-cell dysfunction [[2]][[14]]. |\n| **Insulin Status** | Absolute insulin deficiency [[2]]. | Relative insulin deficiency; $\\beta$-cells produce less over time [[2]][[14]]. |\n| **Prevalence** | 5% to 10% of all cases [[3]]. | 90% to 95% of all cases [[13]]. |\n| **Typical Age** | Most often diagnosed before age 20 [[1]]. | Usually diagnosed in older patients [[14]]. |\n| **Risk Factors** | $\\beta$-cell autoimmunity [[3]]. | Obesity, physical inactivity, and family history [[2]][[14]]. |\n\n## Treatment Approach\n\nThe goal of management is to achieve optimal glycemic control to prevent microvascular complications like neuropathy (nerve damage), retinopathy (eye disease), and nephropathy (kidney disease) [[4]].\n\n*   **Type 1 DM:** Because these patients have an absolute deficiency, they require insulin therapy [[13]].\n*   **Type 2 DM:**\n    *   **First-line:** Lifestyle modifications and metformin are the standard initial therapy [[5]].\n    *   **Stepwise Addition:** If targets are not met, other agents are added. Dual therapy is recommended initially if A1C (a measure of average blood sugar) is >7.5% [[5]].\n    *   **Specific Comorbidities:** SGLT-2 (sodium-glucose cotransporter-2) inhibitors or GLP-1 RAs (glucagon-like peptide-1 receptor agonists) are recommended for patients with established atherosclerotic cardiovascular disease (ASCVD) or chronic kidney disease (CKD), regardless of their blood sugar levels [[5]].\n    *   **Insulin:** Recommended for T2D patients with an A1C >9% and symptoms [[5]].\n\n## Mechanism of Main Drugs\n\n> **Background:** Different medications target different organs to lower blood sugar, such as the liver (which produces glucose), the gut (which absorbs it), or the pancreas (which releases insulin).\n\n*   **Metformin (Biguanide):** It primarily works by decreasing hepatic (liver) glucose production, increasing insulin sensitivity, and decreasing intestinal absorption of glucose [[7]]. It activates AMP kinase at the cellular level [[9]].\n*   **GLP-1 RAs:** These mimic incretin hormones to increase insulin secretion, decrease glucagon secretion, and slow gastric emptying [[1]].\n*   **Insulin Secretagogues (Sulfonylureas and Meglitinides):** These stimulate the pancreatic $\\beta$-cells to secrete more insulin [[11]].\n*   **SGLT-2 Inhibitors:** These increase glucose excretion by the kidneys (glucose reabsorption) [[1]].\n\n## Adverse Effects & Monitoring\n\n### Metformin\n*   **Boxed Warning:** Lactic acidosis (a buildup of lactate in the body), with increased risk in renal impairment, hypoxia, or use of contrast dye [[7]].\n*   **Contraindications:** Do not use if eGFR (estimated glomerular filtration rate\u2014a measure of kidney function) is <30 mL/min/1.73 m\u00b2 [[7]][[12]].\n*   **Side Effects:** Primarily gastrointestinal (GI) issues; it should be taken with a meal to improve tolerance [[7]].\n*   **Monitoring:** Renal function (eGFR) must be assessed before starting and periodically during treatment [[7]].\n\n### Other Agents\n*   **GLP-1 RAs:** These are beneficial for patients needing to avoid weight gain, as they can induce weight loss [[8]]. They should not be used with DPP-4 (dipeptidyl peptidase-4) inhibitors due to similar mechanisms [[8]].\n*   **SGLT-2 Inhibitors:** Patients should be educated on the risk of DKA (diabetic ketoacidosis) [[5]].\n*   **Sulfonylureas:** Older first-generation versions carry a high risk of prolonged hypoglycemia (dangerously low blood sugar) [[11]].\n\n## Key points to remember\n*   T1D is an absolute insulin deficiency (autoimmune), while T2D is a relative deficiency linked to resistance and obesity [[2]][[3]].\n*   Metformin is the first-line drug for T2D due to high efficacy, low cost, and a low risk of hypoglycemia [[4]][[6]].\n*   Metformin is contraindicated if eGFR is below 30 mL/min/1.73 m\u00b2 due to the risk of lactic acidosis [[7]][[12]].\n*   GLP-1 RAs and SGLT-2 inhibitors provide cardiovascular and kidney benefits for high-risk T2D patients [[5]][[8]].",
+   "latency_s": 17.2,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1683",
+     "chars": 994
+    },
+    {
+     "book": "dipiro",
+     "page": "1679",
+     "chars": 898
+    },
+    {
+     "book": "dipiro",
+     "page": "1680",
+     "chars": 957
+    },
+    {
+     "book": "dipiro",
+     "page": "1679",
+     "chars": 925
+    },
+    {
+     "book": "dipiro",
+     "page": "1703",
+     "chars": 966
+    },
+    {
+     "book": "dipiro",
+     "page": "1693",
+     "chars": 896
+    },
+    {
+     "book": "rxprep",
+     "page": 597,
+     "chars": 977
+    },
+    {
+     "book": "dipiro",
+     "page": "1696",
+     "chars": 987
+    },
+    {
+     "book": "dipiro",
+     "page": "1693",
+     "chars": 901
+    },
+    {
+     "book": "dipiro",
+     "page": "1693",
+     "chars": 957
+    },
+    {
+     "book": "rxprep",
+     "page": 597,
+     "chars": 653
+    },
+    {
+     "book": "dipiro",
+     "page": "1693",
+     "chars": 831
+    },
+    {
+     "book": "dipiro",
+     "page": "1680",
+     "chars": 928
+    },
+    {
+     "book": "rxprep",
+     "page": 591,
+     "chars": 949
+    }
+   ],
+   "markers": 47,
+   "words": 730,
+   "app_confidence": 0.6,
+   "model": "gemini-3-flash-preview",
+   "outline": [
+    "Type 1 vs Type 2 Diabetes",
+    "Treatment Approach",
+    "Mechanism of Main Drugs",
+    "Adverse Effects & Monitoring"
+   ]
+  },
+  "hfref-gdmt": {
+   "question": "How is heart failure with reduced ejection fraction treated, and why does each drug class help?",
+   "answer": "**In short:** Heart failure with reduced ejection fraction (HFrEF) is treated with Guideline-Directed Medical Therapy (GDMT) consisting of four main drug classes: a Renin-Angiotensin-Aldosterone System (RAAS) inhibitor, an evidence-based beta-blocker, an aldosterone receptor antagonist (ARA), and a sodium-glucose cotransporter 2 (SGLT2) inhibitor [[4]][[5]]. These medications are used to antagonize neurohormonal activation, which slows disease progression and reduces morbidity and mortality [[4]][[5]].\n\n## Understanding HFrEF\nHFrEF (heart failure with reduced ejection fraction) is defined by an ejection fraction (EF\u2014the percentage of blood pumped out of the heart with each contraction) of 40% or less [[3]]. \n\n> **Background:** The heart's main job is to pump oxygenated blood to the rest of the body. In HFrEF, the heart muscle becomes weak or damaged, making it difficult to squeeze effectively.\n\nThis condition is primarily a problem of systolic dysfunction, meaning the heart has an impaired ability to eject blood during systole (the contraction phase) [[3]]. When the heart cannot pump enough blood, the body triggers compensatory mechanisms, including the sympathetic nervous system (SNS) and the RAAS [[5]]. While these help in the short term, they eventually lead to ventricular remodeling (changes in heart shape and size) and the progression of heart failure [[4]].\n\n## The Four Pillars of GDMT\nPharmacotherapy for HFrEF focuses on blocking these harmful compensatory mechanisms. Most patients should be treated with the following four classes [[4]]:\n\n1.  **RAAS Inhibitors:** This includes an ARNI (angiotensin receptor and neprilysin inhibitor), an ACEi (angiotensin-converting enzyme inhibitor), or an ARB (angiotensin II receptor blocker) [[4]]. An ARNI is preferred over an ACEi or ARB to further reduce morbidity and mortality [[7]][[8]].\n2.  **Beta-blockers:** Specific evidence-based agents are used to reduce mortality and hospitalizations [[8]].\n3.  **Aldosterone Receptor Antagonists (ARA):** Also called mineralocorticoid receptor antagonists, these reduce mortality in patients with NYHA (New York Heart Association) Class II-IV heart failure [[8]].\n4.  **SGLT2 Inhibitors:** These reduce hospitalizations and mortality in patients with or without diabetes [[8]].\n\n### Mechanism of Action and Benefits\n\n| Drug Class | Mechanism of Action | Clinical Benefit |\n| :--- | :--- | :--- |\n| **ACE Inhibitors** | Block conversion of angiotensin I to angiotensin II; block bradykinin degradation [[10]]. | Decrease vasoconstriction and aldosterone secretion; improve survival [[7]][[10]]. |\n| **ARBs** | Block angiotensin II from binding to the AT1 (angiotensin II type-1) receptor [[10]]. | Decrease vasoconstriction and aldosterone secretion [[10]]. |\n| **Beta-blockers** | Antagonize neurohormonal activation of the sympathetic nervous system [[4]]. | Slow HF progression and reduce mortality [[4]][[8]]. |\n| **ARAs** | Attenuate effects of excessive aldosterone and cardiac remodeling [[9]]. | Reduce morbidity and mortality [[8]]. |\n| **SGLT2 Inhibitors** | Mechanism not fully detailed in passages for HF. | Reduce hospitalizations and mortality [[8]]. |\n\n## Additional and Symptomatic Therapies\nWhile the four pillars improve survival, other medications are used for specific symptoms or populations:\n- **Loop Diuretics:** These reduce blood volume to decrease edema (swelling) and congestion [[8]]. Most patients need them for symptom relief [[8]].\n- **Hydralazine and Nitrate:** This combination reduces morbidity and mortality specifically in self-identified Black patients with NYHA Class III-IV heart failure when added to optimized GDMT [[8]].\n\n## Safety and Monitoring\nGDMT medications require careful titration, starting at low doses and increasing to target doses used in clinical trials [[4]][[12]].\n\n| Drug Class | Key Adverse Effects | Monitoring Parameters |\n| :--- | :--- | :--- |\n| **ACEi / ARBs** | Hyperkalemia (high potassium), cough (more common with ACEi), angioedema, increased creatinine [[9]][[10]]. | BP (blood pressure), potassium, renal function (BUN/creatinine) [[12]]. |\n| **ARNI** | Similar to ACEi/ARB; requires a 36-hour washout period when switching from an ACEi [[12]]. | BP, potassium, renal function [[12]]. |\n| **Beta-blockers** | Bradycardia (slow heart rate), hypotension, worsening HF, bronchospasm [[12]]. | BP, HR, signs of fluid retention [[12]]. |\n| **ARAs** | Hyperkalemia, worsening renal function, gynecomastia (specifically with spironolactone) [[12]][[14]]. | Potassium, renal function, BP [[12]]. |\n\n> **Background:** Potassium is an electrolyte essential for heart and muscle function, but levels that are too high or too low can cause dangerous heart rhythms. Creatinine and BUN are waste products measured in the blood to determine how well the kidneys are filtering.\n\n## Key points to remember\n- HFrEF is defined by an EF \u2264 40% and is characterized by impaired systolic function [[3]].\n- GDMT consists of four classes: ARNI (preferred) or ACEi/ARB, evidence-based beta-blocker, ARA, and SGLT2 inhibitor [[4]][[6]].\n- These drugs work by blocking neurohormonal compensatory mechanisms that cause cardiac remodeling [[4]][[9]].\n- ACE inhibitors must be stopped at least 36 hours before starting an ARNI to reduce the risk of angioedema [[12]].\n- Loop diuretics are essential for managing fluid retention and edema but do not necessarily improve survival like GDMT [[6]][[8]].",
+   "latency_s": 20.5,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "388",
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "506",
+     "chars": 884
+    },
+    {
+     "book": "rxprep",
+     "page": 450,
+     "chars": 669
+    },
+    {
+     "book": "dipiro",
+     "page": "518",
+     "chars": 924
+    },
+    {
+     "book": "rxprep",
+     "page": 452,
+     "chars": 929
+    },
+    {
+     "book": "dipiro",
+     "page": "534",
+     "chars": 961
+    },
+    {
+     "book": "dipiro",
+     "page": "536",
+     "chars": 940
+    },
+    {
+     "book": "rxprep",
+     "page": 452,
+     "chars": 969
+    },
+    {
+     "book": "dipiro",
+     "page": "495",
+     "chars": 971
+    },
+    {
+     "book": "rxprep",
+     "page": 454,
+     "chars": 486
+    },
+    {
+     "book": "rxprep",
+     "page": 449,
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "535",
+     "chars": 976
+    },
+    {
+     "book": "rxprep",
+     "page": 448,
+     "chars": 925
+    },
+    {
+     "book": "dipiro",
+     "page": "540",
+     "chars": 886
+    }
+   ],
+   "markers": 49,
+   "words": 793,
+   "app_confidence": 0.9,
+   "model": "gemini-3-flash-preview",
+   "outline": [
+    "Treatment approach",
+    "Mechanism of drug classes",
+    "Adverse effects and monitoring"
+   ]
+  },
+  "asthma-vs-copd": {
+   "question": "What is the difference between asthma and COPD, and how are their inhaler treatments different?",
+   "answer": "Hello! I\u2019m ARIA, your clinical pharmacotherapy tutor. Understanding the distinction between asthma and Chronic Obstructive Pulmonary Disease (COPD) is essential because, while they both involve the airways, their pathophysiology and treatment priorities differ significantly.\n\n**In short:** Asthma is characterized by reversible airflow limitation and is primarily treated with inhaled corticosteroids (ICS) to manage inflammation [[1]][[3]]. COPD involves progressive, non-reversible airflow limitation, where bronchodilators (LABAs and LAMAs) are the first-line maintenance therapy [[1]][[3]][[12]].\n\n## Asthma vs. COPD\nWhile both are respiratory disorders involving inflammation, they differ in their clinical presentation and disease course [[7]].\n\n> **Background:** Pathophysiology refers to the disordered physiological processes associated with a disease or injury. In respiratory disease, this often involves how the immune system responds to triggers and how that response changes the structure of the lungs.\n\n| Feature | Asthma | COPD |\n| :--- | :--- | :--- |\n| **Age of Onset** | Usually < 40 years | Usually $\\ge$ 40 years [[1]] |\n| **Smoking History** | Uncommon | Usually > 20 years [[1]] |\n| **Reversibility** | Airflow limitation is reversible | Airflow limitation is not fully reversible [[3]] |\n| **Disease Process** | Stable; does not worsen over time | Progressive; worsens over time [[1]] |\n| **Sputum Production** | Infrequent | Common [[1]] |\n| **Allergies** | Common | Uncommon [[1]] |\n\nDiagnosis for both involves **spirometry**, a test that measures how much air a person can breathe out and how fast [[1]]. In COPD, a post-bronchodilator ratio of FEV1/FVC (Forced Expiratory Volume in 1 second / Forced Vital Capacity) < 0.70 confirms the diagnosis [[1]].\n\nSome patients exhibit features of both disorders, a condition previously called Asthma-COPD Overlap Syndrome (ACOS) and now referred to as **ACO (Asthma COPD Overlap)** [[8]][[14]]. These patients often have a higher symptom burden and more frequent hospitalizations [[8]].\n\n## Inhaler Treatment Differences\nThe primary goal of asthma treatment is controlling inflammation, whereas COPD treatment focuses on symptom relief and reducing the frequency of exacerbations (sudden worsening of symptoms) [[1]][[11]][[12]].\n\n### Asthma Treatment\n**Inhaled Corticosteroids (ICS)** are the mainstay of asthma therapy [[11]].\n- **Maintenance:** ICS or ICS/LABA (Long-Acting Beta-2 Agonist) combinations are preferred [[2]].\n- **Rescue:** The preferred \"reliever\" is a combination of a low-dose ICS and formoterol (a fast-acting LABA) [[11]]. Alternatively, a SABA (Short-Acting Beta-2 Agonist) can be used to quickly reverse bronchoconstriction (narrowing of the airways) [[11]].\n- **Safety:** Using a LABA alone in asthma is dangerous; therefore, combination ICS/LABA inhalers are used to reduce the risk of asthma-related deaths [[10]].\n\n### COPD Treatment\n**Bronchodilators** are the mainstay of COPD therapy [[12]][[13]].\n- **Maintenance:** LABAs, LAMAs (Long-Acting Muscarinic Antagonists/Anticholinergics), or LAMA/LABA combinations are preferred [[2]].\n- **Initial Therapy:** For occasional symptoms, short-acting bronchodilators are used [[4]]. For persistent symptoms, a LABA or LAMA is recommended [[4]].\n- **Exacerbations:** LAMAs are considered first-line for reducing the frequency of exacerbations because they are more effective than LABAs for this purpose [[4]].\n- **Role of ICS:** ICS monotherapy is **not recommended** for COPD [[6]]. ICS are only used in combination with other agents (like a LABA) for patients with severe disease or frequent exacerbations [[6]]. Unlike in asthma, ICS have not been shown to modify the long-term decline of lung function in COPD [[6]].\n\n## Delivery Devices and Education\nBecause these medications are inhaled, the choice of device is as important as the drug itself [[5]].\n\n> **Background:** A delivery device is the tool used to get medication into the lungs. Different devices require different breathing techniques (e.g., a deep, fast breath versus a slow, steady breath) to work effectively.\n\nCommon devices include:\n- **MDIs (Metered-Dose Inhalers)** [[5]]\n- **DPIs (Dry Powder Inhalers)** [[5]]\n- **SMIs (Soft-Mist Inhalers)** [[5]]\n- **Nebulizers** [[5]]\n\nFor patients using multiple inhalers, clinicians should try to prescribe devices that use a similar administration technique to ensure the patient can use them correctly [[13]].\n\n## Key points to remember\n- Asthma is characterized by reversible airflow obstruction, while COPD is progressive and not fully reversible [[3]].\n- ICS are the foundation of asthma treatment to manage inflammation [[11]].\n- Bronchodilators (LABAs and LAMAs) are the mainstay of COPD treatment to improve exercise tolerance and quality of life [[12]][[13]].\n- ICS monotherapy is contraindicated in COPD; it should only be used in combination with bronchodilators for specific high-risk patients [[6]].\n- Smoking cessation is one of the only strategies proven to slow the progression of COPD [[12]].",
+   "latency_s": 13.1,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "rxprep",
+     "page": 573,
+     "chars": 974
+    },
+    {
+     "book": "rxprep",
+     "page": 562,
+     "chars": 602
+    },
+    {
+     "book": "rxprep",
+     "page": 572,
+     "chars": 439
+    },
+    {
+     "book": "dipiro",
+     "page": "747",
+     "chars": 980
+    },
+    {
+     "book": "dipiro",
+     "page": "757",
+     "chars": 545
+    },
+    {
+     "book": "dipiro",
+     "page": "762",
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "750",
+     "chars": 894
+    },
+    {
+     "book": "dipiro",
+     "page": "718",
+     "chars": 936
+    },
+    {
+     "book": "dipiro",
+     "page": "706",
+     "chars": 804
+    },
+    {
+     "book": "rxprep",
+     "page": 562,
+     "chars": 407
+    },
+    {
+     "book": "rxprep",
+     "page": 558,
+     "chars": 956
+    },
+    {
+     "book": "dipiro",
+     "page": "747",
+     "chars": 905
+    },
+    {
+     "book": "dipiro",
+     "page": "758",
+     "chars": 658
+    },
+    {
+     "book": "dipiro",
+     "page": "718",
+     "chars": 841
+    }
+   ],
+   "markers": 46,
+   "words": 737,
+   "app_confidence": 0.9,
+   "model": "gemini-3-flash-preview",
+   "outline": [
+    "Asthma vs COPD",
+    "Inhaler treatment differences"
+   ]
+  }
+ }
+}

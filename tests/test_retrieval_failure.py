@@ -29,6 +29,7 @@ from llm.errors import (
     wrap_provider_error,
     wrap_retrieval_error,
 )
+from tests.conftest import as_retrieval
 
 
 async def collect(
@@ -138,7 +139,7 @@ async def test_dead_vector_store_streams_a_retrieval_error(
         raise ConnectionResetError(54, "Connection reset by peer")
 
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", dead)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(dead))
 
     events = await collect()
     kinds = types_of(events)
@@ -160,7 +161,7 @@ async def test_empty_retrieval_never_reaches_the_reader_as_an_answer(
 ) -> None:
     """An un-restored (empty) collection must fail, not produce prose."""
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: [])
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: []))
 
     events = await collect()
     kinds = types_of(events)

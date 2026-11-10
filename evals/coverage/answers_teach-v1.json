@@ -1,0 +1,884 @@
+{
+ "label": "teach-v1",
+ "generated_at": "2026-11-08T08:28:36.100363+00:00",
+ "rows": {
+  "prostate-local-vs-advanced": {
+   "question": "What is the difference between localized and non-localized (advanced or metastatic) prostate cancer, and how is each treated?",
+   "answer": "**In short:**\nLocalized prostate cancer is confined to the prostate gland and holds a high chance of cure through surgery, radiation, or careful monitoring [[1]][[2]][[4]]. In contrast, advanced or metastatic prostate cancer has spread beyond the gland and is not curable; treatment relies on systemic ADT (androgen deprivation therapy \u2014 lowering testosterone levels) to slow disease progression and provide symptom relief [[1]][[2]][[4]][[5]].\n\n> **Background:** Cancer staging describes how far a tumor has grown or spread in the body. Localized stages remain restricted to their organ of origin, whereas advanced or metastatic stages indicate invasion into nearby tissue, lymph nodes, or distant organs.\n\n## Definition & Staging Differences\n\nProstate cancer prognosis is tied directly to histologic grade, tumor size, and disease stage [[1]]. \n\n* **Localized Prostate Cancer:** Disease is confined to the prostate. More than 85% of patients with localized disease can be cured [[1]][[2]].\n* **Advanced / Metastatic Prostate Cancer:** Disease has spread locally outside the gland or to distant sites (such as bones or lymph nodes). Advanced and metastatic disease is not curable, with less than 1% of metastatic cases cured [[1]][[2]][[5]].\n* **Castration-Na\u00efve vs. Castration-Resistant:** Castration-na\u00efve disease has not yet been treated with ADT or remains responsive to it [[8]][[10]]. Castration-resistant prostate cancer (CRPC) is disease that continues to progress despite androgen deprivation [[8]].\n\n| Disease Stage | Extent of Spread | Curability Goal | Primary Treatment Approach |\n|---|---|---|---|\n| **Localized** | Confined to the prostate gland [[2]] | Curable (>85% cure rate) [[1]][[2]] | Active surveillance, radical prostatectomy, or radiation therapy [[2]][[4]][[6]] |\n| **Advanced / Metastatic** | Regional lymph nodes or distant organs (e.g., bone) [[1]][[7]][[10]] | Not curable (<1% cure rate); goal is palliation and disease control [[1]][[2]][[4]] | ADT combined with secondary systemic agents (antiandrogens, chemotherapy) [[4]][[7]][[8]] |\n\n## Treatment Options for Localized Prostate Cancer\n\nBecause prostate cancer often follows an indolent (slow-growing) course, aggressive treatment is not always required immediately [[2]][[5]]. \n\n* **Active Surveillance / Observation:** Preferred for patients with localized disease and a low risk of recurrence, or those undergoing watchful waiting to minimize treatment-related morbidity [[3]][[4]][[6]]. Patients are monitored closely for symptoms or disease progression [[2]].\n* **Surgery or Radiation Therapy:** For patients with intermediate-to-high recurrence risk or a normal life expectancy of 10 years or greater, active treatment options include radical prostatectomy (surgical removal of the prostate and pelvic lymph node dissection) or radiation therapy (external beam radiation or brachytherapy) [[3]][[6]]. Surgery and radiation are considered therapeutically equivalent for localized disease [[6]].\n* **Locally Advanced Disease:** Adding ADT with an LHRH (luteinizing hormone-releasing hormone) agonist plus an antiandrogen to radiation therapy improves outcomes compared to radiation therapy alone [[1]].\n\n## Treatment Options for Advanced/Metastatic Prostate Cancer\n\nTestosterone fuels the growth of prostate cancer cells [[11]]. Therefore, treatment of advanced disease centers around systemic therapy to remove or block androgens [[4]][[11]].\n\n> **Background:** Systemic therapy refers to medications that travel through the bloodstream to treat cells throughout the entire body, rather than targeting a single localized area.\n\n### Castration-Na\u00efve Disease\n* **Non-metastatic:** Options include surgical castration (orchiectomy), an LHRH agonist with or without a first-generation antiandrogen, a GnRH (gonadotropin-releasing hormone) antagonist, or observation [[8]][[10]]. If lymph nodes are involved (N1 disease), abiraterone with a corticosteroid (e.g., prednisone) can be added to ADT [[10]].\n* **Metastatic:** Systemic ADT is combined with one of the following to improve survival: docetaxel, abiraterone (with prednisone), enzalutamide, or apalutamide [[8]][[10]].\n\n### Castration-Resistant Prostate Cancer (CRPC)\nADT must be continued in all cases of CRPC to maintain serum testosterone at castrate levels (< 50 ng/dL or 1.7 nmol/L) [[7]][[8]][[9]].\n* **Non-metastatic CRPC:** For patients with a rapid PSA (prostate-specific antigen \u2014 a protein produced by prostate cells) doubling time ($\\le 10$ months), preferred systemic additions to ADT include second-generation antiandrogens: apalutamide, darolutamide, or enzalutamide [[7]][[8]].\n* **Metastatic CRPC:** Treatment options combined with continued ADT include docetaxel with prednisone, abiraterone with prednisone, enzalutamide, cabazitaxel, sipuleucel-T (for asymptomatic/minimally symptomatic disease), or olaparib (for homologous recombination [HR] gene variants) [[8]][[9]]. Palliative radiation and bone-targeted therapies (denosumab or IV bisphosphonates) are added for bone metastases [[7]][[9]].\n\n## Mechanism of Androgen Deprivation Therapy\n\nPharmacologic ADT works along the hypothalamic-pituitary-gonadal axis to suppress androgen production [[11]].\n\n```\nHypothalamus (GnRH) \u2794 Pituitary (LH & FSH) \u2794 Testes (Testosterone) \u2794 Cancer Cell Growth\n```\n\n* **GnRH / LHRH Agonists (e.g., leuprolide, goserelin, histrelin, triptorelin):** Cause an initial surge in LH (luteinizing hormone) and FSH (follicle-stimulating hormone), leading to a temporary increase in testosterone [[11]][[13]]. With chronic administration, sustained stimulation leads to down-regulation and feedback inhibition of gonadotropins, suppressing testosterone to castrate levels [[4]][[11]].\n* **The \"Tumor Flare\" Effect:** The initial surge in testosterone from GnRH agonists can cause a temporary worsening of symptoms (\"tumor flare\") [[11]][[13]]. To prevent tumor flare, a first-generation antiandrogen (e.g., bicalutamide) must be started prior to initiating an LHRH agonist and continued for 2 to 4 weeks [[12]][[13]].\n* **GnRH Antagonists:** Directly block GnRH receptors in the pituitary gland, immediately lowering LH, FSH, and testosterone without causing an initial surge [[11]]. Because there is no tumor flare, GnRH antagonists can be administered as monotherapy without an antiandrogen [[11]].\n\n## Adverse Effects and Monitoring of ADT\n\nLowering systemic testosterone leads to several adverse metabolic, musculoskeletal, and hormonal side effects [[12]][[13]][[14]].\n\n* **Hormonal & Vasomotor Symptoms:** Hot flashes, impotence, gynecomastia (breast tissue enlargement), and bone pain [[13]].\n* **Metabolic & Cardiovascular:** Dyslipidemia, hyperglycemia, hypertension, edema, QT prolongation, fatigue, nausea, vomiting, and diarrhea [[13]][[14]].\n* **Bone Loss & Fracture Risk:** ADT decreases hip and spine bone mineral density (BMD) by 2% to 3% during initial therapy, causing a 21% to 45% relative increase in fracture risk [[12]][[13]]. \n* **Monitoring & Prevention:** Patients on ADT should undergo DEXA (dual-energy X-ray absorptiometry) screening to monitor for osteoporosis and osteopenia [[13]]. Preventive measures include calcium and vitamin D supplementation, weight-bearing exercise, and initiating bone-resorption therapies such as denosumab or intravenous bisphosphonates when bone metastases or high fracture risks are present [[7]][[12]][[13]][[14]].\n* **Severe Flare Risk:** Caution is required when starting LHRH agonists in patients with widespread metastatic disease near the spinal cord or ureters, as tumor flare can trigger spinal cord compression or ureteral obstruction [[12]].\n\n## Key points to remember\n\n- Localized prostate cancer is curable (>85% cure rate) with surgery or radiation, or managed with active surveillance [[1]][[2]][[3]].\n- Advanced/metastatic prostate cancer is non-curable, and systemic ADT is the foundation of therapy to reduce testosterone to castrate levels (< 50 ng/dL) [[2]][[4]][[7]].\n- GnRH agonists (e.g., leuprolide) cause an initial testosterone surge (\"tumor flare\") and require 2 to 4 weeks of co-administered antiandrogen therapy [[11]][[12]][[13]].\n- GnRH antagonists drop testosterone immediately without flare and can be given as monotherapy [[11]].\n- ADT causes significant bone loss (2\u20133% initial decrease in BMD) and increases fracture risk, requiring DEXA monitoring, calcium/vitamin D, or bone resorption agents (denosumab or IV bisphosphonates) [[7]][[12]][[13]][[14]].",
+   "latency_s": 40.2,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "2933",
+     "chars": 998
+    },
+    {
+     "book": "dipiro",
+     "page": "2934",
+     "chars": 968
+    },
+    {
+     "book": "rxprep",
+     "page": 800,
+     "chars": 978
+    },
+    {
+     "book": "dipiro",
+     "page": "2938",
+     "chars": 918
+    },
+    {
+     "book": "dipiro",
+     "page": "2950",
+     "chars": 744
+    },
+    {
+     "book": "dipiro",
+     "page": "2939",
+     "chars": 920
+    },
+    {
+     "book": "dipiro",
+     "page": "2942",
+     "chars": 929
+    },
+    {
+     "book": "dipiro",
+     "page": "2933",
+     "chars": 958
+    },
+    {
+     "book": "dipiro",
+     "page": "2942",
+     "chars": 992
+    },
+    {
+     "book": "dipiro",
+     "page": "2941",
+     "chars": 688
+    },
+    {
+     "book": "rxprep",
+     "page": 800,
+     "chars": 973
+    },
+    {
+     "book": "dipiro",
+     "page": "2943",
+     "chars": 836
+    },
+    {
+     "book": "rxprep",
+     "page": 801,
+     "chars": 980
+    },
+    {
+     "book": "rxprep",
+     "page": 667,
+     "chars": 857
+    }
+   ],
+   "markers": 97,
+   "words": 1135,
+   "app_confidence": 0.85,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Definition & staging differences",
+    "Treatment options for localized prostate cancer",
+    "Treatment options for advanced/metastatic prostate cancer",
+    "Mechanism of androgen deprivation therapy",
+    "Adverse effects and monitoring of ADT"
+   ]
+  },
+  "diabetes-t1-vs-t2": {
+   "question": "How do type 1 and type 2 diabetes differ, and how is each treated?",
+   "answer": "**In short:** Type 1 diabetes mellitus (T1DM) is caused by autoimmune destruction of pancreatic beta-cells leading to absolute insulin deficiency, requiring lifelong insulin replacement [[2]][[10]][[12]]. Type 2 diabetes mellitus (T2DM) involves relative insulin deficiency driven by progressive beta-cell failure and peripheral insulin resistance, managed through lifestyle modifications, oral antidiabetics, and non-insulin or insulin injectables [[2]][[3]][[10]][[11]]. Antidiabetic agents work through distinct pathophysiologic pathways, ranging from lowering hepatic glucose output to stimulating endogenous insulin secretion and enhancing renal glucose excretion [[1]][[5]].\n\n## Differences between Type 1 and Type 2 Diabetes\n\n> **Background:** Diabetes mellitus is a metabolic condition where the body cannot properly process glucose for cellular energy, leading to elevated blood sugar levels. Insulin is the primary hormone produced by the pancreas that allows sugar to move from the bloodstream into body tissues.\n\nT1DM and T2DM differ fundamentally in their underlying pathophysiology, clinical presentation, and therapeutic management [[1]][[3]][[10]]. In T1DM, immune-mediated destruction of pancreatic beta-cells eliminates the body's ability to produce insulin and co-secreted amylin (a pancreatic hormone that slows gastric emptying and suppresses glucagon) [[2]][[10]][[12]]. Without insulin, glucose cannot enter cells for fuel, causing the body to break down fat into acidic compounds called ketones, putting patients at risk for DKA (diabetic ketoacidosis \u2014 a dangerous acute metabolic complication) [[12]]. \n\nConversely, T2DM results from insulin resistance combined with progressive impairment of insulin release [[2]][[3]][[10]][[11]]. Patients with T2DM gradually lose approximately 5% to 7% of beta-cell function per year due to factors such as chronic elevation of blood sugar over 140 mg/dL (glucotoxicity), lipotoxicity, and genetics [[13]].\n\n| Characteristic | Type 1 Diabetes Mellitus (T1DM) | Type 2 Diabetes Mellitus (T2DM) | Passages |\n|---|---|---|---|\n| Etiology & Pathophysiology | Autoimmune destruction of pancreatic beta-cells causing absolute insulin deficiency [[2]][[10]][[12]] | Relative insulin deficiency caused by progressive beta-cell dysfunction and insulin resistance [[2]][[3]][[10]][[11]] | [[2]][[3]][[10]][[11]][[12]] |\n| Prevalence | Accounts for 5% to 10% of all cases [[10]][[12]] | Accounts for ~90% to 95% of all cases [[11]] | [[10]][[11]][[12]] |\n| Clinical Features & Diagnosis | Typically diagnosed before age 20 [[1]]; risk of acute starvation mode causing DKA [[12]] | Diagnosed gradually in older adults [[11]]; strongly tied to obesity and physical inactivity [[3]][[11]] | [[1]][[3]][[11]][[12]] |\n| Secondary Hormonal Deficiencies | Amylin deficiency accompanying beta-cell loss [[2]] | Deficient incretin effect and loss of first-phase insulin release [[1]][[13]][[14]] | [[1]][[2]][[13]][[14]] |\n| Primary Management | Lifelong daily insulin replacement [[2]] | Lifestyle changes, oral agents, GLP-1 RAs, SGLT2 inhibitors, and/or insulin [[4]][[6]][[11]] | [[2]][[4]][[6]][[11]] |\n\n## Mechanism of Main Antidiabetic Drugs\n\n> **Background:** Antidiabetic drugs lower blood glucose levels by targeting key organs involved in carbohydrate regulation, including the liver, pancreas, intestines, kidneys, and peripheral fat and muscle tissues.\n\nAntidiabetic agents target specific pathways within the pathophysiologic defect of diabetes [[1]]:\n\n- **Biguanides (Metformin):** Decreases hepatic (liver) glucose production [[1]].\n- **Sulfonylureas (SUs) and Meglitinides:** Known as insulin secretagogues [[9]]. SUs bind to the SUR1 (sulfonylurea receptor 1) on pancreatic beta-cells, closing ATP-dependent potassium (K+) channels [[5]]. The resulting decrease in potassium efflux depolarizes the cell membrane, opening voltage-dependent calcium (Ca2+) channels [[5]]. Inward calcium flux binds to calmodulin, prompting exocytosis (release) of insulin granules into the portal vein to suppress liver glucose production [[5]]. Meglitinides (e.g., repaglinide, nateglinide) similarly stimulate pancreatic insulin release [[9]].\n- **GLP-1 RAs (Glucagon-like peptide-1 receptor agonists) & DPP-4 (Dipeptidyl peptidase 4) inhibitors:** Address the decreased incretin effect seen in T2DM [[1]]. GLP-1 RAs and DPP-4 inhibitors enhance glucose-dependent insulin secretion, decrease glucagon secretion, and reduce glucose output [[1]].\n- **SGLT2 (Sodium-glucose cotransporter 2) inhibitors:** Act on the kidney to decrease glucose reabsorption, promoting glucose excretion in the urine [[1]].\n- **TZDs (Thiazolidinediones):** Increase glucose uptake in peripheral muscle/fat tissue and lower hepatic glucose production [[1]].\n\n## Adverse Effects and Monitoring of Antidiabetic Therapy\n\nWhen selecting pharmacotherapy, safety profiles dictate drug selection and co-administration [[4]][[6]][[9]].\n\n- **Metformin:** Can cause lactic acidosis (a severe metabolic warning) as well as nausea and diarrhea [[7]]. Taking it with food or using extended-release formulations reduces gastrointestinal discomfort [[7]]. Long-term use requires monitoring Vitamin B12 levels due to potential deficiency [[7]]. Long-acting forms can leave an unabsorbed ghost tablet in the stool [[7]].\n- **Sulfonylureas & Meglitinides:** Commonly cause hypoglycemia (low blood glucose) and weight gain [[9]]. Meglitinides can also cause upper respiratory tract infections [[9]]. SUs and meglitinides should not be combined with insulin due to high hypoglycemia risk [[9]]. Repaglinide is strictly contraindicated with gemfibrozil because gemfibrozil increases repaglinide exposure [[9]].\n- **GLP-1 RAs:** Frequently cause gastrointestinal side effects including nausea, diarrhea, decreased appetite, and weight loss [[7]]. Serious risks include pancreatitis, gallbladder disease, and acute kidney injury from severe dehydration [[7]]. Specific agents carry unique risks: Bydureon BCise can cause injection-site nodules or abscesses, while Ozempic, Mounjaro, and Trulicity are associated with diabetic retinopathy [[7]]. GLP-1 RAs must not be combined with DPP-4 inhibitors due to overlapping incretin mechanisms [[4]][[6]].\n- **SGLT2 Inhibitors:** Cause hypotension (low blood pressure), ketoacidosis (must be stopped prior to surgery), severe urinary tract infections (UTIs), and genital fungal infections [[7]]. Canagliflozin and bexagliflozin carry specific risks of bone fractures and lower-limb amputations [[7]].\n- **TZDs:** Can cause or worsen heart failure, peripheral edema/weight gain, and bone fractures [[7]]. When insulin therapy is initiated, TZDs should be stopped or dose-reduced [[6]].\n- **DPP-4 Inhibitors:** Can cause acute pancreatitis [[7]].\n\nThe excerpts do not cover specific laboratory monitoring schedules or target glycated hemoglobin thresholds for antidiabetic therapy.\n\n## Key points to remember\n\n- **T1DM vs T2DM:** T1DM is characterized by autoimmune beta-cell destruction causing absolute insulin deficiency [[2]][[10]][[12]], while T2DM involves progressive beta-cell dysfunction (5%\u20137% loss per year) combined with insulin resistance [[2]][[10]][[13]].\n- **Sulfonylurea Mechanism:** SUs close ATP-dependent K+ channels via SUR1 receptors on pancreatic beta-cells, causing membrane depolarization, Ca2+ influx, and insulin exocytosis [[5]].\n- **Key Safety Contraindications & Interactions:** Never combine GLP-1 RAs with DPP-4 inhibitors due to redundant mechanisms [[4]][[6]], avoid repaglinide with gemfibrozil due to severe hypoglycemia [[9]], and do not combine insulin with SUs or meglitinides [[9]].\n- **Major Class-Specific Adverse Effects:** Metformin causes lactic acidosis and B12 deficiency [[7]]; GLP-1 RAs cause GI distress, pancreatitis, and retinopathy risks [[7]]; SGLT2 inhibitors cause UTIs, genital fungal infections, ketoacidosis, and hypotension [[7]]; TZDs worsen heart failure [[7]].",
+   "latency_s": 34.1,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1683",
+     "chars": 994
+    },
+    {
+     "book": "dipiro",
+     "page": "1682",
+     "chars": 957
+    },
+    {
+     "book": "dipiro",
+     "page": "1679",
+     "chars": 898
+    },
+    {
+     "book": "dipiro",
+     "page": "1696",
+     "chars": 987
+    },
+    {
+     "book": "dipiro",
+     "page": "1699",
+     "chars": 971
+    },
+    {
+     "book": "dipiro",
+     "page": "1703",
+     "chars": 882
+    },
+    {
+     "book": "rxprep",
+     "page": 612,
+     "chars": 987
+    },
+    {
+     "book": "rxprep",
+     "page": 291,
+     "chars": 354
+    },
+    {
+     "book": "rxprep",
+     "page": 598,
+     "chars": 961
+    },
+    {
+     "book": "dipiro",
+     "page": "1680",
+     "chars": 957
+    },
+    {
+     "book": "rxprep",
+     "page": 591,
+     "chars": 949
+    },
+    {
+     "book": "rxprep",
+     "page": 591,
+     "chars": 574
+    },
+    {
+     "book": "dipiro",
+     "page": "1682",
+     "chars": 810
+    },
+    {
+     "book": "dipiro",
+     "page": "1682",
+     "chars": 886
+    }
+   ],
+   "markers": 111,
+   "words": 1040,
+   "app_confidence": 0.6,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Differences between Type\u202f1 and Type\u202f2 Diabetes",
+    "Mechanism of Main Antidiabetic Drugs",
+    "Adverse Effects and Monitoring of Antidiabetic Therapy"
+   ]
+  },
+  "seizures-focal-vs-generalized": {
+   "question": "What is the difference between focal and generalized seizures, and how does that change the choice of antiseizure medication?",
+   "answer": "**In short:**\nFocal seizures originate in a network of cells on one side of the brain, while generalized seizures involve networks on both sides of the brain from onset [[3]][[4]]. Broad-spectrum antiseizure medications (ASMs) treat both focal and generalized seizures, whereas narrow-spectrum ASMs primarily treat focal seizures and can even exacerbate certain generalized seizure types [[1]][[2]][[5]].\n\n## Seizure classification\n> **Background:** A seizure is an episode of abnormal electrical activity in the brain that disrupts typical neurological function. Categorizing how an event begins helps determine appropriate treatment strategies and long-term prognosis.\n\nSeizures are classified into three main categories based on their site of onset in the brain [[3]][[4]]:\n- **Focal seizures:** Start in a network of cells on one side of the brain, though they can propagate to the opposite side [[3]][[4]]. They are further subdivided by awareness:\n  - *Focal aware seizure* (formerly simple partial seizure): The patient retains awareness of self and environment during the event [[1]][[3]].\n  - *Focal seizure with impaired awareness* (formerly complex partial seizure): The patient experiences a loss of consciousness [[3]][[13]].\n- **Generalized seizures:** Start in a bilaterally distributed network encompassing both sides of the brain simultaneously [[4]]. Patients experience loss of consciousness or lack of awareness during the event [[13]]. Symptoms can involve motor signs (such as tonic, clonic, atonic, or myoclonic movements) or non-motor signs (absence seizures, which typically present as staring spells) [[13]].\n- **Unknown onset seizures:** Used when seizures occur unwitnessed or during sleep, making the initial presentation impossible to observe [[3]][[4]].\n\n| Feature | Focal Seizures | Generalized Seizures | Citation |\n|---|---|---|---|\n| **Brain Onset** | Begins in a network on one side of the brain | Begins in a network encompassing both sides of the brain | [[3]][[4]] |\n| **Awareness Level** | Can be aware (focal aware) or impaired (focal with impaired awareness) | Loss of consciousness or unaware during the event | [[1]][[3]][[13]] |\n| **Common Presentation** | Motor/non-motor symptoms; awareness retained or lost | Motor (e.g., tonic-clonic) or non-motor (absence staring spells) | [[1]][[3]][[13]] |\n\n## Antiseizure medication selection\nASM selection is highly individualized based on seizure type, patient age, biological sex, childbearing potential, daily activities, and comorbid conditions [[2]][[6]]. \n\n- **Broad-spectrum ASMs:** Treat both focal and generalized seizures (e.g., lamotrigine, levetiracetam, topiramate, valproic acid) [[2]].\n- **Narrow-spectrum ASMs:** Primarily treat focal-onset seizures [[2]]. \n- **Condition-specific ASMs:** Ethosuximide is used for isolated conditions and is the drug of first choice for treating absence seizures [[2]][[5]].\n\nUsing a narrow-spectrum ASM for a generalized seizure type can be detrimental. For instance, carbamazepine and phenytoin can exacerbate generalized seizures (especially generalized atypical absence) [[5]], and carbamazepine can worsen childhood absence epilepsy [[1]]. \n\nSecond-generation ASMs are generally preferred over first-generation ASMs because of superior tolerability, generic availability, and fewer medication interactions [[5]]. The primary exception is ethosuximide, which remains the first-line therapy for absence seizures [[5]].\n\n## Drug mechanism\n> **Background:** Antiseizure drugs work by dampening excessive neuronal firing or enhancing inhibitory neurotransmission to prevent the spread of abnormal electrical discharges.\n\nMany ASMs exert their pharmacological activity through sodium channel inhibition or GABAergic (gamma-aminobutyric acid, an inhibitory neurotransmitter) pathways [[7]]. \n- **Sodium channel inhibitors:** Eslicarbazepine, lacosamide, and rufinamide are third-generation sodium channel inhibitors [[7]]. Eslicarbazepine has a 5- to 15-fold lower affinity for sodium channels in their resting state compared to carbamazepine or oxcarbazepine, granting it selectivity for hyperactive neurons that fire during seizure activity [[7]].\n- **Calcium channel modulators:** Gabapentin binds to the presynaptic alpha-2-delta subunit of voltage-gated calcium channels [[8]].\n\n## Adverse effects and monitoring\nAll ASMs carry a risk of concentration-dependent CNS (central nervous system) adverse effects because they act directly on the brain [[10]]. Common shared dose-related CNS adverse reactions include sedation, dizziness, blurred or double vision, concentration impairment, ataxia (lack of voluntary muscle coordination), and cognitive dysfunction [[10]]. \n\nSpecific agents carry additional adverse reaction profiles. For example, gabapentin causes somnolence, dizziness, ataxia, fatigue, nystagmus (involuntary eye movement), peripheral edema, weight gain, and gastrointestinal effects (nausea and vomiting) [[8]].\n\nPatient follow-up and monitoring should assess [[11]]:\n- ASM effectiveness in suppressing clinical and electrical seizure activity [[11]].\n- Presence of adverse medication reactions and drug-drug interactions [[11]].\n- Serum drug concentrations through therapeutic medication monitoring when indicated [[11]].\n\n## Key points to remember\n- Focal seizures originate on one side of the brain, whereas generalized seizures involve both hemispheres from onset [[3]][[4]].\n- Broad-spectrum ASMs (e.g., lamotrigine, levetiracetam, topiramate, valproic acid) cover both focal and generalized seizures [[2]].\n- Narrow-spectrum ASMs (e.g., carbamazepine, phenytoin) can exacerbate generalized seizures like absence epilepsy and should be avoided in those conditions [[1]][[5]].\n- Ethosuximide is the preferred first-line agent specifically for absence seizures [[5]].\n- Dose-dependent CNS side effects (dizziness, sedation, ataxia, cognitive impairment) are common class-wide adverse effects of ASMs [[10]].",
+   "latency_s": 23.1,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1301",
+     "chars": 951
+    },
+    {
+     "book": "rxprep",
+     "page": 861,
+     "chars": 987
+    },
+    {
+     "book": "rxprep",
+     "page": 859,
+     "chars": 997
+    },
+    {
+     "book": "dipiro",
+     "page": "1301",
+     "chars": 714
+    },
+    {
+     "book": "dipiro",
+     "page": "1324",
+     "chars": 839
+    },
+    {
+     "book": "dipiro",
+     "page": "1299",
+     "chars": 963
+    },
+    {
+     "book": "dipiro",
+     "page": "1326",
+     "chars": 974
+    },
+    {
+     "book": "dipiro",
+     "page": "1317",
+     "chars": 1000
+    },
+    {
+     "book": "dipiro",
+     "page": "1335",
+     "chars": 797
+    },
+    {
+     "book": "dipiro",
+     "page": "1312",
+     "chars": 888
+    },
+    {
+     "book": "dipiro",
+     "page": "1341",
+     "chars": 921
+    },
+    {
+     "book": "rxprep",
+     "page": 862,
+     "chars": 128
+    },
+    {
+     "book": "rxprep",
+     "page": 859,
+     "chars": 729
+    },
+    {
+     "book": "dipiro",
+     "page": "1303",
+     "chars": 881
+    }
+   ],
+   "markers": 54,
+   "words": 794,
+   "app_confidence": 0.9,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Seizure classification",
+    "Antiseizure medication selection",
+    "Drug mechanism",
+    "Adverse effects and monitoring"
+   ]
+  },
+  "hfref-gdmt": {
+   "question": "How is heart failure with reduced ejection fraction treated, and why does each drug class help?",
+   "answer": "**In short:** Heart failure with reduced ejection fraction (HFrEF) is defined by a left ventricular ejection fraction (LVEF \u2014 the percentage of blood pumped out of the main chamber per contraction) of less than 40% [[13]]. Guideline-directed medical therapy (GDMT \u2014 recommended combination drug therapy) for HFrEF uses four foundational drug classes to reduce morbidity and mortality: a renin-angiotensin-aldosterone system (RAAS) inhibitor, an evidence-based beta-blocker, an aldosterone receptor antagonist (ARA), and a sodium-glucose cotransporter 2 (SGLT2) inhibitor [[5]][[6]].\n\n---\n\n## Treatment of HFrEF\n\n> **Background:** Heart failure occurs when the heart cannot pump enough blood to meet the body's demands, triggering hormonal compensatory mechanisms that ultimately cause further cardiac damage and worsening function.\n\nThe primary physiologic abnormality in HFrEF is decreased cardiac output (CO) resulting from decreased LVEF [[2]]. Pharmacotherapy is designed to block harmful compensatory pathways and prevent adverse ventricular remodeling (structural changes to the heart muscle) [[9]][[10]]. \n\nGDMT for HFrEF consists of four main drug classes initiated simultaneously at low doses or sequentially, with the goal of titrating each medication to target doses as tolerated [[5]]:\n\n1. **RAAS Inhibitor:** An angiotensin receptor and neprilysin inhibitor (ARNI \u2014 sacubitril/valsartan) is preferred over an angiotensin-converting enzyme inhibitor (ACEi) or angiotensin receptor blocker (ARB) to further reduce morbidity and mortality [[4]][[6]][[10]]. If an ARNI is not feasible, an ACEi or ARB is used [[4]][[5]][[6]].\n2. **Evidence-Based Beta-Blocker:** Metoprolol succinate or carvedilol are the preferred beta-blockers to reduce mortality and hospitalizations [[2]][[6]].\n3. **Aldosterone Receptor Antagonist (ARA):** Also known as a mineralocorticoid receptor antagonist (MRA), these agents decrease morbidity and mortality in New York Heart Association (NYHA) Class II\u2013IV heart failure [[1]][[5]][[6]].\n4. **SGLT2 Inhibitor:** Decreases hospitalizations and cardiovascular mortality in patients with or without diabetes [[6]][[9]].\n\n### Additional Add-On Therapies\n- **Loop Diuretics:** Used for symptom relief to reduce blood volume, which decreases edema (fluid accumulation) and congestion [[1]][[6]].\n- **Hydralazine and Nitrate (BiDil):** Added to optimized GDMT to decrease morbidity and mortality in self-identified Black patients with NYHA Class III\u2013IV heart failure [[6]].\n\n---\n\n## Mechanism of Action\n\n> **Background:** Hormones that constrict blood vessels and increase fluid retention help maintain blood pressure in the short term, but long-term exposure to these hormones damages heart tissue and causes fluid overload.\n\nEach medication class targets specific neurohormonal pathways to stop disease progression and relieve symptoms [[5]].\n\n| Drug Class | Mechanism of Action | Main Clinical Benefit | Citation |\n|---|---|---|---|\n| **ARNI / ACEi / ARB** | ACE inhibitors block conversion of angiotensin I to angiotensin II; ARBs block angiotensin II from binding the AT1 receptor. ARNIs inhibit neprilysin while blocking AT1. Both decrease vasoconstriction (narrowing of blood vessels) and decrease aldosterone secretion. ARBs also prevent ventricular remodeling triggered by angiotensin II formed via non-ACE pathways. | Decreases morbidity and mortality (ARNI preferred over ACEi/ARB). | [[4]][[6]][[10]][[11]] |\n| **Evidence-Based Beta-Blockers** | Inhibits sympathetic nervous system activity (blocking adrenaline effects on the heart). | Reduces mortality and hospitalizations. | [[2]][[5]][[6]] |\n| **Aldosterone Receptor Antagonist (ARA)** | Blocks mineralocorticoid receptors, inhibiting aldosterone-mediated sodium and water retention. | Decreases morbidity and mortality. | [[1]][[5]][[6]] |\n| **SGLT2 Inhibitor** | Blocks SGLT2 proteins (inhibiting renal glucose and sodium reabsorption). | Decreases hospitalizations and cardiovascular mortality regardless of diabetes status. | [[6]][[9]] |\n| **Loop Diuretics** | Inhibits sodium reabsorption in the loop of Henle to promote fluid excretion. | Reduces blood volume, decreasing edema and congestion. | [[6]] |\n\n---\n\n## Adverse Effects & Monitoring\n\nBecause these medications alter hemodynamics (blood flow dynamics) and renal electrolyte excretion, close monitoring is essential.\n\n### ACE Inhibitors and ARBs\n- **Key Adverse Effects:** The most common adverse effects are worsening renal function and hypotension (low blood pressure) [[7]]. Hyperkalemia (high blood potassium) is also possible, especially in patients who develop acute kidney injury [[7]]. ACE inhibitors block bradykinin degradation, which can lead to a dry cough and angioedema (swelling under the skin) [[10]][[11]].\n- **Monitoring & Safety:** Monitor blood pressure, serum creatinine (SCr \u2014 a marker of kidney function), and potassium closely [[7]]. If cough or angioedema occurs with an ACE inhibitor, an ARB or sacubitril/valsartan is used instead [[10]].\n\n### Aldosterone Receptor Antagonists (ARAs)\n- **Monitoring & Safety:** Patients must meet specific estimated glomerular filtration rate (eGFR \u2014 a measure of kidney filtration), SCr, and serum potassium criteria prior to initiation due to the risk of severe hyperkalemia [[6]].\n\n### SGLT2 Inhibitors\n- **Monitoring & Safety:** Patients must meet eGFR baseline criteria before initiation [[6]].\n\n---\n\n## Key points to remember\n\n- **Four GDMT Pillars:** HFrEF treatment relies on an ARNI (or ACEi/ARB), an evidence-based beta-blocker (metoprolol succinate or carvedilol), an ARA, and an SGLT2 inhibitor to lower mortality [[2]][[5]][[6]].\n- **ARNI Preference:** Sacubitril/valsartan (ARNI) is preferred over ACE inhibitors or ARBs because it provides superior reductions in morbidity and mortality [[4]][[6]][[10]].\n- **Symptom vs. Mortality Relief:** Loop diuretics reduce edema and congestion to relieve symptoms, whereas the four GDMT pillars directly improve survival [[5]][[6]].\n- **Renal & Electrolyte Safety:** ACE inhibitors, ARBs, and ARAs require baseline and ongoing monitoring of blood pressure, renal function (SCr/eGFR), and serum potassium [[6]][[7]].",
+   "latency_s": 78.9,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "388",
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "392",
+     "chars": 972
+    },
+    {
+     "book": "rxprep",
+     "page": 449,
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "536",
+     "chars": 940
+    },
+    {
+     "book": "rxprep",
+     "page": 452,
+     "chars": 929
+    },
+    {
+     "book": "rxprep",
+     "page": 452,
+     "chars": 969
+    },
+    {
+     "book": "dipiro",
+     "page": "495",
+     "chars": 992
+    },
+    {
+     "book": "dipiro",
+     "page": "534",
+     "chars": 922
+    },
+    {
+     "book": "dipiro",
+     "page": "533",
+     "chars": 949
+    },
+    {
+     "book": "dipiro",
+     "page": "536",
+     "chars": 899
+    },
+    {
+     "book": "rxprep",
+     "page": 454,
+     "chars": 486
+    },
+    {
+     "book": "dipiro",
+     "page": "634",
+     "chars": 643
+    },
+    {
+     "book": "rxprep",
+     "page": 449,
+     "chars": 607
+    },
+    {
+     "book": "dipiro",
+     "page": "518",
+     "chars": 949
+    }
+   ],
+   "markers": 55,
+   "words": 846,
+   "app_confidence": 0.35,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Treatment of HFrEF",
+    "Mechanism of action",
+    "Adverse effects & monitoring"
+   ]
+  },
+  "warfarin-vs-doac-af": {
+   "question": "For stroke prevention in atrial fibrillation, how do warfarin and the DOACs compare?",
+   "answer": "**In short:** For stroke prevention in atrial fibrillation (AF \u2014 an irregular heart rhythm), direct-acting oral anticoagulants (DOACs) are generally preferred over warfarin because they offer comparable or superior stroke reduction with lower rates of serious bleeding, faster onset, and fewer drug-food interactions [[1]][[2]][[4]][[13]]. However, warfarin remains the required anticoagulant in patients with AF who have mechanical heart valves or moderate-to-severe mitral stenosis (narrowing of the heart's mitral valve) [[1]][[4]].\n\n> **Background:** Anticoagulants prevent stroke in atrial fibrillation by inhibiting the formation of blood clots inside the heart chambers that could otherwise travel to the brain.\n\n## Warfarin vs DOACs Comparison\n\nGuidelines generally recommend DOACs over warfarin for stroke prevention in AF because DOACs provide fixed dosing without the need for continuous blood testing to adjust the dose [[1]][[2]][[7]]. However, medication selection must be tailored based on patient factors such as kidney function, cost, drug interactions, and adherence [[7]].\n\n| Feature | Warfarin | DOACs (Apixaban, Dabigatran, Edoxaban, Rivaroxaban) | Citation |\n|---|---|---|---|\n| **Preferred Indications** | Mechanical heart valves, moderate-to-severe mitral stenosis, or triple-positive antiphospholipid syndrome | Nonvalvular AF stroke prevention, venous thromboembolism treatment | [[1]][[4]] |\n| **Onset / Duration of Action** | Slower onset of action | Shorter onset and duration of action | [[2]][[11]] |\n| **Efficacy in AF Stroke Prevention** | Reduces stroke risk by 62% vs placebo; target INR 2\u20133 | As effective (noninferior) or superior to warfarin in reducing stroke/systemic embolism | [[1]][[3]][[13]][[14]] |\n| **Intracranial Hemorrhage (ICH) Risk** | Higher rate of ICH compared to DOACs | Significantly reduced risk of ICH compared to warfarin | [[3]][[7]][[13]] |\n| **Dose Adjustments & Monitoring** | Requires frequent INR blood monitoring to adjust target doses | Fixed dosing based on indication, kidney/liver function; no INR monitoring | [[2]] |\n| **Drug & Food Interactions** | High propensity for food and drug interactions | Significantly fewer drug and food interactions | [[1]][[2]][[5]] |\n\n> **Background:** The liver synthesizes active proteins called clotting factors that interact in a step-by-step cascade to convert fluid blood into a solid clot.\n\n## Mechanism of Action\n\n- **Warfarin:** Acts as a vitamin K antagonist. It inhibits hepatic enzymes responsible for converting vitamin K back to its reduced form [[5]]. Reduced vitamin K is a required cofactor for the N-terminal carboxylation (activation) of clotting factors II, VII, IX, and X, as well as endogenous anticoagulant proteins C and S [[5]]. Without adequate reduced vitamin K, the liver produces partially carboxylated proteins with reduced biological activity [[5]]. Warfarin has no direct inhibitory effect on clotting factors already circulating in the blood [[5]].\n- **DOACs:** Directly target specific steps in the coagulation cascade [[1]][[2]][[6]]:\n  - **Direct Factor Xa Inhibitors** (apixaban, edoxaban, rivaroxaban): Inhibit Factor Xa directly, preventing it from generating active thrombin [[1]][[6]].\n  - **Direct Thrombin Inhibitors** (dabigatran): Directly inhibit thrombin (Factor IIa) [[1]][[2]].\n\n## Adverse Effects and Monitoring\n\n> **Background:** Anticoagulants disrupt normal clot formation, making routine safety evaluations essential to detect unexpected blood loss or organ toxicity early.\n\n### Key Adverse Effects\n- **Bleeding and Bruising:** Mild to severe bleeding is the primary risk for all anticoagulants [[8]][[9]]. Apixaban and edoxaban demonstrate lower or similar rates of major bleeding compared to warfarin, as well as lower rates of ICH [[3]][[7]][[13]]. However, edoxaban 60 mg daily shows a significantly higher risk of major gastrointestinal (GI) bleeding compared to warfarin [[7]].\n- **Skin Necrosis:** A known adverse effect of warfarin therapy [[9]].\n\n### Monitoring Requirements\n- **Warfarin Monitoring:**\n  - **PT/INR (Prothrombin Time / International Normalized Ratio \u2014 a measure of blood clotting speed):** For standard AF, the goal INR range is 2 to 3 (target 2.5) [[7]][[9]][[14]]. Time in therapeutic range (TTR) should ideally exceed 70% [[7]]. Begin monitoring after 2 or 3 initial doses, or every 4 to 12 weeks once chronic stability is established [[9]].\n  - **Laboratory Tests:** Hemoglobin (Hgb \u2014 oxygen-carrying protein in red blood cells), hematocrit (Hct \u2014 percentage of blood volume made of red blood cells), and clinical signs/symptoms of bleeding [[8]][[9]].\n  - **Reversal:** Vitamin K acts as the antidote for warfarin [[9]].\n- **DOAC Monitoring:**\n  - Routine INR monitoring is not required [[2]].\n  - **Renal Function:** Monitoring serum creatinine (SCr \u2014 a biomarker of kidney function) is required because DOAC clearance depends on kidney function [[1]][[8]][[11]].\n  - **Adherence:** Patients must maintain strict daily adherence because missing even a single DOAC dose can lead to an increased risk of thromboembolic (TE) events due to their shorter duration of action [[2]][[10]].\n\n## Dosing and Renal Adjustment\n\n- **Renal Dosing Considerations:** DOAC doses are established based on the indication, kidney function, and liver function [[2]]. Patient kidney function must be evaluated prior to initiating a DOAC [[1]]. If significant renal impairment is present, dose adjustments are necessary [[1]].\n- **Severe Renal Impairment:** In patients with a creatinine clearance (CrCl \u2014 a measure of kidney filtration rate) less than 15 mL/min (0.25 mL/s) or those undergoing hemodialysis, **warfarin or apixaban** are the preferred anticoagulants [[1]].\n- **Administration & Drug Interactions:**\n  - Rivaroxaban doses of 15 mg and 20 mg must be taken with food to enhance oral absorption, whereas other DOACs can be taken with or without food [[12]].\n  - Strong inducers of P-gp (P-glycoprotein transporter) and CYP 3A4 enzymes (such as carbamazepine and rifampin) must be avoided with DOACs [[12]]. Strong P-gp or combined P-gp/CYP 3A4 inhibitors require caution, particularly in renal insufficiency; if such interactions are unavoidable, switching to INR-guided warfarin is recommended [[12]].\n\n## Key points to remember\n\n- **DOAC Preference:** DOACs are preferred over warfarin for nonvalvular AF stroke prevention due to fixed dosing, fewer interactions, and reduced risk of serious bleeding/ICH [[1]][[2]][[4]][[13]].\n- **Valvular AF Exception:** Warfarin (target INR 2\u20133) must be used instead of a DOAC if the patient has moderate-to-severe mitral stenosis or a mechanical heart valve [[1]][[4]][[14]].\n- **Mechanism Difference:** Warfarin indirectly inhibits factors II, VII, IX, and X by blocking vitamin K epoxide reductase, while DOACs directly inhibit Factor Xa (apixaban, edoxaban, rivaroxaban) or thrombin (dabigatran) [[1]][[5]][[6]].\n- **Renal Thresholds:** Assess renal function prior to starting DOACs; for patients with CrCl < 15 mL/min or on hemodialysis, either apixaban or warfarin is preferred [[1]].\n- **Monitoring & Adherence:** Warfarin requires routine INR checks (target 2\u20133), while DOACs require periodic renal monitoring (SCr) and strict adherence to prevent thromboembolic events [[2]][[7]][[8]][[10]].",
+   "latency_s": 26.9,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "612",
+     "chars": 865
+    },
+    {
+     "book": "rxprep",
+     "page": 486,
+     "chars": 948
+    },
+    {
+     "book": "dipiro",
+     "page": "631",
+     "chars": 728
+    },
+    {
+     "book": "rxprep",
+     "page": 486,
+     "chars": 930
+    },
+    {
+     "book": "dipiro",
+     "page": "593",
+     "chars": 994
+    },
+    {
+     "book": "dipiro",
+     "page": "511",
+     "chars": 987
+    },
+    {
+     "book": "dipiro",
+     "page": "632",
+     "chars": 804
+    },
+    {
+     "book": "dipiro",
+     "page": "628",
+     "chars": 996
+    },
+    {
+     "book": "rxprep",
+     "page": 494,
+     "chars": 970
+    },
+    {
+     "book": "dipiro",
+     "page": "632",
+     "chars": 820
+    },
+    {
+     "book": "dipiro",
+     "page": "586",
+     "chars": 853
+    },
+    {
+     "book": "dipiro",
+     "page": "591",
+     "chars": 863
+    },
+    {
+     "book": "dipiro",
+     "page": "631",
+     "chars": 925
+    },
+    {
+     "book": "dipiro",
+     "page": "612",
+     "chars": 947
+    }
+   ],
+   "markers": 79,
+   "words": 1048,
+   "app_confidence": 0.7,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Warfarin vs DOACs comparison",
+    "Mechanism of action",
+    "Adverse effects and monitoring",
+    "Dosing and renal adjustment"
+   ]
+  },
+  "htn-first-line": {
+   "question": "How should hypertension be treated initially, and what blood pressure targets are used?",
+   "answer": "**In short:** The standard target blood pressure (BP) for most adults with hypertension is <130/80 mm Hg [[1]][[2]][[4]][[5]][[7]]. Initial drug therapy selection relies on agents with proven reduction in cardiovascular (CV) morbidity and mortality, specifically angiotensin-converting enzyme inhibitors (ACEi), angiotensin II receptor blockers (ARBs), calcium channel blockers (CCBs), and thiazide diuretics [[1]][[2]][[4]][[7]]. Patients with stage 1 hypertension typically start with one drug, whereas those presenting with stage 2 hypertension or BP >20/10 mm Hg above goal should start with a two-drug combination [[1]][[7]][[13]].\n\n> **Background:** Managing blood pressure reduces systemic arterial resistance and cardiac workload. Lowering elevated pressure helps prevent long-term damage to major vascular beds throughout the body, including the heart, brain, and kidneys.\n\n## Initial treatment of hypertension\n\nInitial management of hypertension combines non-pharmacologic measures with evidence-based drug selection [[1]][[8]]. \n\n- **Lifestyle Modifications:** Recommended for all patients, especially those with elevated BP or hypertension [[1]]. Lifestyle changes include weight control, increased physical activity, alcohol moderation, sodium reduction, and dietary emphasis on fresh fruits, vegetables, and low-fat dairy products [[8]].\n- **Preferred First-Line Drug Classes:** For patients without compelling indications, four primary classes are preferred due to evidence demonstrating CV event reduction: ACE inhibitors, ARBs, CCBs (such as dihydropyridine CCBs [DHP CCBs]), and thiazide diuretics [[1]][[2]][[7]].\n- **Monotherapy vs. Combination Therapy:** \n  - **Stage 1 Hypertension:** Start with a single first-line agent [[1]][[13]].\n  - **Stage 2 Hypertension:** Start with two first-line agents as initial combination therapy [[1]][[13]], particularly when baseline average BP is >20/10 mm Hg above goal (e.g., >150/90 mm Hg) [[7]].\n- **Selection by Patient Population and Compelling Indications:**\n  - **Self-Identified Black Patients (without CKD):** Thiazide diuretics or DHP CCBs may be preferred as initial options [[7]].\n  - **Chronic Kidney Disease (CKD):** An ACE inhibitor or ARB is recommended for patients with stage 3 CKD (eGFR <60 mL/min/1.73 m\u00b2) or albuminuria (defined as urine albumin \u226530 mg/day or albumin:creatinine ratio \u226530 mg/g) [[7]]. ACE inhibitors and ARBs are also frequently chosen in patients with diabetes due to their CV and kidney protective benefits [[9]].\n  - **Stable Ischemic Heart Disease (SIHD):** Specific selections depend on compelling indications (e.g., prior myocardial infarction, angina, heart failure with reduced ejection fraction) and may include beta-blockers, ACE inhibitors, or ARBs, adding thiazides or DHP CCBs as needed [[8]]. Beta-blockers are not considered first-line for general hypertension without a compelling indication because they reduce CV risk less effectively than the preferred first-line classes [[2]].\n  - **Pregnancy:** ACE inhibitors, ARBs, and the direct renin inhibitor aliskiren are contraindicated due to fetal toxicity [[14]]. Recommended first-line oral drugs for non-severe chronic hypertension during pregnancy include labetalol, extended-release nifedipine, and methyldopa [[14]].\n\n| Patient Population / Indication | Preferred Initial Class(es) | Citation |\n|---|---|---|\n| General population (no compelling indications) | ACEi, ARB, DHP CCB, or Thiazide diuretic | [[1]][[7]] |\n| Self-identified Black patients without CKD | Thiazide diuretic or DHP CCB | [[7]] |\n| Chronic Kidney Disease (with albuminuria or eGFR <60 mL/min/1.73 m\u00b2) | ACEi or ARB | [[7]] |\n| Chronic hypertension in pregnancy | Labetalol, extended-release nifedipine, or methyldopa | [[14]] |\n\n## Blood pressure targets\n\nLowering BP to target levels serves as a surrogate goal to minimize overall CV risk [[2]][[4]][[5]].\n\n- **General Goal:** A target BP of <130/80 mm Hg is recommended for most patients with hypertension [[1]][[2]][[4]][[5]][[7]], including those with atherosclerotic cardiovascular disease (ASCVD), diabetes, SIHD, or CKD [[4]][[8]].\n- **CKD-Specific Targets:** The KDIGO 2021 guideline recommends a target systolic blood pressure (SBP) of <120 mm Hg (if tolerated) for patients with hypertension and CKD [[7]]. The Systolic Blood Pressure Intervention Trial (SPRINT) evaluated an intensive SBP goal of <120 mm Hg compared to <140 mm Hg in CKD [[6]].\n- **Pregnancy Targets:** Antihypertensive therapy is initiated if SBP >140 mm Hg or diastolic blood pressure (DBP) \u226590 mm Hg, with target SBP maintained between 120\u2013139 mm Hg and DBP between 80\u201389 mm Hg [[14]].\n\n## Mechanism of antihypertensive drugs\n\nThe excerpts do not cover the mechanism of antihypertensive drugs.\n\n## Adverse effects and monitoring of antihypertensives\n\nMonitoring involves verifying BP goal attainment while evaluating medication tolerability and laboratory parameters [[7]][[10]][[12]].\n\n- **BP Monitoring and Titration:** BP should be reassessed monthly after starting treatment, titrating therapy if the goal is not met [[7]]. Clinical decisions should rely on an average of two or more readings taken across separate encounters or home readings from memory-capable monitors [[5]][[10]].\n- **Laboratory Monitoring:** Routine lab safety parameters for first-line agents should be checked 4 weeks after starting a new drug or escalating a dose, followed by monitoring every 6 to 12 months once stable [[10]]. Additional disease-specific monitoring (such as for diabetes, dyslipidemia, or gout) should be tailored to the specific agent used [[10]].\n- **Safety Warnings:** ACE inhibitors, ARBs, and aliskiren carry a boxed warning for fetal toxicity and must be discontinued immediately if pregnancy is planned or detected [[14]].\n- **Alternative Agents:** Drugs such as mineralocorticoid receptor antagonists, central alpha-2 agonists, adrenergic inhibitors, or arterial vasodilators carry higher rates of adverse effects that limit tolerability; they are reserved for resistant hypertension or multi-drug add-on regimens [[3]].\n\n## Key points to remember\n\n- **Standard Target:** A BP goal of <130/80 mm Hg applies to most adults with hypertension, including those with diabetes or ASCVD [[1]][[4]][[5]][[7]].\n- **First-Line Agents:** Preferred initial drug classes are ACE inhibitors, ARBs, CCBs, and thiazide diuretics due to demonstrated CV risk reduction [[1]][[2]][[7]].\n- **Dosing Strategy:** Initiate 1 drug for stage 1 hypertension and 2 drugs for stage 2 hypertension or when baseline BP is >20/10 mm Hg above goal [[1]][[7]][[13]].\n- **Compelling Kidney/Pregnancy Indications:** Use ACE inhibitors or ARBs for patients with CKD and albuminuria [[7]]. Avoid ACE inhibitors, ARBs, and aliskiren in pregnancy due to boxed warnings for fetal toxicity [[14]].",
+   "latency_s": 26.2,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "378",
+     "chars": 996
+    },
+    {
+     "book": "dipiro",
+     "page": "405",
+     "chars": 912
+    },
+    {
+     "book": "dipiro",
+     "page": "394",
+     "chars": 942
+    },
+    {
+     "book": "dipiro",
+     "page": "385",
+     "chars": 802
+    },
+    {
+     "book": "dipiro",
+     "page": "378",
+     "chars": 870
+    },
+    {
+     "book": "dipiro",
+     "page": "1047",
+     "chars": 423
+    },
+    {
+     "book": "rxprep",
+     "page": 423,
+     "chars": 867
+    },
+    {
+     "book": "dipiro",
+     "page": "457",
+     "chars": 989
+    },
+    {
+     "book": "dipiro",
+     "page": "1706",
+     "chars": 951
+    },
+    {
+     "book": "dipiro",
+     "page": "404",
+     "chars": 896
+    },
+    {
+     "book": "dipiro",
+     "page": "423",
+     "chars": 976
+    },
+    {
+     "book": "dipiro",
+     "page": "416",
+     "chars": 986
+    },
+    {
+     "book": "dipiro",
+     "page": "387",
+     "chars": 885
+    },
+    {
+     "book": "rxprep",
+     "page": 423,
+     "chars": 981
+    }
+   ],
+   "markers": 71,
+   "words": 957,
+   "app_confidence": 0.85,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Initial treatment of hypertension",
+    "Blood pressure targets",
+    "Mechanism of antihypertensive drugs",
+    "Adverse effects and monitoring of antihypertensives"
+   ]
+  },
+  "asthma-vs-copd": {
+   "question": "What is the difference between asthma and COPD, and how are their inhaler treatments different?",
+   "answer": "**In short:**\nAsthma and COPD (chronic obstructive pulmonary disease) differ in their age of onset, underlying inflammation, and airflow reversibility, with asthma being reversible and COPD causing progressive, irreversible airflow limitation [[1]][[3]][[13]]. Because of these pathophysiologic differences, first-line maintenance therapy for asthma centers on ICS (inhaled corticosteroid) products to reduce inflammation, whereas COPD relies primarily on long-acting bronchodilators like LABAs (long-acting beta-2 agonists) and LAMAs (long-acting muscarinic agonists) [[1]][[2]][[6]].\n\n## Key differences between asthma and COPD\n\n> **Background:** Chronic respiratory diseases cause breathing difficulty by narrowing the passages that carry air into and out of the lungs. Understanding whether this airflow restriction can be reversed or if it permanently worsens guides appropriate long-term treatment.\n\nSpirometry\u2014which measures FVC (forced vital capacity, total exhaled air) and FEV1 (forced expiratory volume in one second)\u2014is required to confirm a COPD diagnosis when the post-bronchodilator FEV1/FVC ratio is < 0.70 [[1]][[3]]. Although both conditions involve chronic airway inflammation, the cell types and inflammatory mediators differ, causing each condition to respond differently to anti-inflammatory treatments [[13]]. Airflow limitation in asthma is reversible with medication and symptoms remain stable over time, whereas COPD limitation is not fully reversible and progresses over time [[1]][[3]].\n\n| Feature | Asthma | COPD | Citation |\n|---|---|---|---|\n| Age of onset | Usually < 40 years | Usually 40 years | [[1]] |\n| Smoking history | Uncommon | Usually 20 years | [[1]] |\n| Allergies | Common | Uncommon | [[1]] |\n| Sputum production | Infrequent | Common | [[1]] |\n| Symptom pattern & course | Variable; stable over time | Persistent; progressive over time | [[1]] |\n| Airflow limitation | Reversible with medication | Not fully reversible; progressive | [[3]] |\n| First-line maintenance | Inhaled corticosteroids | Bronchodilators | [[1]] |\n\n## Differences in inhaler therapy\n\n> **Background:** Maintenance inhalers deliver active medication directly into bronchial tissues to keep airways open and prevent severe flare-ups, while rescue inhalers provide rapid relief during acute symptoms.\n\nInhaled medications are preferred for both conditions and are delivered via MDIs (metered-dose inhalers) or DPIs (dry powder inhalers) [[4]][[8]]. The treatment approaches differ fundamentally based on the underlying disease process:\n\n- **Asthma Strategy:** Anti-inflammatory control is the foundation of therapy [[6]]. ICS or ICS/LABA combinations are preferred for maintenance [[2]]. For acute rescue, the preferred regimen is a low-dose ICS combined with formoterol, or a SABA (short-acting beta-2 agonist) administered at the same time as an ICS [[8]].\n- **COPD Strategy:** Bronchodilators are first-line [[1]][[2]]. Therapy typically begins with a LABA, LAMA, or LAMA/LABA combination [[2]][[11]]. LAMAs block the constricting effect of acetylcholine at M3 muscarinic receptors in bronchial smooth muscle [[4]] and are slightly more effective than LABAs at preventing exacerbations [[14]].\n- **ICS Role in COPD vs Asthma:** ICS monotherapy is not recommended in COPD because clinical trials fail to show long-term benefit in slowing lung function decline [[5]]. However, adding an ICS to a LABA (or using triple therapy with LABA + LAMA + ICS) reduces exacerbation frequency in COPD patients at high risk for exacerbations [[5]][[12]].\n- **LABA Monotherapy Safety:** LABAs carry a Boxed Warning in asthma because using them alone increases the risk of asthma-related death [[10]]. In asthma, LABAs must always be combined with an ICS [[10]]. In contrast, LABA monotherapy is appropriate and indicated in COPD [[10]].\n\n## Mechanism of action of inhaled corticosteroids\n\n> **Background:** Corticosteroids act on cellular pathways to blunt immune signaling and prevent hyperreactive airway responses to environmental triggers.\n\nCorticosteroids suppress inflammatory cellular responses, block the late-phase reaction to allergens, and decrease airway hyperresponsiveness [[7]]. In asthma, this mechanism reduces symptoms, improves lung function, enhances quality of life, and lowers exacerbation risk [[7]]. \n\nThe therapeutic index of an ICS product is governed by pharmacokinetic and pharmacodynamic parameters, including receptor binding affinity, bioavailability, clearance, and half-life [[9]]. Products with higher receptor binding affinity and longer half-lives demonstrate improved efficacy, but also carry a higher potential for systemic adverse effects [[9]].\n\n## Safety, adverse effects, and monitoring of inhaled bronchodilators\n\nBeta-2 agonists bind to beta-2 receptors in the lung, causing bronchial smooth muscle relaxation [[10]]. Muscarinic antagonists block acetylcholine at M3 muscarinic receptors in bronchial smooth muscle to cause bronchodilation and are generally well tolerated [[4]]. \n\nLABAs are contraindicated as monotherapy for asthma due to the Boxed Warning for asthma-related death, and are also contraindicated in status asthmaticus or acute episodes of asthma or COPD [[10]]. The excerpts do not cover specific routine adverse effects or laboratory monitoring parameters for inhaled bronchodilators.\n\n## Key points to remember\n\n- Asthma airflow limitation is reversible and managed primarily with ICS-containing regimens, whereas COPD airflow limitation is not fully reversible and managed primarily with long-acting bronchodilators (LABA, LAMA) [[1]][[2]][[3]].\n- Spirometry demonstrating a post-bronchodilator FEV1/FVC < 0.70 confirms a diagnosis of COPD [[1]].\n- LABA monotherapy is contraindicated in asthma due to a Boxed Warning for asthma-related death, but LABAs may be used alone in COPD [[10]].\n- ICS monotherapy is not recommended in COPD; however, adding an ICS to long-acting bronchodilator therapy helps reduce exacerbation frequency in high-risk COPD patients [[5]][[12]].\n- Higher receptor binding affinity and longer half-lives increase both the efficacy and potential systemic side effects of ICS medications [[9]].",
+   "latency_s": 32.5,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "rxprep",
+     "page": 573,
+     "chars": 974
+    },
+    {
+     "book": "rxprep",
+     "page": 562,
+     "chars": 602
+    },
+    {
+     "book": "rxprep",
+     "page": 572,
+     "chars": 439
+    },
+    {
+     "book": "rxprep",
+     "page": 576,
+     "chars": 982
+    },
+    {
+     "book": "dipiro",
+     "page": "762",
+     "chars": 988
+    },
+    {
+     "book": "dipiro",
+     "page": "711",
+     "chars": 891
+    },
+    {
+     "book": "rxprep",
+     "page": 561,
+     "chars": 625
+    },
+    {
+     "book": "rxprep",
+     "page": 558,
+     "chars": 924
+    },
+    {
+     "book": "dipiro",
+     "page": "734",
+     "chars": 711
+    },
+    {
+     "book": "rxprep",
+     "page": 577,
+     "chars": 983
+    },
+    {
+     "book": "dipiro",
+     "page": "747",
+     "chars": 980
+    },
+    {
+     "book": "dipiro",
+     "page": "2388",
+     "chars": 957
+    },
+    {
+     "book": "dipiro",
+     "page": "750",
+     "chars": 894
+    },
+    {
+     "book": "dipiro",
+     "page": "761",
+     "chars": 828
+    }
+   ],
+   "markers": 50,
+   "words": 870,
+   "app_confidence": 0.4,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Asthma vs COPD differences",
+    "Inhaler therapy differences",
+    "Mechanism of inhaled corticosteroids",
+    "Adverse effects and monitoring of inhaled bronchodilators"
+   ]
+  },
+  "levothyroxine": {
+   "question": "How is hypothyroidism treated with levothyroxine, and how is the dose monitored?",
+   "answer": "**In short:** Hypothyroidism is primarily treated with synthetic levothyroxine (T4), which serves as a prohormone that converts to active triiodothyronine (T3) [[2]][[5]]. Dosing is calculated based on body weight and clinical factors, and therapy is monitored primarily using serum thyrotropin (TSH) levels measured 4 to 6 weeks after initiating or adjusting doses [[1]][[7]][[8]].\n\n## Levothyroxine Therapy and Mechanism\n\n> **Background:** The thyroid gland produces hormones that regulate metabolic rate, cellular respiration, and energy expenditure throughout the body. When endogenous hormone production is insufficient, exogenously administered hormone replacement therapy restores normal physiologic function.\n\nLevothyroxine (T4) is the drug of choice for thyroid replacement therapy in hypothyroidism, a condition most commonly caused by an autoimmune disorder known as Hashimoto's thyroiditis [[2]][[5]]. Levothyroxine is chemically stable, relatively inexpensive, active when taken orally, free of antigenicity, and possesses uniform potency [[5]]. Once administered, T4 serves as a prohormone that is converted to T3 in the body when needed [[5]]. \n\nCombining levothyroxine with liothyronine (T3) has not shown reproducible clinical benefits [[2]]. Liothyronine has several clinical disadvantages when compared to levothyroxine, including a shorter half-life of 1.5 days, higher cost, difficulty in monitoring with conventional laboratory testing, and a higher incidence of cardiac adverse effects [[5]].\n\n| Characteristic | Levothyroxine (T4) | Liothyronine (T3) |\n|---|---|---|\n| **Role / Mechanism** | Converts to T3 as needed (prohormone) | Direct active hormone | [[5]] |\n| **Half-life** | Approximately 1 week | Approximately 1.5 days | [[5]][[7]] |\n| **Clinical Utility** | Preferred drug of choice for replacement | Disadvantaged by cardiac risks, cost, and monitoring difficulty | [[2]][[5]] |\n\nLevothyroxine is available under brand names such as Synthroid, Levoxyl, Unithroid, Euthyrox, Tirosint, and Tirosint-SOL [[10]]. To avoid overtreatment or undertreatment, product switching between different bioequivalent levothyroxine preparations in stable patients is not recommended [[12]].\n\n## Dosing and Administration\n\nWhen initiating levothyroxine, clinicians determine the starting dose based on several patient parameters, including body weight, lean body mass, age, etiology of hypothyroidism, degree of baseline TSH elevation, pregnancy status, and general clinical context [[1]].\n\n- **Full Replacement Dosing:** For hypothyroid patients without autonomous thyroid function (such as athyreotic patients), the full replacement dosage is estimated at 1.6 to 1.7 mcg/kg/day, ideally calculated using ideal body weight (IBW) [[4]][[10]][[11]]. Patients who retain some endogenous thyroid production require lower initial doses [[4]]. The average adult maintenance dosage is approximately 125 mcg/day [[4]].\n- **Older Adults and Cardiac Disease:** Aging reduces total dosing requirements [[8]]. In older patients or those with long-standing disease without known cardiac disease, therapy should be initiated at 50 mcg daily and increased after 1 month [[13]]. For older patients with known cardiac disease, the recommended initial dose is lower at 25 mcg daily, titrated upward in increments of 25 mcg at monthly intervals to prevent cardiovascular stress and exacerbation of angina [[13]].\n- **Pregnancy:** In patients receiving thyroid replacement before pregnancy, a 25% dose increase is recommended as soon as pregnancy is confirmed [[14]]. For newly diagnosed patients during pregnancy, a reasonable starting dose is 1 to 2 mcg/kg/day or 0.1 mg/day [[14]].\n- **Administration Timing:** Levothyroxine can be taken before breakfast, or alternatively, taken at bedtime, as both timing strategies demonstrate equal efficacy [[4]].\n\n## Monitoring and Treatment Goals\n\nSerum TSH (thyrotropin) concentration is the most sensitive and specific laboratory monitoring parameter for assessing thyroid hormone replacement [[8]]. Because levothyroxine has a half-life of approximately 1 week, it takes time to reach steady-state conditions [[7]]. Laboratory monitoring of TSH and serum T4 should occur 4 to 6 weeks after dose initiation or any dosage change [[1]][[7]].\n\n- **Interpreting TSH Levels:** An elevated TSH concentration indicates under-replacement or insufficient therapy, whereas a suppressed TSH concentration indicates over-replacement [[2]][[7]]. The goal of therapy is to restore serum TSH to within the normal laboratory reference range [[7]].\n- **Serum T4 Monitoring:** Serum T4 concentrations are measured alongside TSH to detect issues such as noncompliance, malabsorption, or bioequivalence variations [[7]]. Free T4 targets are generally maintained in the upper part of the normal reference range, though targets may be adjusted to the middle of the normal range in older patients or those with comorbidities [[9]].\n- **Confounding Medications:** Interpretation of TSH levels can be confounded by concurrent medications that suppress TSH concentrations in primary hypothyroidism, including dopamine, bromocriptine, octreotide (or somatostatin analogs), and corticosteroids [[9]].\n\n## Adverse Effects and Safety\n\nLevothyroxine carries a **Boxed Warning**: it is ineffective and potentially toxic when used for obesity or weight reduction, especially in euthyroid individuals, where high doses can lead to severe toxicity [[10]].\n\nSuboptimal therapy\u2014either under-replacement or over-replacement\u2014is common [[6]][[12]]. While appropriate replacement therapy restores left ventricular performance within 2 weeks, excessive doses of thyroid hormone cause significant cardiovascular toxicity, including:\n- Heart failure [[6]]\n- Atrial fibrillation and increased frequency of premature atrial beats [[6]]\n- Angina pectoris and myocardial infarction (rarely due to coronary artery spasm) [[6]]\n\nAllergic reactions are extremely rare with synthetic products compared to natural animal-derived products (such as desiccated thyroid) [[6]]. For a patient suspected of having a thyroid tablet allergy, the 0.05 mg (50 mcg) Synthroid tablet is the least allergenic choice because it lacks dyes and contains few excipients [[6]].\n\n## Key points to remember\n\n- **First-line choice:** Synthetic levothyroxine (T4) is the drug of choice for hypothyroidism replacement therapy; combination T4/T3 therapy is not routinely recommended [[2]][[5]].\n- **Weight-based dosing:** Full replacement dosing for adults without thyroid function is 1.6 to 1.7 mcg/kg/day based on IBW, whereas older patients with cardiac disease require lower starting doses (25 mcg daily) [[10]][[11]][[13]].\n- **Monitoring timeline:** TSH is the primary monitoring parameter; assess TSH and T4 levels 4 to 6 weeks after starting or changing a dose due to levothyroxine's 1-week half-life [[1]][[7]][[8]].\n- **Interpretation:** Elevated TSH indicates under-replacement, while suppressed TSH indicates over-replacement [[2]][[7]].\n- **Safety warning:** Levothyroxine is contraindicated for weight loss due to severe cardiovascular toxicities (e.g., arrhythmias, angina, heart failure) at excessive doses [[6]][[10]].",
+   "latency_s": 26.5,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1746",
+     "chars": 797
+    },
+    {
+     "book": "dipiro",
+     "page": "1727",
+     "chars": 614
+    },
+    {
+     "book": "dipiro",
+     "page": "1749",
+     "chars": 421
+    },
+    {
+     "book": "dipiro",
+     "page": "1747",
+     "chars": 832
+    },
+    {
+     "book": "dipiro",
+     "page": "1745",
+     "chars": 981
+    },
+    {
+     "book": "dipiro",
+     "page": "1747",
+     "chars": 959
+    },
+    {
+     "book": "dipiro",
+     "page": "1748",
+     "chars": 856
+    },
+    {
+     "book": "dipiro",
+     "page": "1748",
+     "chars": 900
+    },
+    {
+     "book": "dipiro",
+     "page": "1748",
+     "chars": 932
+    },
+    {
+     "book": "rxprep",
+     "page": 615,
+     "chars": 915
+    },
+    {
+     "book": "dipiro",
+     "page": "1747",
+     "chars": 657
+    },
+    {
+     "book": "dipiro",
+     "page": "1747",
+     "chars": 832
+    },
+    {
+     "book": "dipiro",
+     "page": "1748",
+     "chars": 775
+    },
+    {
+     "book": "dipiro",
+     "page": "1799",
+     "chars": 971
+    }
+   ],
+   "markers": 60,
+   "words": 985,
+   "app_confidence": 0.85,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Levothyroxine therapy",
+    "Mechanism of levothyroxine",
+    "Dosing and monitoring",
+    "Adverse effects and safety"
+   ]
+  },
+  "acetaminophen-overdose": {
+   "question": "How is acetaminophen (paracetamol) overdose managed?",
+   "answer": "**In short:** Acetaminophen overdose management relies on identifying hepatotoxicity risk using the Rumack-Matthew nomogram based on a serum concentration drawn 4 to 24 hours post-ingestion [[4]][[8]]. Early administration of the antidote N-acetylcysteine (NAC, Acetadote) within 10 hours of ingestion prevents liver damage by acting as a glutathione precursor to detoxify the reactive intermediate [[1]][[4]][[5]][[9]].\n\n> **Background:** The liver processes most ingested medications through metabolic pathways that break them down into harmless waste products. However, when these pathways become saturated during a high-dose exposure, alternative pathways produce reactive toxic compounds that can damage liver cells.\n\n## Assessment & Staging\n\nAn acute single ingestion of at least 10 g or 200 mg/kg (whichever is less) in patients 6 years of age or older, or 200 mg/kg or more in children under 6 years of age, is associated with the development of hepatotoxicity [[13]]. \n\nTo assess the risk of liver damage:\n- **Obtain a serum concentration:** The acetaminophen blood sample should be drawn no sooner than 4 hours post-ingestion to ensure peak absorption; levels drawn earlier than 4 hours are not interpretable and must be repeated at or after the 4-hour mark [[7]].\n- **Plot on the Rumack-Matthew nomogram:** Serum acetaminophen levels drawn between 4 and 24 hours after ingestion are plotted on the Rumack-Matthew nomogram to determine if hepatotoxicity is probable and if antidote therapy is required [[4]][[8]]. \n- **Treatment threshold:** In the United States, acetylcysteine therapy is indicated if the patient's serum concentration falls above the nomogram treatment line, which starts at 150 mcg/mL (1,000 $\\mu$mol/L) at the 4-hour mark [[3]][[10]]. \n\nThe nomogram is not useful for assessing chronic or supratherapeutic exposures [[3]]. If serum concentration results will take longer than 8 hours post-ingestion to return, acetylcysteine therapy should be initiated immediately based on ingestion history and discontinued later if the level comes back non-toxic [[3]].\n\n## Antidote Mechanism\n\n> **Background:** Cells rely on endogenous antioxidants to neutralize harmful oxidative molecules. When these protective molecules are used up faster than the body can synthesize them, toxic compounds bind to cellular components and trigger cell death.\n\nWhen taken in overdose, acetaminophen is bioactivated to a toxic reactive intermediate called NAPQI (N-acetyl-p-benzoquinone imine) [[5]]. Under normal conditions, hepatocytes use glutathione (GSH) \u2014 a molecule rich in sulfhydryl groups \u2014 to neutralize NAPQI [[5]]. \n\nDuring an overdose:\n1. Glutathione stores become depleted [[5]].\n2. Free NAPQI begins reacting directly with hepatocytes, disrupting mitochondrial function and accelerating cell necrosis [[5]].\n3. NAC (N-acetylcysteine) serves as a glutathione precursor and sulfhydryl donor [[1]][[4]][[5]][[6]]. It increases GSH capacity and directly binds reactive metabolites, converting NAPQI into non-toxic metabolites and halting liver necrosis [[1]][[4]][[5]].\n\n## Overdose Management\n\nManagement depends on the ingestion time, dose, and serum acetaminophen concentration [[1]]:\n\n- **Decontamination:** If a patient presents to the emergency department within 4 hours of an acute ingestion, one dose of activated charcoal can be administered [[1]].\n- **Antidote Administration:** NAC should be initiated quickly, ideally within 8 to 10 hours of ingestion for maximum effectiveness [[4]][[9]]. It is available in both intravenous (IV) and oral formulations [[4]][[6]][[9]].\n\n| Feature | Intravenous NAC | Oral NAC |\n|---|---|---|\n| **Formulation** | IV infusion (Acetadote) [[4]][[6]] | Oral solution / injectable formulation given orally [[4]][[6]] |\n| **Usage Preference** | Used significantly more often (e.g., 10 times more frequently in registry reports) [[4]][[7]][[9]] | Used less frequently due to tolerability issues [[4]][[7]][[9]] |\n| **Administration Issues** | Risk of hypersensitivity/anaphylactoid reactions [[9]] | Poor palatability (foul odor) and frequent vomiting [[4]] |\n| **Dosing Consideration** | Standardized infusion protocols [[2]] | Pre-treatment with antiemetics recommended; dose must be repeated if emesis occurs within 1 hour [[4]] |\n\n## Adverse Effects & Monitoring\n\n- **Oral NAC Safety & Handling:** Oral NAC is poorly tolerated due to its foul odor and tendency to cause vomiting [[4]]. Pre-treatment with antiemetics is recommended, and if the patient vomits within 1 hour of an oral dose, that dose must be re-administered [[4]].\n- **IV NAC Safety:** Approximately 10% of patients receiving IV acetylcysteine experience anaphylactoid reactions during the infusion [[9]]. \n- **Clinical Monitoring:** Patient vital signs, airway, and circulation should be supported [[11]]. Serum acetaminophen levels and time from ingestion dictate the duration and necessity of antidote treatment [[4]][[8]].\n\n## Key points to remember\n\n- Draw serum acetaminophen levels between 4 and 24 hours post-ingestion; levels drawn before 4 hours are uninterpretable and must be repeated [[4]][[7]].\n- Use the Rumack-Matthew nomogram to plot the 4+ hour concentration; start NAC if the level is on or above the treatment line (150 mcg/mL at 4 hours in the US) [[3]][[4]][[10]].\n- Activated charcoal may be given if the patient arrives within 4 hours of ingestion [[1]].\n- NAC acts as a glutathione precursor to detoxify NAPQI; it is most effective when given within 10 hours of ingestion [[4]][[5]][[9]].\n- IV NAC is preferred over oral NAC due to oral GI intolerance (vomiting/foul odor), but IV NAC requires monitoring for anaphylactoid reactions [[4]][[9]].",
+   "latency_s": 21.7,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 963
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 867
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 943
+    },
+    {
+     "book": "rxprep",
+     "page": 959,
+     "chars": 966
+    },
+    {
+     "book": "dipiro",
+     "page": "952",
+     "chars": 932
+    },
+    {
+     "book": "rxprep",
+     "page": 738,
+     "chars": 927
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 985
+    },
+    {
+     "book": "rxprep",
+     "page": 738,
+     "chars": 348
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 879
+    },
+    {
+     "book": "dipiro",
+     "page": "89",
+     "chars": 887
+    },
+    {
+     "book": "rxprep",
+     "page": 962,
+     "chars": 714
+    },
+    {
+     "book": "dipiro",
+     "page": "2030",
+     "chars": 969
+    },
+    {
+     "book": "dipiro",
+     "page": "89",
+     "chars": 920
+    },
+    {
+     "book": "rxprep",
+     "page": 959,
+     "chars": 975
+    }
+   ],
+   "markers": 63,
+   "words": 825,
+   "app_confidence": 0.85,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Overdose Management",
+    "Antidote Mechanism",
+    "Adverse Effects & Monitoring",
+    "Assessment & Staging"
+   ]
+  },
+  "ssri-depression": {
+   "question": "How do SSRIs treat depression, and what should a patient starting one be told?",
+   "answer": "**In short:**  \nSelective serotonin reuptake inhibitors (SSRIs) treat depression by inhibiting the presynaptic reuptake of 5-HT (serotonin), thereby increasing serotonin concentrations in the neuronal synapse [[1]][[2]]. Patients starting an SSRI should be counseled on the expected 2-to-4-week delay for initial improvement, transient early side effects (such as nausea and headache), safety monitoring for changes in suicidality, and the importance of daily adherence without abrupt discontinuation [[4]][[6]][[7]][[10]].\n\n## Mechanism of SSRIs\n\n> **Background:** Neurotransmitters are chemical messengers that transmit signals across the small space between nerve cells. Once a signal is sent, specialized transporter proteins typically pull these messengers back into the sending cell to reset the synapse.\n\nAntidepressants in the SSRI class act on presynaptic regulation by targeting serotonin transporters responsible for reuptake into presynaptic neurons [[1]][[2]]. By blocking these transporters, SSRIs increase synaptic concentrations of 5-HT [[1]][[2]]. They have only weak effects on NE (norepinephrine) and DA (dopamine) reuptake [[1]]. Additionally, antidepressants modulate receptor activation of neuronal signal transduction pathways connected to 5-HT, DA, and NE [[3]]. \n\nSSRIs possess a low affinity for alpha 1-adrenergic ($\\alpha_1$), histaminic ($H_1$), and muscarinic ($M_1$) receptors [[4]]. Because they lack significant activity at these off-target receptors, SSRIs cause fewer side effects compared to TCAs (tricyclic antidepressants) [[4]].\n\n| Antidepressant Class | Presynaptic Mechanism | Affinity for $\\alpha_1$, $H_1$, and $M_1$ Receptors | Tolerability Comparison |\n|---|---|---|---|\n| **SSRIs** | Selectively inhibit 5-HT reuptake [[1]][[2]] | Low affinity [[4]] | Lower rates of orthostatic hypotension, sedation, weight gain, and anticholinergic effects [[4]] |\n| **TCAs** | Inhibit 5-HT and/or NE reuptake [[2]] | High affinity [[4]][[12]] | Higher rates of orthostatic hypotension, sedation, weight gain, and anticholinergic effects [[4]] |\n\n## Adverse Effects & Monitoring\n\n> **Background:** Patient monitoring involves regularly checking a person's clinical status, lab values, and physical measures to ensure a therapy remains safe and effective over time.\n\nMost initial side effects of SSRIs are dose-dependent, mild, and resolve within 1 to 2 weeks after initiating treatment or increasing the dose [[4]][[7]]. Common early symptoms include GI (gastrointestinal) distress (nausea, vomiting, diarrhea), headache, and anxiety [[4]][[6]]. Both somnolence (drowsiness) and insomnia can occur across all SSRIs [[4]][[10]].\n\nKey adverse reactions and their specific monitoring parameters include:\n- **Suicidality & Jitteriness:** Evaluated via patient interview [[6]]. Suicidality must be monitored weekly during the first few weeks of therapy in patients under age 25 or those with comorbid depression [[6]][[7]].\n- **Sexual Dysfunction:** SSRIs can cause impairment across all three stages of the sexual response: arousal, libido, and orgasm [[10]]. Assessed via patient interview; it is a major reason for nonadherence [[6]].\n- **Weight Gain:** Monitored using body weight, BMI (body mass index), and waist circumference [[6]]. Paroxetine has greater anticholinergic and antihistaminergic activity, making it more likely to cause sedation and weight gain than other SSRIs [[4]][[10]].\n- **Hyponatremia (low blood sodium):** Monitored using a BMP (basic metabolic panel) at baseline and periodically throughout therapy [[6]].\n- **QT Prolongation:** Citalopram carries a safety warning for dose-dependent QT interval prolongation, requiring maximum daily dosing limits (such as a maximum of 20 mg/day in elderly patients over 60 years old) [[1]][[10]].\n- **Discontinuation Syndrome:** Abruptly stopping an SSRI can trigger a withdrawal or discontinuation syndrome [[10]].\n\n## Patient Counseling\n\n> **Background:** Clear clinical communication requires adjusting medical language into accessible concepts so patients understand how to take their medications safely.\n\nWhen initiating an SSRI, counsel the patient using the following strategies and key points:\n\n- **Communication Technique:** Use layman's language (e.g., saying \"tired\" rather than fatigued) [[9]]. Ask open-ended questions (e.g., \"What questions can I answer about your medication today?\") instead of yes/no or leading questions [[9]].\n- **Treatment Timeline:** Inform the patient that early tolerability issues (like nausea or headache) usually peak in the first 1 to 2 weeks [[4]][[7]], but noticeable improvement in depression symptoms generally takes 2 to 4 weeks [[7]].\n- **Adherence and Discontinuation:** Emphasize taking the medication every day as prescribed [[7]]. Warn patients never to discontinue therapy abruptly due to the risk of discontinuation/withdrawal syndrome [[10]].\n- **Safety and Escalation:** Educate the patient and family on self-monitoring for worsening mood or suicidality [[7]]. Provide explicit instructions on when to contact the clinic or seek emergency medical care [[7]].\n\n## Key points to remember\n\n- SSRIs increase synaptic 5-HT by selectively inhibiting presynaptic serotonin reuptake transporters, featuring low affinity for $\\alpha_1$, $H_1$, and $M_1$ receptors [[1]][[2]][[4]].\n- Initial side effects like nausea, diarrhea, and headache are typically transient (resolving in 1\u20132 weeks), whereas therapeutic response requires 2 to 4 weeks [[4]][[6]][[7]].\n- Monitor for suicidality weekly during the first few weeks of treatment in patients under 25 years old or those with comorbid depression [[6]].\n- Key long-term safety monitoring includes baseline and periodic BMP for hyponatremia, body weight/BMI for weight gain (highest risk with paroxetine), and patient interviews for sexual dysfunction [[6]][[10]].\n- Use open-ended, plain language to counsel patients on daily adherence and to warn against abrupt drug discontinuation [[7]][[9]][[10]].",
+   "latency_s": 32.5,
+   "n_passages": 14,
+   "passages": [
+    {
+     "book": "rxprep",
+     "page": 809,
+     "chars": 895
+    },
+    {
+     "book": "dipiro",
+     "page": "1573",
+     "chars": 912
+    },
+    {
+     "book": "dipiro",
+     "page": "1623",
+     "chars": 982
+    },
+    {
+     "book": "dipiro",
+     "page": "1578",
+     "chars": 814
+    },
+    {
+     "book": "rxprep",
+     "page": 810,
+     "chars": 993
+    },
+    {
+     "book": "dipiro",
+     "page": "1624",
+     "chars": 754
+    },
+    {
+     "book": "dipiro",
+     "page": "1577",
+     "chars": 993
+    },
+    {
+     "book": "rxprep",
+     "page": 806,
+     "chars": 845
+    },
+    {
+     "book": "rxprep",
+     "page": 94,
+     "chars": 989
+    },
+    {
+     "book": "dipiro",
+     "page": "1578",
+     "chars": 921
+    },
+    {
+     "book": "rxprep",
+     "page": 810,
+     "chars": 855
+    },
+    {
+     "book": "dipiro",
+     "page": "1582",
+     "chars": 992
+    },
+    {
+     "book": "dipiro",
+     "page": "1478",
+     "chars": 998
+    },
+    {
+     "book": "dipiro",
+     "page": "1643",
+     "chars": 966
+    }
+   ],
+   "markers": 61,
+   "words": 823,
+   "app_confidence": 0.65,
+   "model": "gemini-3.6-flash",
+   "outline": [
+    "Mechanism of SSRIs",
+    "Adverse Effects & Monitoring",
+    "Patient Counseling"
+   ]
+  }
+ }
+}

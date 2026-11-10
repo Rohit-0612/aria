@@ -21,6 +21,7 @@ import pytest
 from agents.guardrail_agent import Intent
 from api.server import run_consultation
 from llm.errors import AriaLLMError
+from tests.conftest import as_retrieval
 
 
 async def collect(
@@ -48,9 +49,9 @@ def happy_path(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> None:
     from agents.judge_agent import Judgment
 
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: chunks))
     monkeypatch.setattr(
-        "graph.nodes.stream_answer", lambda q, c: iter(["Thiazides ", "are first-line."])
+        "graph.nodes.stream_answer", lambda q, c, *_: iter(["Thiazides ", "are first-line."])
     )
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(0.88, "grounded"))
 
@@ -81,9 +82,9 @@ async def test_generator_failure_emits_no_token_and_no_meta(
     "MODERATE CERTAINTY · grounded reply" onto a provider error.
     """
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: chunks))
 
-    def dead(q: str, c: list[Any]) -> Any:
+    def dead(q: str, c: list[Any], *_: Any) -> Any:
         raise AriaLLMError("generator", "llama-3.3-70b-versatile", "gone", "model_not_found")
         yield ""  # pragma: no cover - makes `dead` a generator function
 
@@ -122,7 +123,7 @@ async def test_guardrail_failure_does_not_fail_open(
         return []
 
     monkeypatch.setattr("graph.nodes.classify_query", dead)
-    monkeypatch.setattr("graph.nodes.navigator", spy)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(spy))
 
     events = await collect()
     assert not reached["navigator"]
@@ -140,9 +141,9 @@ async def test_judge_failure_keeps_the_answer_but_drops_the_score(
     Confidence must be null rather than the old fabricated 0.5.
     """
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: chunks))
     monkeypatch.setattr(
-        "graph.nodes.stream_answer", lambda q, c: iter(["Thiazides ", "are first-line."])
+        "graph.nodes.stream_answer", lambda q, c, *_: iter(["Thiazides ", "are first-line."])
     )
 
     def dead(q: str, a: str, c: list[Any]) -> Any:
@@ -167,8 +168,8 @@ async def test_unparseable_judge_reply_also_yields_no_tier(
     from agents.judge_agent import Judgment
 
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
-    monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c: iter(["Thiazides."]))
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: chunks))
+    monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c, *_: iter(["Thiazides."]))
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(None, "unparseable"))
 
     meta = next(e for e in await collect() if e["type"] == "meta")
@@ -186,3 +187,33 @@ async def test_out_of_scope_is_not_an_error(monkeypatch: pytest.MonkeyPatch) -> 
     assert "error" not in kinds
     assert "token" in kinds
     assert steps_at_end(events)["navigator"] == "skipped"
+
+
+@pytest.mark.asyncio
+async def test_a_restarted_answer_withdraws_the_half_answer_before_the_new_one(
+    happy_path: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A model that stops part-way is replaced, and the browser is told to
+    drop what it showed — the Judge scores only the answer that finished."""
+    judged: list[str] = []
+
+    def stream(q: str, c: Any, outline: Any, on_model: Any, on_restart: Any) -> Any:
+        yield "Half an ans"
+        on_restart("gemini-x")
+        yield "Thiazides are first-line."
+
+    def judge(q: str, a: str, c: Any) -> Any:
+        from agents.judge_agent import Judgment
+
+        judged.append(a)
+        return Judgment(0.9, "grounded")
+
+    monkeypatch.setattr("graph.nodes.stream_answer", stream)
+    monkeypatch.setattr("graph.nodes.judge_answer", judge)
+    events = await collect()
+    kinds = types_of(events)
+    assert "error" not in kinds
+    restart = kinds.index("restart")
+    tokens = [i for i, k in enumerate(kinds) if k == "token"]
+    assert tokens[0] < restart < tokens[-1]
+    assert judged == ["Thiazides are first-line."]

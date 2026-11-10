@@ -20,7 +20,7 @@ from llm.config import (
 
 def test_defaults_are_the_verified_live_models() -> None:
     assert spec_for(Role.GENERATOR).model == DEFAULT_GENERATOR_MODEL == "openai/gpt-oss-120b"
-    assert spec_for(Role.JUDGE).model == DEFAULT_SMALL_MODEL == "openai/gpt-oss-20b"
+    assert spec_for(Role.JUDGE).model == "openai/gpt-oss-120b"
     assert spec_for(Role.GUARDRAIL).model == DEFAULT_SMALL_MODEL
 
 
@@ -110,4 +110,4 @@ def test_reasoning_effort_is_overridable_per_role(monkeypatch: pytest.MonkeyPatc
     monkeypatch.setenv("ARIA_EVAL_JUDGE_MODEL", "openai/gpt-oss-120b")
     monkeypatch.setenv("ARIA_EVAL_JUDGE_EFFORT", "high")
     assert spec_for(Role.EVAL_JUDGE).reasoning_effort == "high"
-    assert spec_for(Role.JUDGE).reasoning_effort == "medium"
+    assert spec_for(Role.JUDGE).reasoning_effort == "low"

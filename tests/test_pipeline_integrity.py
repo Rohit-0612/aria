@@ -18,6 +18,7 @@ import api.server as server
 from agents.guardrail_agent import Intent
 from agents.judge_agent import Judgment
 from api.server import run_consultation
+from tests.conftest import as_retrieval
 
 
 async def collect(
@@ -38,8 +39,8 @@ def working_pipeline(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> list
     """A graph whose generator yields several distinct fragments."""
     fragments = ["Thiazide ", "diuretics ", "are ", "first-line."]
     monkeypatch.setattr("graph.nodes.classify_query", lambda q: Intent.CLINICAL)
-    monkeypatch.setattr("graph.nodes.navigator", lambda q: chunks)
-    monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c: iter(fragments))
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(lambda q: chunks))
+    monkeypatch.setattr("graph.nodes.stream_answer", lambda q, c, *_: iter(fragments))
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(0.88, "grounded"))
     return fragments
 

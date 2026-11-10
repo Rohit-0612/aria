@@ -78,7 +78,7 @@ def test_the_judge_asks_for_json_mode(monkeypatch: pytest.MonkeyPatch, chunks: l
     """Constrained decoding, rather than hoping the reply parses."""
     modes: list[bool] = []
 
-    def fake(role: Any, prompt: str, *, json_mode: bool = False) -> str:
+    def fake(role: Any, prompt: str, *, json_mode: bool = False, **_: Any) -> str:
         modes.append(json_mode)
         return '{"confidence": 0.9, "reason": "ok"}'
 

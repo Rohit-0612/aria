@@ -19,3 +19,6 @@ web/dist/
 
 # macOS
 .DS_Store
+
+# Eval passage text — copyrighted textbook pages, kept local like data/
+evals/coverage/passages_*.json

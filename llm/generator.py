@@ -14,13 +14,15 @@ and presented with ARIA's citation furniture around it.
 from __future__ import annotations
 
 import logging
-from collections.abc import Iterator
+import time
+from collections.abc import Callable, Iterator
 from typing import Any
 
-from llm.config import Role
-from llm.errors import EMPTY_RETRIEVAL_CODE, AriaRetrievalError
+from llm.config import Role, generator_cascade, spec_for
+from llm.errors import EMPTY_RETRIEVAL_CODE, AriaLLMError, AriaRetrievalError
+from llm.gemini import GeminiError, gemini_key, stream_gemini
 from llm.llm_setup import stream_role
-from llm.prompts import ANSWER_PROMPT
+from llm.prompts import ANSWER_PROMPT, TEACH_PROMPT
 
 logger = logging.getLogger(__name__)
 
@@ -50,27 +52,53 @@ def passage_label(chunk: Any) -> str:
     return f"{book}, p. {page}" if page is not None else book
 
 
-def format_passages(chunks: list[Any]) -> str:
+def format_passages(chunks: list[Any], only: set[int] | None = None) -> str:
     """Number the passages the way the reader will see them.
 
     Passage `n` here is citation `n` in the UI: both follow the order of
     `chunks`. That shared numbering is the whole contract behind an inline
     `[[n]]` marker opening the passage the claim rests on, so it must not be
     re-sorted anywhere between retrieval and the browser.
+
+    `only` prints a subset (1-based numbers) under their ORIGINAL numbers, for
+    a model whose token budget cannot take every passage: a gap in the
+    numbering is harmless, a renumbering would point citations at the wrong
+    passage.
     """
     return "\n\n".join(
         f"[{i}] {passage_label(chunk)}\n{chunk.page_content.strip()}"
         for i, chunk in enumerate(chunks, start=1)
+        if only is None or i in only
     )
 
 
-def _prompt_for(query: str, chunks: list[Any]) -> str:
-    """Build the grounded prompt, refusing an empty passage set.
+#: Groq reserves prompt + max_tokens of its 8,000-token minute up front, and
+#: max_tokens is 4,096, so the passages must fit in about 2,600 tokens there.
+GROQ_PASSAGE_CHARS = 10_000
 
-    Raises:
-        AriaRetrievalError: if `chunks` is empty. Generating from an empty
-            context is the one failure mode ARIA exists to prevent.
-    """
+
+def _budget_subset(chunks: list[Any], max_chars: int) -> set[int]:
+    """The most relevant passages that fit in `max_chars`, by original number."""
+    order = sorted(
+        range(len(chunks)),
+        key=lambda i: (
+            -float((getattr(chunks[i], "metadata", {}) or {}).get("relevance_score", 0.0))
+        ),
+    )
+    keep: set[int] = set()
+    used = 0
+    for i in order:
+        size = len(chunks[i].page_content)
+        if keep and used + size > max_chars:
+            continue
+        keep.add(i + 1)
+        used += size
+    return keep
+
+
+def _refuse_empty(chunks: list[Any]) -> None:
+    """Generating from an empty context is the one failure mode ARIA exists
+    to prevent."""
     if not chunks:
         raise AriaRetrievalError(
             stage="generator",
@@ -79,31 +107,133 @@ def _prompt_for(query: str, chunks: list[Any]) -> str:
             code=EMPTY_RETRIEVAL_CODE,
         )
 
-    return ANSWER_PROMPT.format(context=format_passages(chunks), question=query)
 
+def _prompt_for(
+    query: str, chunks: list[Any], outline: list[str] | None = None, only: set[int] | None = None
+) -> str:
+    """Build the grounded prompt, refusing an empty passage set.
 
-def stream_answer(query: str, chunks: list[Any]) -> Iterator[str]:
-    """Stream an answer to `query` grounded strictly in `chunks`.
-
-    This is the serving path: fragments reach the reader as the model writes
-    them, rather than after the whole answer exists.
+    With an outline it is the teaching prompt; without one, the original
+    answer prompt — so switching facet retrieval off restores the old
+    pipeline exactly.
 
     Raises:
         AriaRetrievalError: if `chunks` is empty.
-        AriaLLMError: if the generator model (and its fallback) cannot be
-            reached. The exception text is never a valid answer.
     """
-    yield from stream_role(Role.GENERATOR, _prompt_for(query, chunks))
+    _refuse_empty(chunks)
+    context = format_passages(chunks, only)
+    if outline:
+        return TEACH_PROMPT.format(
+            outline="\n".join(f"- {t}" for t in outline), context=context, question=query
+        )
+    return ANSWER_PROMPT.format(context=context, question=query)
 
 
-def generate_answer(query: str, chunks: list[Any]) -> str:
+# ── The Gemini cascade ─────────────────────────────────────────────────
+#
+# A model that just failed is skipped for a while rather than retried on the
+# next question: an exhausted daily quota stays exhausted for hours, and an
+# overloaded model costs the reader a timeout each time it is tried.
+_COOLDOWN_S = {
+    "quota": 30 * 60,
+    "overloaded": 3 * 60,
+    "network": 60,
+    "empty": 60,
+    "incomplete": 3 * 60,
+    "blocked": 0,
+    "bad_request": 30 * 60,
+    "unavailable": 12 * 3600,
+}
+_cooling_until: dict[str, float] = {}
+
+
+def _available(model: str) -> bool:
+    return _cooling_until.get(model, 0.0) <= time.time()
+
+
+def stream_answer(
+    query: str,
+    chunks: list[Any],
+    outline: list[str] | None = None,
+    on_model: Callable[[str], None] | None = None,
+    on_restart: Callable[[str], None] | None = None,
+) -> Iterator[str]:
+    """Stream an answer to `query` grounded strictly in `chunks`.
+
+    With an outline and a Gemini key, the Gemini models in
+    `generator_cascade()` are tried in order: a model that is out of quota,
+    overloaded, unavailable or blocks the reply is skipped *before* any text
+    reaches the reader, and the next one is asked. If none answers, the Groq
+    generator writes it from the most relevant passages that fit its token
+    budget, keeping their original numbers. `on_model` is told which model
+    is writing, before the first fragment.
+
+    A free-tier model can also stop part-way through (it did in 2 of 11
+    answers in one eval run). With `on_restart`, that is recovered: the
+    caller is told to discard what has streamed, and the next model writes
+    the answer from the start. Without it, the failure is raised — a caller
+    that cannot take text back must not be handed two answers joined up.
+
+    Raises:
+        AriaRetrievalError: if `chunks` is empty.
+        AriaLLMError: if every model fails, or one fails mid-answer (a half
+            answer is never passed off as a whole one). The exception text is
+            never a valid answer.
+    """
+    _refuse_empty(chunks)
+    tried: list[str] = []
+    if outline and gemini_key():
+        prompt = _prompt_for(query, chunks, outline)
+        for model in generator_cascade():
+            if not _available(model):
+                continue
+            try:
+                stream = stream_gemini(model, prompt)
+                first = next(stream)
+            except GeminiError as exc:
+                tried.append(f"{model}:{exc.kind}")
+                _cooling_until[model] = time.time() + _COOLDOWN_S.get(exc.kind, 60)
+                logger.warning("generator %s unavailable (%s) — trying the next model", model, exc)
+                continue
+            if on_model:
+                on_model(model)
+            yield first
+            try:
+                yield from stream
+            except GeminiError as exc:
+                tried.append(f"{model}:{exc.kind} part-way")
+                _cooling_until[model] = time.time() + _COOLDOWN_S.get(exc.kind, 60)
+                if on_restart is None:
+                    raise AriaLLMError(
+                        stage="generator",
+                        model=model,
+                        message=f"the answer stopped part-way ({exc.kind})",
+                        code=f"gemini_{exc.kind}",
+                    ) from exc
+                logger.warning("generator %s stopped part-way (%s) — rewriting", model, exc)
+                on_restart(model)
+                continue
+            return
+        if tried:
+            logger.warning("every Gemini model failed (%s) — writing on Groq", ", ".join(tried))
+
+    only = _budget_subset(chunks, GROQ_PASSAGE_CHARS) if outline else None
+    if on_model:
+        on_model(spec_for(Role.GENERATOR).model)
+    yield from stream_role(Role.GENERATOR, _prompt_for(query, chunks, outline, only))
+
+
+def generate_answer(query: str, chunks: list[Any], outline: list[str] | None = None) -> str:
     """Write an answer to `query` grounded strictly in `chunks`.
 
     The batch form, for callers with nothing to stream to (the eval suite,
     the CLI entry points). Same prompt and same guarantees as
     `stream_answer` because it is the same call, merely joined up.
     """
-    answer = "".join(stream_answer(query, chunks))
+    parts: list[str] = []
+    for piece in stream_answer(query, chunks, outline, on_restart=lambda _m: parts.clear()):
+        parts.append(piece)
+    answer = "".join(parts)
     logger.info("generated answer of %d characters from %d chunks", len(answer), len(chunks))
     return answer
 

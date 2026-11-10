@@ -68,6 +68,11 @@ export type ConsultationEvent =
    * clinician with the authority of a cited answer.
    */
   | { type: 'token'; chunk: string }
+  /**
+   * The model writing the answer stopped part-way and another is starting
+   * over: everything streamed so far is withdrawn, never kept or joined.
+   */
+  | { type: 'restart' }
   /** A failure. Terminal, and carries no confidence and no citations. */
   | ({ type: 'error' } & ConsultationError)
   | { type: 'done' };

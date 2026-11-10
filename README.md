@@ -35,7 +35,13 @@ Its knowledge comes from two reference texts — **DiPiro's Pharmacotherapy: A
 Pathophysiologic Approach (12e)** and the **RxPrep NAPLEX Course Book (2025)** —
 and every answer is:
 
-- **Generated only from retrieved passages**, never from the model's open-ended memory
+- **Taught, not just answered** — a question is broken into the outline a student
+  needs (what it is, how it is treated and why, how the drugs work, what to watch
+  for), each part is looked up separately, and the answer explains the reasoning
+  and defines its terms
+- **Generated only from retrieved passages**, never from the model's open-ended memory —
+  a short general explanation is allowed only in a block marked *not from the
+  textbooks*, and never carries a drug, dose or number
 - **Cited inline, claim by claim** — each statement carries a marker that opens the
   exact passage (book, page, text) it was drawn from
 - **Independently adjudicated** by a Judge agent that scores the finished answer for
@@ -66,12 +72,14 @@ A LangGraph state machine routes every query through four specialised agents:
                        │         others ── anything but clinical ──► declined
                        │ clinical  (self-harm gets support and a helpline)
                  ┌─────▼──────┐
-                 │ Navigator  │  rewrites for search, hybrid retrieval from
-                 └─────┬──────┘  Qdrant (dense + BM25, RRF), reranks with Cohere
+                 │ Navigator  │  plans a learning outline (3–5 topics), runs a
+                 └─────┬──────┘  hybrid search per topic (dense + BM25, RRF),
+                       │         one Cohere rerank, keeps every topic covered
                        │ numbered passages ──────────────► sources → browser
                  ┌─────▼──────┐
-                 │ Generator  │  writes from the passages only, citing [[n]];
-                 └─────┬──────┘  streamed to the reader as it is written
+                 │ Generator  │  teaches from the passages only, citing [[n]];
+                 └─────┬──────┘  Gemini Flash (free tier) → Groq if unavailable;
+                       │         streamed to the reader as it is written
                        │ finished answer
                  ┌─────▼──────┐
                  │   Judge    │  scores groundedness, citation accuracy,
@@ -89,9 +97,9 @@ code that actually ran.
 | Agent | Role |
 |---|---|
 | **Guardrail** | If the question depends on the conversation ("what about its dose?"), rewrites it into a standalone question first — every later stage works on that, and the conversation itself never reaches the generator as evidence. Then classifies the message by **intent**, not topic: *clinical* (including toxicity, overdose and antidotes — core pharmacy education), *out of scope*, *self-harm* or *harm to others*. Anything but clinical is declined before retrieval; self-harm gets a supportive reply with a helpline instead of a refusal notice. Messages the guardrail flags, or that carry risk language, get a second opinion from a policy-following safety model (`gpt-oss-safeguard-20b`) — see [Safety posture](#safety-posture). |
-| **Navigator** | Rewrites the question into an optimised medical search query, performs **hybrid, source-balanced retrieval** — dense and BM25 search fused by Reciprocal Rank Fusion, as a global candidate set plus a guaranteed RxPrep set, so neither exact drug names nor the smaller book are lost — then keeps only the most relevant passages via cross-encoder reranking. |
-| **Generator** | Synthesises the answer from the retrieved passages only (`openai/gpt-oss-120b` via Groq). The passages arrive numbered `[1] DiPiro's Pharmacotherapy 12e, p. 1081`, and every claim is cited inline as `[[n]]` — the same numbering the browser uses, so a marker opens the passage it rests on. |
-| **Judge** | Independently scores the finished answer for groundedness, citation accuracy (does each `[[n]]` point at a passage that says that?) and relevance. Below 0.60 the answer is still shown — it is real, and its sources are visible — but with an explicit warning to check each claim. When the Judge cannot score an answer, the UI shows **Not adjudicated** rather than a placeholder number. |
+| **Navigator** | Plans the **outline** a complete teaching answer needs — always the question's core, the treatment approach when treatment is asked, and the drugs' mechanism and adverse effects whenever drugs are involved — each with its own search query (`retrieval/planner.py`). Every topic gets a **hybrid, source-balanced search** (dense + BM25 fused by Reciprocal Rank Fusion, a global set plus a guaranteed RxPrep set), run in parallel; the pooled candidates are reranked in **one** Cohere call, and each topic keeps its best three passages before the rest are filled by score (up to 14), so the main topic cannot crowd out safety or mechanism. Passages that open on a stray full stop are cleaned up. If planning fails it falls back to the single-search pipeline. |
+| **Generator** | Teaches from the retrieved passages only. Each passage arrives numbered `[1] DiPiro's Pharmacotherapy 12e, p. 1081`, and every clinical fact is cited inline as `[[n]]` — the same numbering the browser uses. Written by **Gemini Flash** on the free tier (a cascade of six Flash models: one out of quota, overloaded or gone is skipped for a while), falling back to `openai/gpt-oss-120b` on Groq with the most relevant passages that fit its budget, under their original numbers. A model that fails before writing is skipped invisibly; one that stops part-way has its text withdrawn from the screen and the next model starts over. |
+| **Judge** | Independently scores the finished answer (`openai/gpt-oss-120b`, a different family from the Gemini writer) for groundedness, citation accuracy (does each `[[n]]` point at a passage that says that?) and relevance. Below 0.60 the answer is still shown — it is real, and its sources are visible — but with an explicit warning to check each claim. When the Judge cannot score an answer, the UI shows **Not adjudicated** rather than a placeholder number. |
 
 The answer is **streamed as the model writes it**, so the first words appear
 while the rest is still being generated. The retrieved passages are sent
@@ -100,9 +108,10 @@ The Judge scores the finished text, so the grounding badge arrives with the
 completed turn rather than before it — the Judge annotates the answer, it does
 not gate it (see [Design decisions](#design-decisions)).
 
-Each agent's model is configured by role in `llm/config.py` — the generator
-gets the larger model, while the guardrail, query rewrite and judge run on
-`openai/gpt-oss-20b`. Nothing is hardcoded: every ID is overridable via an
+Each agent's model is configured by role in `llm/config.py` — the Gemini
+cascade writes, the Judge and the Groq fallback writer use
+`openai/gpt-oss-120b`, and the guardrail, outline planner and query rewrite
+run on `openai/gpt-oss-20b`. Nothing is hardcoded: every ID is overridable via an
 `ARIA_*_MODEL` environment variable, validated against the provider's live
 model list at startup, and backed by an automatic fallback if a model is
 decommissioned mid-flight.
@@ -116,7 +125,7 @@ decommissioned mid-flight.
 | Corpus | 27,104 passages — 23,087 DiPiro, 4,017 RxPrep — with book, PDF page and printed page label |
 | Reference matter | Chapter bibliographies and back-of-book index pages (4,124 chunks, 13% of the original 31,228) are left out of the index — they match a question's words and say nothing about it — and still filtered at query time as a guard |
 | First-stage search | **Hybrid**: dense + BM25, fused by Reciprocal Rank Fusion inside one Qdrant query; source-balanced, top 20 overall + top 8 RxPrep |
-| Second-stage rerank | Cohere `rerank-v5.0-fast` cross-encoder — top 5 kept |
+| Second-stage rerank | Cohere `rerank-v5.0-fast` cross-encoder, one call per question over every topic's candidates — the best 3 per topic kept, up to 14 in all (5 in the single-search pipeline) |
 | Evidence floor | Passages the reranker scores below `ARIA_RELEVANCE_FLOOR` (0.02) are not cited; if even the best passage scores under 0.5, the reader is warned the books may not cover the question |
 
 Retrieval returns the passages that are actually relevant rather than a fixed
@@ -220,6 +229,68 @@ the mean groundedness by several points, so treat a difference of a few points
 between runs as noise. LLM judges are a strong signal, not ground truth. The
 suite is most useful for what it is used for here — finding the failure, then
 checking the fix.
+
+### Teaching answers
+
+The suite above measures whether an answer is *true*. It could not see that an
+answer was *incomplete*: asked how localized and metastatic prostate cancer
+differ and how each is treated, ARIA scored 0.95 groundedness while saying
+nothing about staging, why hormone therapy works, or what it does to bone. One
+search query, five passages (all Groq's free per-minute budget allowed), and a
+prompt that forbade any explanation the passages did not spell out.
+
+`evals/coverage_eval.py` scores **coverage**: for each of 10 questions, the
+facets a pharmacy student needs (written in `evals/coverage_cases.py` before
+any answer was generated), each graded covered / partial / missing, plus 1–5
+for explaining *why* and defining terms. Same 10 questions, same grader, run of
+November 9, 2026:
+
+| | Before (single search, Groq) | **After (outline + Gemini)** |
+|---|---|---|
+| Coverage of the facets a student needs | 0.57 | **0.78** — higher on 8 of 10, equal on 2 |
+| Explains *why* (1–5) | 2.5 | **4.1** |
+| Defines terms (1–5) | 3.1 | **4.6** |
+| Structure (1–5) | 4.3 | **4.8** |
+| Passages per answer | 5 | 14 |
+| Words | 414 | 769 |
+| Cited numbers found in the passage they cite — no model involved | — | **149/155**; the other 6 are a correct number cited to the wrong passage (5) or a definition ("A1C, over 3 months") — none invented |
+| App Judge (gpt-oss-120b) | — | 0.89 mean; 8 of 10 at ≥ 0.9 |
+| Latency, median / max | 7.9 s / 23.8 s | 29.7 s / 51.5 s |
+
+**How it is graded.** The grader is `qwen3.8-27b`, a family that wrote neither
+side (the baseline is gpt-oss, the teaching answers Gemini). It was meant to be
+Gemini 3.5 Flash, until the API's quota errors showed `gemini-3.5-flash` is
+served by `gemini-3.6-flash` — one of the models writing the answers, so it
+would have been grading its own work. Its scores, kept in their own files,
+moved the same way (0.64 → 0.74 on all 10 for the first teaching version;
+0.67 → 0.88 on the three final answers it graded before its quota ran out). The baseline's own
+Judge score (0.89) came from the earlier, smaller Judge and is not comparable;
+its passages were not saved, so it could not be re-scored.
+
+**What the eval found on the way.** The first teaching version scored 0.79
+coverage and an app Judge of 0.71: Gemini, told to be complete, added what it
+knew under citations to passages that did not say it (a drug's brand name, a
+threshold cited to the wrong passage). The prompt now requires the cited
+passage to contain the fact and forbids specifics the passages do not write,
+even well-known ones; the two worst answers went from 0.35 and 0.40 to 0.90.
+Then three failures that only show up on a free tier:
+
+- Gemini wrote that SGLT-2 inhibitors *increase* glucose reabsorption. The
+  passage was an OCR'd diagram — labels side by side, the label naming the
+  defect the drug corrects. The small Judge scored that answer 0.6, the same as
+  a correct one; the 120B Judge gave it 0.3, which is why the Judge was moved up.
+  The prompt now treats label runs as saying nothing about how labels relate.
+- A model stopped part-way through 2 of 11 answers, and the reader got an
+  error. Now the half answer is withdrawn from the screen and the next model
+  writes it from the start; the Judge only ever sees the finished one.
+- A stream closed after 14 words with no error and was shown as the answer.
+  A reply now counts as whole only if Gemini marks it finished (`STOP`).
+
+**The cost is time and quota.** A teaching answer takes about 30 s against 8,
+because it is two to three times longer and the Judge reads 14 passages. Each
+Gemini model allows about 20 answers a day on the free tier, so on a busy day
+the cascade works down the list and then writes on Groq, with fewer passages.
+`ARIA_FACET_RETRIEVAL=0` restores the old pipeline exactly.
 
 ### Safety
 
@@ -361,9 +432,14 @@ sent a reader to the wrong page. They now show the printed number.
 offline eval judge is Qwen. LLM judges measurably favour output from their own
 family, so a suite where gpt-oss grades gpt-oss would flatter itself.
 
-**Small model where it's enough.** The guardrail, follow-up rewrite, query
-rewrite and Judge run on `gpt-oss-20b` with low reasoning effort (a measured 3×
-latency win on the YES/NO guardrail); only the answer gets the 120B model. All
+**Small model where it's enough.** The guardrail, follow-up rewrite, outline
+planner and query rewrite run on `gpt-oss-20b` with low reasoning effort (a
+measured 3× latency win on the YES/NO guardrail). The Judge moved up to the
+120B model when answers grew: on the same saved teaching answers, the small
+model scored a well-cited answer 0.6 and one with an inverted mechanism also
+0.6; the large one gave them 0.9 and 0.3, which is what checking by hand says.
+When the large model is rate limited the Judge scores on the small one rather
+than not at all. All
 model IDs live in one registry (`llm/config.py`), are overridable by
 environment variable, are verified against the provider at boot, and fall back
 automatically if one is decommissioned.
@@ -456,8 +532,8 @@ A present-but-empty collection is reported as an outage: with no passages
 there is nothing to ground an answer in. Point an uptime monitor here.
 
 `/api/consult` is rate limited, because it is public and every call spends
-real quota — four model calls plus a rerank — against Groq's 8000 TPM
-ceiling. Per-client requests are capped by `ARIA_RATE_LIMIT` (10 per minute)
+real quota — four Groq calls, a Gemini call and a rerank — against Groq's
+8000 TPM ceiling and Gemini's daily free quota. Per-client requests are capped by `ARIA_RATE_LIMIT` (10 per minute)
 and total concurrency by `ARIA_MAX_CONCURRENT` (4); a throttled request
 returns on the error channel, so the UI shows a fault rather than an empty
 reply.
@@ -470,7 +546,7 @@ verdict is constrained to valid JSON rather than parsed out of prose.
 
 **Deployment.** The included `Dockerfile` builds the frontend and serves API + UI
 from a single container on port 7860 — the image behind the
-[live demo on Hugging Face Spaces](https://mohitrks-aria.hf.space). Runtime dependencies are
+[live demo on Hugging Face Spaces](https://rks0612-aria.hf.space). Runtime dependencies are
 pinned in `requirements-space.txt`, so a rebuild for an unrelated change cannot
 pick up a breaking upstream release; `requirements.txt` adds the ingestion and
 restore tooling.
@@ -494,6 +570,12 @@ for the restore procedure.
   with their own evals; re-running the full answer suite on the new stack is
   next. The free tier's daily token quotas set the pace — the eval judge and
   the live app's small model share limits, so evals are run in sections.
+- **Teaching answers run on free tiers.** Gemini's free tier allows about 20
+  requests a day per model and gives no uptime promise; free models also time
+  out or stop part-way. ARIA skips and rewrites around both, and falls back to
+  Groq, but a busy day means shorter answers from fewer passages. Some passages
+  still begin mid-sentence: completing them from their neighbours needs a
+  payload index on `metadata.page` in Qdrant.
 - **Evals are small.** 10 consultations, 22 safety cases, 39 + 20 retrieval
   questions. Enough to find failures and compare designs; not enough for tight
   confidence intervals. Expert-written reference answers would allow RAGAS
@@ -536,7 +618,8 @@ aria/
 
 **Prerequisites:** Python 3.11+, Node 18+, and API keys for
 [Groq](https://console.groq.com), [Cohere](https://dashboard.cohere.com) and
-[Qdrant Cloud](https://cloud.qdrant.io).
+[Qdrant Cloud](https://cloud.qdrant.io). A [Gemini](https://aistudio.google.com)
+key (free tier) is optional: without it every answer is written on Groq.
 
 ```bash
 # 1. Backend setup

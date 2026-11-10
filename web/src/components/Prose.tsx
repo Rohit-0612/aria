@@ -73,6 +73,9 @@ const INLINE =
   per passage.
 */
 const MARKER_RUN = /\]\]\s*\[\[/g;
+
+/** `**Background:**` (or `**Background**:`) opening a blockquote. */
+const BACKGROUND = /^\s*\*\*Background:?\*\*:?\s*/i;
 // The generator writes "occurs [[5]]." — a superscript sits against its
 // word, so the space before it goes.
 const SPACE_BEFORE_MARKER = /\s+(?=\[\[\d)/g;
@@ -296,7 +299,7 @@ export function Prose({ content, streaming }: { content: string; streaming?: boo
               return (
                 <h4
                   key={bi}
-                  className="mb-1.5 mt-5 font-display text-[1.1rem] font-semibold leading-snug tracking-tight2 text-ink first:mt-0"
+                  className="head mb-2 mt-6 border-t border-rule/30 pt-2.5 text-[1.3rem] leading-[0.95] text-ink first:mt-0 first:border-t-0 first:pt-0 sm:text-[1.4rem]"
                 >
                   {renderInline(b.text, `h-${bi}`)}
                 </h4>
@@ -336,7 +339,32 @@ export function Prose({ content, streaming }: { content: string; streaming?: boo
               </ol>
             );
 
-          case 'quote':
+          case 'quote': {
+            // `> **Background:** …` is general explanation the generator is
+            // allowed to add from its own knowledge — never a clinical fact,
+            // never cited. It must not look like evidence, so it is set apart
+            // and says plainly where it comes from.
+            const first = b.paragraphs[0] ?? '';
+            const bg = first.match(BACKGROUND);
+            if (bg) {
+              const paragraphs = [first.slice(bg[0].length), ...b.paragraphs.slice(1)].filter(
+                (p) => p.trim(),
+              );
+              return (
+                <aside
+                  key={bi}
+                  aria-label="General background, not from the textbooks"
+                  className="my-4 rounded-[2px] border border-dashed border-rule/35 bg-surface/50 px-3.5 py-2.5"
+                >
+                  <span className="label mb-1 block">General background · not from the textbooks</span>
+                  {paragraphs.map((para, pi) => (
+                    <p key={pi} className="my-1 text-[0.92em] italic leading-relaxed text-ink-soft">
+                      {renderInline(para, `bg-${bi}-${pi}`)}
+                    </p>
+                  ))}
+                </aside>
+              );
+            }
             return (
               <blockquote
                 key={bi}
@@ -349,6 +377,7 @@ export function Prose({ content, streaming }: { content: string; streaming?: boo
                 ))}
               </blockquote>
             );
+          }
 
           case 'table': {
             tableNo += 1;
@@ -422,10 +451,10 @@ function ClinicalTable({
   return (
     <figure className="my-5">
       <figcaption className="label mb-1.5">Table {number}</figcaption>
-      <div className="overflow-x-auto rounded-[10px] border border-line bg-surface/40">
+      <div className="overflow-x-auto rounded-[2px] border border-rule/40 bg-surface/40">
         <table className="w-full border-collapse text-[0.88rem]">
           <thead>
-            <tr className="border-b border-line-strong/60 bg-surface/70">
+            <tr className="border-b border-rule/60 bg-surface/80">
               {table.header.map((h, i) => (
                 <th
                   key={i}

@@ -18,6 +18,7 @@ import os
 import re
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, TypeVar
 
 from dotenv import load_dotenv
@@ -289,6 +290,130 @@ class BalancedRetriever:
             len(kept) - n_rx,
         )
         return kept
+
+    def invoke_facets(
+        self,
+        question: str,
+        facets: list[tuple[str, str]],
+        per_facet: int = 3,
+        cap: int = 14,
+        k_facet: int = 10,
+        k_facet_rxprep: int = 3,
+    ) -> list[Any]:
+        """Retrieve for every facet of an outline, rerank once, keep each facet's best.
+
+        `facets` is a list of (name, search query). Every facet gets its own
+        hybrid search (global + RxPrep), all of them in parallel. The pooled
+        candidates are then reranked in ONE call against the question and the
+        outline together — the reranker's trial quota is counted in calls,
+        and a call per facet would spend it five times as fast. Selection then
+        guarantees each facet up to `per_facet` passages, best first, before
+        filling the rest of `cap` by score, so a facet such as "adverse
+        effects and monitoring" cannot be crowded out by the question's main
+        topic. The result is ordered facet by facet, which is the numbering
+        the generator cites by.
+
+        Raises:
+            AriaRetrievalError: as `invoke` — the store or reranker failing, or
+                nothing clearing the relevance floor.
+        """
+        jobs: list[tuple[int, str, Any]] = []
+        for i, (_, query) in enumerate(facets):
+            jobs.append((i, query, None))
+            jobs.append((i, query, RXPREP_FILTER))
+
+        def search(job: tuple[int, str, Any]) -> tuple[int, list[Any]]:
+            i, query, flt = job
+            k = k_facet if flt is None else k_facet_rxprep
+            return i, with_transient_retry(
+                lambda: self.vs.similarity_search(query, k=k, filter=flt), "vector search"
+            )
+
+        try:
+            with ThreadPoolExecutor(max_workers=min(8, len(jobs))) as pool:
+                found = list(pool.map(search, jobs))
+        except Exception as exc:
+            logger.error("vector store unreachable during retrieval: %s", exc)
+            raise wrap_retrieval_error(exc, "navigator", collection_name()) from exc
+
+        by_key: dict[str, Any] = {}
+        facet_of: dict[str, set[int]] = {}
+        n_reference = 0
+        for i, docs in found:
+            for d in docs:
+                key = d.page_content[:120]
+                if key not in by_key:
+                    if is_reference_matter(d.page_content):
+                        n_reference += 1
+                        continue
+                    by_key[key] = d
+                facet_of.setdefault(key, set()).add(i)
+        if n_reference:
+            logger.info("Dropped %d reference-list/index passage(s) before reranking", n_reference)
+        if not by_key:
+            raise AriaRetrievalError(
+                stage="navigator",
+                source=collection_name(),
+                message=(
+                    "only reference lists and index pages matched the query"
+                    if n_reference
+                    else "the vector store returned no candidate passages"
+                ),
+                code=EMPTY_RETRIEVAL_CODE,
+            )
+
+        keys = list(by_key)
+        docs = [by_key[k] for k in keys]
+        rerank_query = f"{question}\nCovering: " + "; ".join(name for name, _ in facets)
+        try:
+            ranked = with_transient_retry(
+                lambda: self.reranker.rerank(
+                    [d.page_content for d in docs], rerank_query, top_n=len(docs)
+                ),
+                "rerank",
+            )
+        except Exception as exc:
+            logger.error("reranker unavailable: %s", exc)
+            raise wrap_retrieval_error(exc, "navigator", "reranker") from exc
+
+        score: dict[str, float] = {}
+        for r in ranked:
+            k = keys[int(r["index"])]
+            score[k] = float(r["relevance_score"])
+            by_key[k].metadata["relevance_score"] = score[k]
+        eligible = sorted(
+            (k for k in keys if score.get(k, 0.0) >= self.floor), key=lambda k: -score[k]
+        )
+        if not eligible:
+            raise AriaRetrievalError(
+                stage="navigator",
+                source=collection_name(),
+                message="no retrieved passage cleared the relevance floor",
+                code=EMPTY_RETRIEVAL_CODE,
+            )
+
+        chosen: list[str] = []
+        for i in range(len(facets)):
+            mine = [k for k in eligible if i in facet_of[k] and k not in chosen][:per_facet]
+            chosen.extend(mine)
+        for k in eligible:
+            if len(chosen) >= cap:
+                break
+            if k not in chosen:
+                chosen.append(k)
+        chosen = chosen[:cap]
+
+        result = [by_key[k] for k in chosen]
+        n_rx = sum(1 for d in result if d.metadata.get("book") == "rxprep")
+        logger.info(
+            "Facet retrieve: %d facets, %d candidates -> %d kept (%d RxPrep, %d DiPiro)",
+            len(facets),
+            len(keys),
+            len(result),
+            n_rx,
+            len(result) - n_rx,
+        )
+        return result
 
 
 def get_balanced_retriever(

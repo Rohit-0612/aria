@@ -1,0 +1,442 @@
+{
+ "label": "baseline",
+ "grader": "gemini-3.5-flash",
+ "graded_at": "2026-11-08T07:53:32.221620+00:00",
+ "rows": {
+  "prostate-local-vs-advanced": {
+   "coverage": 0.643,
+   "structure": 5,
+   "explains_why": 2,
+   "defines_terms": 2,
+   "biggest_gap": "The answer fails to explain the adverse effects and monitoring parameters of androgen deprivation therapy (ADT) and does not explain the biological mechanism behind ADT or the definition of castration resistance.",
+   "facets": [
+    {
+     "facet": "Defines localized disease (confined to the prostate) versus locally advanced and metastatic disease",
+     "verdict": "covered",
+     "note": "Clearly defines localized disease versus advanced and metastatic disease in text and tables."
+    },
+    {
+     "facet": "Explains how the stage/extent is established (e.g. PSA, Gleason/grade, imaging) or risk-stratified",
+     "verdict": "partial",
+     "note": "Mentions PSA, DRE, and imaging in the context of active surveillance, but does not explain how initial staging or risk stratification (e.g., Gleason score/grade) is performed."
+    },
+    {
+     "facet": "States the goal of therapy in each: curative intent for localized, control/survival/palliation for metastatic",
+     "verdict": "covered",
+     "note": "Clearly contrasts curative intent for localized disease with disease control, survival, and palliation for metastatic disease."
+    },
+    {
+     "facet": "Covers options for localized disease: active surveillance, radical prostatectomy, radiation",
+     "verdict": "covered",
+     "note": "Covers active surveillance, radical prostatectomy, and radiation therapy."
+    },
+    {
+     "facet": "Explains androgen deprivation therapy (ADT) and why it works (prostate cancer growth depends on androgens)",
+     "verdict": "partial",
+     "note": "Mentions ADT and achieving testosterone suppression (<50 ng/dL), but does not explain the biological reason why it works (androgen dependency)."
+    },
+    {
+     "facet": "Explains castration-resistant disease and how treatment escalates (e.g. abiraterone, enzalutamide/apalutamide, docetaxel)",
+     "verdict": "partial",
+     "note": "Lists therapeutic escalation options for castration-resistant disease, but fails to define what castration-resistant means."
+    },
+    {
+     "facet": "Covers adverse effects of ADT and what to monitor (e.g. bone loss, hot flashes, metabolic/cardiovascular effects, testosterone/PSA)",
+     "verdict": "missing",
+     "note": "Does not discuss the adverse effects of ADT (e.g., bone loss, hot flashes, cardiovascular/metabolic risks) or comprehensive monitoring."
+    }
+   ]
+  },
+  "diabetes-t1-vs-t2": {
+   "coverage": 0.643,
+   "structure": 5,
+   "explains_why": 4,
+   "defines_terms": 3,
+   "biggest_gap": "The answer misses critical clinical guidance on selecting SGLT2 inhibitors or GLP-1 receptor agonists for cardiovascular and renal risk reduction, as well as hypoglycemia recognition and treatment.",
+   "facets": [
+    {
+     "facet": "Explains the pathophysiology difference: autoimmune beta-cell destruction (absolute insulin deficiency) vs insulin resistance with relative deficiency",
+     "verdict": "covered",
+     "note": "Clearly contrasts absolute insulin deficiency from autoimmune destruction in T1D with insulin resistance and progressive beta-cell decline in T2D."
+    },
+    {
+     "facet": "Contrasts typical presentation/onset and risk of DKA",
+     "verdict": "covered",
+     "note": "Contrasts onset (sudden vs gradual), typical age, and risk of ketoacidosis (DKA)."
+    },
+    {
+     "facet": "States that type 1 requires insulin and describes the basal-bolus (or pump) approach",
+     "verdict": "covered",
+     "note": "Explains the requirement for lifelong insulin in T1D and details basal-bolus regimens and pump therapy."
+    },
+    {
+     "facet": "Describes type 2 first-line therapy (lifestyle plus metformin) and how therapy is intensified",
+     "verdict": "covered",
+     "note": "Outlines lifestyle, metformin, and step-wise intensification based on A1C thresholds."
+    },
+    {
+     "facet": "Explains when SGLT2 inhibitors or GLP-1 receptor agonists are preferred (cardiovascular or kidney disease)",
+     "verdict": "missing",
+     "note": "Does not explain that SGLT2 inhibitors or GLP-1 RAs are preferred in patients with atherosclerotic cardiovascular disease, heart failure, or chronic kidney disease."
+    },
+    {
+     "facet": "Gives glycemic targets/monitoring (A1C goal, glucose monitoring)",
+     "verdict": "partial",
+     "note": "Mentions A1C thresholds for therapy escalation, but fails to state standard glycemic targets (e.g., A1C < 7%) or discuss glucose monitoring methods."
+    },
+    {
+     "facet": "Covers hypoglycemia: which drugs cause it, recognition and treatment",
+     "verdict": "missing",
+     "note": "Does not cover hypoglycemia recognition, management (e.g., the 15-15 rule or glucagon), or clearly identify high-risk drug classes such as sulfonylureas."
+    }
+   ]
+  },
+  "seizures-focal-vs-generalized": {
+   "coverage": 0.714,
+   "structure": 5,
+   "explains_why": 3,
+   "defines_terms": 4,
+   "biggest_gap": "The answer completely omits critical medication safety issues, such as valproate teratogenicity and lamotrigine rash/SJS risk.",
+   "facets": [
+    {
+     "facet": "Defines focal seizures (onset in one hemisphere/network) versus generalized (both hemispheres from onset)",
+     "verdict": "covered",
+     "note": "Clearly defines focal onset (one region/side of brain) versus generalized onset (both hemispheres simultaneously)."
+    },
+    {
+     "facet": "Names generalized seizure types (e.g. tonic-clonic, absence, myoclonic)",
+     "verdict": "partial",
+     "note": "Mentions absence seizures, but does not list or define other generalized seizure types like tonic-clonic or myoclonic."
+    },
+    {
+     "facet": "Explains that seizure type drives drug choice",
+     "verdict": "covered",
+     "note": "Explains clearly that accurate seizure classification drives drug choice (broad- vs narrow-spectrum)."
+    },
+    {
+     "facet": "Gives first-line options for focal seizures (e.g. lamotrigine, levetiracetam, carbamazepine/oxcarbazepine)",
+     "verdict": "partial",
+     "note": "Mentions carbamazepine and broad-spectrum options, but does not explicitly present standard first-line drugs specific to focal seizures."
+    },
+    {
+     "facet": "Gives options for generalized seizures, including broad-spectrum agents (e.g. valproate, lamotrigine, levetiracetam) and ethosuximide for absence",
+     "verdict": "covered",
+     "note": "Correctly names broad-spectrum ASMs (lamotrigine, levetiracetam, topiramate, valproic acid) and ethosuximide for absence seizures."
+    },
+    {
+     "facet": "Explains drugs that can worsen certain generalized seizures (e.g. carbamazepine/phenytoin in absence or myoclonic)",
+     "verdict": "covered",
+     "note": "Explains that phenytoin and carbamazepine can exacerbate absence seizures."
+    },
+    {
+     "facet": "Covers key safety issues: teratogenicity (valproate), rash/SJS (lamotrigine), monitoring, drug interactions",
+     "verdict": "missing",
+     "note": "Omits key safety concerns such as valproate teratogenicity, lamotrigine rash/SJS, and monitoring/interaction principles."
+    }
+   ]
+  },
+  "hfref-gdmt": {
+   "coverage": 0.571,
+   "structure": 5,
+   "explains_why": 4,
+   "defines_terms": 3,
+   "biggest_gap": "The answer completely omits required monitoring parameters (potassium, renal function, BP, HR) and critical drug safety cautions like hyperkalemia, the ACEi/ARNI washout period, and avoiding NSAIDs.",
+   "facets": [
+    {
+     "facet": "Defines HFrEF (reduced ejection fraction) and the neurohormonal activation behind it",
+     "verdict": "partial",
+     "note": "Expands the acronym HFrEF and mentions neurohormonal activation, but does not define what reduced ejection fraction actually is (e.g., LVEF \u226440%)."
+    },
+    {
+     "facet": "Names the guideline-directed pillars: ARNI/ACE inhibitor/ARB, evidence-based beta-blocker, MRA, SGLT2 inhibitor",
+     "verdict": "covered",
+     "note": "Clearly lists all four core GDMT pillars including specific evidence-based beta-blockers."
+    },
+    {
+     "facet": "Explains why each pillar helps (blocks RAAS / sympathetic / aldosterone effects, mortality benefit)",
+     "verdict": "covered",
+     "note": "Explains how each class targets specific neurohormonal pathways and maladaptive remodeling to improve survival."
+    },
+    {
+     "facet": "Explains loop diuretics are for congestion/symptoms, not mortality",
+     "verdict": "partial",
+     "note": "Correctly categorizes loop diuretics under symptom/edema control, but does not explicitly state that they lack a mortality benefit."
+    },
+    {
+     "facet": "Describes initiation and titration (start low, titrate to target doses)",
+     "verdict": "covered",
+     "note": "Explains starting low and titrating to target doses, including simultaneous initiation strategies."
+    },
+    {
+     "facet": "Covers monitoring: potassium, renal function, blood pressure, heart rate",
+     "verdict": "missing",
+     "note": "Does not mention monitoring blood pressure, heart rate, serum potassium, or renal function."
+    },
+    {
+     "facet": "Mentions key cautions (e.g. hyperkalemia with MRA, ACE inhibitor + ARNI washout, avoiding harmful drugs like NSAIDs)",
+     "verdict": "missing",
+     "note": "Omits key cautions such as hyperkalemia risk, the 36-hour ACEi-to-ARNI washout period, and drugs to avoid like NSAIDs."
+    }
+   ]
+  },
+  "warfarin-vs-doac-af": {
+   "coverage": 0.643,
+   "structure": 5,
+   "explains_why": 2,
+   "defines_terms": 3,
+   "biggest_gap": "The answer completely omits the pharmacological mechanisms of action (vitamin K antagonism vs. direct factor Xa/thrombin inhibition) and reversal agents for anticoagulant-induced bleeding.",
+   "facets": [
+    {
+     "facet": "Explains why anticoagulation is needed in AF (stroke risk) and how risk is assessed (e.g. CHA2DS2-VASc)",
+     "verdict": "partial",
+     "note": "Mentions that anticoagulation is used for stroke prevention in AF, but does not explain how stroke risk is assessed (e.g., CHA2DS2-VASc score)."
+    },
+    {
+     "facet": "Explains the mechanism difference: vitamin K antagonist vs direct thrombin or factor Xa inhibition",
+     "verdict": "missing",
+     "note": "Does not explain the mechanisms of action for warfarin (vitamin K antagonist) or DOACs (direct thrombin inhibitor vs. factor Xa inhibitors)."
+    },
+    {
+     "facet": "Covers monitoring: INR target for warfarin versus no routine INR for DOACs",
+     "verdict": "partial",
+     "note": "Mentions that DOACs do not require routine INR monitoring, but fails to mention the target INR range for warfarin (2.0\u20133.0)."
+    },
+    {
+     "facet": "Covers dose adjustment for renal function for DOACs",
+     "verdict": "covered",
+     "note": "Explains renal clearance, the need for dose adjustments based on renal function, and specific options for low CrCl."
+    },
+    {
+     "facet": "Covers interactions: many drug/food interactions with warfarin, fewer with DOACs",
+     "verdict": "covered",
+     "note": "Notes that DOACs have fewer food and drug interactions compared to warfarin."
+    },
+    {
+     "facet": "Covers bleeding risk and reversal agents (vitamin K, idarucizumab, andexanet alfa)",
+     "verdict": "partial",
+     "note": "Compares major bleeding and intracranial hemorrhage risks well, but completely omits reversal agents (vitamin K, idarucizumab, andexanet alfa)."
+    },
+    {
+     "facet": "States situations where warfarin is still preferred (e.g. mechanical heart valves, moderate-severe mitral stenosis)",
+     "verdict": "covered",
+     "note": "Clearly identifies mechanical heart valves and moderate-to-severe mitral stenosis as conditions where warfarin is preferred."
+    }
+   ]
+  },
+  "htn-first-line": {
+   "coverage": 0.571,
+   "structure": 5,
+   "explains_why": 2,
+   "defines_terms": 3,
+   "biggest_gap": "The answer entirely lacks information on adverse effects, monitoring parameters (renal function, electrolytes), and dangerous combinations to avoid (dual RAS blockade).",
+   "facets": [
+    {
+     "facet": "Gives the definition/staging of hypertension and the BP target",
+     "verdict": "partial",
+     "note": "Blood pressure targets (<130/80 mm Hg) are covered clearly, but numerical definitions/staging of Stage 1 vs Stage 2 hypertension are not provided."
+    },
+    {
+     "facet": "Covers lifestyle modification as part of treatment",
+     "verdict": "covered",
+     "note": "Mentions lifestyle modifications (diet, exercise, weight loss, sodium restriction) for all patients."
+    },
+    {
+     "facet": "Names first-line drug classes: thiazide diuretic, ACE inhibitor, ARB, calcium channel blocker",
+     "verdict": "covered",
+     "note": "Correctly lists all four first-line classes: ACE inhibitors, ARBs, CCBs, and thiazide diuretics."
+    },
+    {
+     "facet": "Explains how compelling indications change choice (e.g. ACEI/ARB in CKD with albuminuria or diabetes)",
+     "verdict": "partial",
+     "note": "Mentions compelling indications conceptually and gives an example for beta-blockers (post-MI/arrhythmia), but does not explain specific compelling choices like ACEi/ARBs in CKD or diabetes."
+    },
+    {
+     "facet": "Explains when to start with two drugs (BP well above goal)",
+     "verdict": "covered",
+     "note": "Explains starting with two agents for Stage 2 hypertension (when BP is significantly above goal)."
+    },
+    {
+     "facet": "Covers monitoring and adverse effects (electrolytes, renal function, cough, edema)",
+     "verdict": "missing",
+     "note": "Does not discuss monitoring parameters (e.g., serum creatinine, potassium) or adverse effects (e.g., cough, edema, hyperkalemia)."
+    },
+    {
+     "facet": "Mentions combinations to avoid (e.g. ACE inhibitor plus ARB)",
+     "verdict": "missing",
+     "note": "Does not mention drug combinations to avoid, such as combining an ACE inhibitor with an ARB."
+    }
+   ]
+  },
+  "asthma-vs-copd": {
+   "coverage": 0.714,
+   "structure": 5,
+   "explains_why": 3,
+   "defines_terms": 4,
+   "biggest_gap": "The response fails to cover practical clinical aspects like adverse effects (e.g., oral thrush from ICS), inhaler technique, and the step-up/step-down management framework.",
+   "facets": [
+    {
+     "facet": "Contrasts pathophysiology: variable, largely reversible airway inflammation (asthma) vs progressive, largely irreversible airflow limitation (COPD)",
+     "verdict": "partial",
+     "note": "Mentions reversible vs progressive decline and anti-inflammatory vs bronchodilator focus, but does not explicitly contrast the underlying pathophysiology (inflammation vs irreversible airflow limitation)."
+    },
+    {
+     "facet": "Contrasts typical patient/onset and triggers (e.g. allergy/atopy vs smoking history)",
+     "verdict": "covered",
+     "note": "Clearly contrasts onset age, smoking history, and allergy/atopy history in a table."
+    },
+    {
+     "facet": "Explains the role of inhaled corticosteroids as the cornerstone in asthma",
+     "verdict": "covered",
+     "note": "Explains ICS as the preferred first-line controller/anti-inflammatory therapy in asthma."
+    },
+    {
+     "facet": "Explains the role of long-acting bronchodilators (LAMA/LABA) as the cornerstone in COPD",
+     "verdict": "covered",
+     "note": "Explains LAMA and LABA bronchodilators as preferred maintenance therapy in COPD."
+    },
+    {
+     "facet": "Explains why LABA monotherapy is avoided in asthma",
+     "verdict": "covered",
+     "note": "Explains that LABA monotherapy is avoided in asthma due to a boxed warning for increased asthma-related death risk."
+    },
+    {
+     "facet": "Covers reliever/rescue therapy and step-up/step-down approach",
+     "verdict": "partial",
+     "note": "Covers reliever/rescue inhalers (SABA/SAMA) well, but completely omits the step-up/step-down management approach."
+    },
+    {
+     "facet": "Covers inhaler technique/adherence and adverse effects (e.g. oral thrush with ICS)",
+     "verdict": "missing",
+     "note": "Does not discuss inhaler technique, adherence, or adverse effects such as oral thrush with ICS."
+    }
+   ]
+  },
+  "levothyroxine": {
+   "coverage": 0.667,
+   "structure": 4,
+   "explains_why": 3,
+   "defines_terms": 3,
+   "biggest_gap": "The answer misses explaining the underlying pathophysiology of hypothyroidism (low T4 causing high baseline TSH) and specific clinical risks of over-replacement like atrial fibrillation and osteoporosis.",
+   "facets": [
+    {
+     "facet": "Explains hypothyroidism (low thyroid hormone, raised TSH in primary disease) and why levothyroxine replaces it",
+     "verdict": "partial",
+     "note": "States levothyroxine replaces synthetic T4 in primary hypothyroidism, but fails to explain what hypothyroidism is (low thyroid hormone levels, elevated baseline TSH)."
+    },
+    {
+     "facet": "Covers starting dose and the lower start in elderly or cardiac patients",
+     "verdict": "covered",
+     "note": "Provides full replacement dose (1.6 mcg/kg IBW) and specifies starting lower in older/at-risk patients, though cardiac disease specifically is not explicitly highlighted."
+    },
+    {
+     "facet": "Explains administration: empty stomach, separate from calcium/iron/PPIs and other binders",
+     "verdict": "covered",
+     "note": "Clearly notes administration on an empty stomach and separating from interacting substances like calcium and iron."
+    },
+    {
+     "facet": "Explains monitoring with TSH and the timing (about 6-8 weeks after a change, because of the long half-life)",
+     "verdict": "partial",
+     "note": "Mentions monitoring TSH at 4\u20136 weeks to allow equilibration, but omits the explanation of levothyroxine's long half-life (~7 days) as the reason for this timeframe."
+    },
+    {
+     "facet": "Covers signs of over-replacement (hyperthyroid symptoms, atrial fibrillation, bone loss)",
+     "verdict": "partial",
+     "note": "Mentions observing for hyperthyroidism and suppressed TSH, but omits important specific complications of overtreatment like atrial fibrillation and bone loss."
+    },
+    {
+     "facet": "Mentions special situations (e.g. dose increase in pregnancy)",
+     "verdict": "partial",
+     "note": "Lists pregnancy status as a consideration in starting dose, but does not explain that levothyroxine requirements significantly increase during pregnancy."
+    }
+   ]
+  },
+  "acetaminophen-overdose": {
+   "coverage": 0.786,
+   "structure": 5,
+   "explains_why": 4,
+   "defines_terms": 4,
+   "biggest_gap": "The underlying pathophysiology of acetaminophen toxicity (saturation of normal conjugation pathways leading to NAPQI accumulation via CYP2E1) is not explicitly detailed.",
+   "facets": [
+    {
+     "facet": "Explains the mechanism of toxicity (NAPQI accumulation when glutathione is depleted, causing hepatotoxicity)",
+     "verdict": "partial",
+     "note": "Mentions that NAC replenishes glutathione and binds NAPQI, but does not explicitly explain the baseline metabolic pathway shift leading to glutathione depletion and NAPQI toxicity in overdose."
+    },
+    {
+     "facet": "Describes the clinical course/phases (often few early symptoms, liver injury after 24-72 h)",
+     "verdict": "covered",
+     "note": "Clearly lists all four clinical phases from nonspecific early symptoms to lab evidence of liver injury and recovery/transplant."
+    },
+    {
+     "facet": "Explains risk assessment with a timed serum level and the treatment nomogram",
+     "verdict": "covered",
+     "note": "Explains plotting serum concentration on the Rumack-Matthew nomogram based on ingestion time."
+    },
+    {
+     "facet": "States that N-acetylcysteine is the antidote and explains how it works (replenishes glutathione)",
+     "verdict": "covered",
+     "note": "Identifies NAC as the antidote and explains it works by replenishing glutathione."
+    },
+    {
+     "facet": "Explains timing matters (most effective within about 8-10 hours) and that it is still given late",
+     "verdict": "partial",
+     "note": "Mentions empiric treatment if results take >8 hours, but does not explicitly explain that NAC is most effective within 8\u201310 hours or that it is still beneficial when given late."
+    },
+    {
+     "facet": "Covers decontamination (activated charcoal when early) and monitoring of liver function/INR",
+     "verdict": "covered",
+     "note": "Covers activated charcoal within 4 hours and monitoring AST/ALT and INR."
+    },
+    {
+     "facet": "Mentions factors that increase risk (e.g. chronic alcohol use, malnutrition)",
+     "verdict": "partial",
+     "note": "Mentions chronic alcoholics under special populations, but does not explain other risk factors like malnutrition or enzyme induction."
+    }
+   ]
+  },
+  "ssri-depression": {
+   "coverage": 0.429,
+   "structure": 4,
+   "explains_why": 2,
+   "defines_terms": 1,
+   "biggest_gap": "The response completely fails to explain the mechanism of action of SSRIs or even define what SSRI stands for.",
+   "facets": [
+    {
+     "facet": "Explains the mechanism (serotonin reuptake inhibition) at a basic level",
+     "verdict": "missing",
+     "note": "Despite a section header on how SSRIs work, the mechanism of action (serotonin reuptake inhibition) is never stated or explained."
+    },
+    {
+     "facet": "Explains the delayed onset of benefit (several weeks) and need for an adequate trial",
+     "verdict": "covered",
+     "note": "Explains delayed onset (1-2 weeks initial, 6-8/12 weeks full effect) and the need for an 8-12 week adequate trial."
+    },
+    {
+     "facet": "Covers common adverse effects (GI upset, sexual dysfunction, sleep changes)",
+     "verdict": "partial",
+     "note": "Mentions sexual dysfunction and sleep disturbances (fluoxetine), but omits common GI side effects (nausea/diarrhea)."
+    },
+    {
+     "facet": "Covers serious risks: serotonin syndrome, suicidality warning in young people, bleeding risk, hyponatremia",
+     "verdict": "partial",
+     "note": "Covers serotonin syndrome and suicidal ideation, but misses specific mention of young age risk for suicidality, bleeding risk, and hyponatremia."
+    },
+    {
+     "facet": "Explains continuation after response and not stopping abruptly (discontinuation syndrome, tapering)",
+     "verdict": "partial",
+     "note": "Mentions continuation for relapse prevention, but omits warnings against abrupt discontinuation, tapering guidance, and discontinuation syndrome."
+    },
+    {
+     "facet": "Covers key interactions (e.g. MAOIs, other serotonergic drugs, NSAIDs/anticoagulants)",
+     "verdict": "missing",
+     "note": "Key drug interactions (MAOIs, anticoagulants/NSAIDs, other serotonergic agents) are not mentioned."
+    },
+    {
+     "facet": "Explains what to do if there is no response (dose optimisation, switching or augmenting)",
+     "verdict": "partial",
+     "note": "Mentions dose adjustment based on response, but omits strategies for non-responders such as switching agents or augmentation."
+    }
+   ]
+  }
+ }
+}

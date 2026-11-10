@@ -4,6 +4,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Display face — a tall, condensed serif for every headline, set in caps
+   at tight tracking, the way a broadsheet sets its heads.
+   Melodrama by Indian Type Foundry (ITF Free Font License). */
+@font-face {
+  font-family: 'Melodrama';
+  src: url('../assets/fonts/Melodrama-600.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Melodrama';
+  src: url('../assets/fonts/Melodrama-700.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   * {
     border-color: hsl(var(--line));
@@ -16,21 +34,18 @@
     /* Touch devices: no grey flash on tap, no rubber-banding behind the app. */
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
+    background: hsl(var(--desk));
   }
 
   body {
     @apply bg-desk text-ink font-prose;
     margin: 0;
     overflow: hidden;
-    /* The desk: a quiet woven neutral, no gradient blobs. */
-    background-image:
-      linear-gradient(hsl(var(--ink) / 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--ink) / 0.02) 1px, transparent 1px);
-    background-size: 26px 26px;
   }
 
   ::selection {
-    background: hsl(var(--accent) / 0.22);
+    background: hsl(var(--ink));
+    color: hsl(var(--page));
   }
 
   :focus-visible {
@@ -43,12 +58,24 @@
   h2,
   h3 {
     @apply font-display;
-    font-optical-sizing: auto;
   }
 }
 
 @layer components {
-  /* Section running head — small, letterspaced caps, journal style. */
+  /* Broadsheet headline: condensed display serif, caps, tight. */
+  .head {
+    @apply font-display font-bold uppercase;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+
+  /* A headline printed in reverse — the nameplate slab. */
+  .slab {
+    background: hsl(var(--ink));
+    color: hsl(var(--page));
+  }
+
+  /* Section running head — small, letterspaced caps. */
   .sec {
     @apply font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-faint;
   }
@@ -58,21 +85,14 @@
     @apply font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink-faint;
   }
 
-  /* A chat-surface chip: quiet by default, warms on hover. */
+  /* A chat-surface chip: square-cut like a printed tag, warms on hover. */
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1
+    @apply inline-flex items-center gap-1.5 rounded-[2px] border border-line-strong/70 px-2.5 py-1
            font-mono text-[0.6rem] uppercase tracking-[0.1em] text-ink-soft transition-all
            duration-200;
   }
   .chip:hover {
-    @apply border-line-strong text-ink;
-  }
-
-  /* The reader's own message — warm, weightless, tucked to the right. */
-  .bubble {
-    box-shadow:
-      0 1px 0 hsl(var(--ink) / 0.03),
-      0 8px 22px -18px hsl(var(--shadow) / 0.5);
+    @apply border-ink/60 text-ink;
   }
 
   /* Live status text: a highlight travels left-to-right through the glyphs. */
@@ -111,33 +131,165 @@
   }
   @media (min-width: 640px) {
     .pb-safe {
-      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+      padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
     }
   }
 
-  /* Softens the top of the transcript as it slides under the header. */
-  .fade-top {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 28px);
-    mask-image: linear-gradient(to bottom, transparent 0, black 28px);
-  }
-
-  /* Identifier / metadata text — DOIs, manuscript ids. */
+  /* Identifier / metadata text — page numbers, timings. */
   .ident {
     @apply font-mono text-[0.62rem] tracking-tight text-ink-faint;
   }
 
-  /* Journal double rule. */
+  /* Rules, as a printer sets them. */
   .rule-double {
     border-top: 3px double hsl(var(--rule) / 0.85);
   }
   .rule-hair {
     border-top: 1px solid hsl(var(--rule) / 0.55);
   }
+  /* The masthead's hairline-over-hairline foot. */
+  .rule-press {
+    border-bottom: 1px solid hsl(var(--rule));
+    box-shadow:
+      0 3px 0 -2px hsl(var(--desk)),
+      0 4px 0 -2px hsl(var(--rule));
+  }
 
-  /* Superscript citation reference number, journal-set. */
+  /* Superscript citation reference number. */
   .supref {
     font-feature-settings: 'sups' 1;
   }
+
+  /* ── A hand-drawn loop that inks itself around its host on hover. ── */
+  .doodle-host {
+    position: relative;
+  }
+  .doodle {
+    position: absolute;
+    inset: -22% -7%;
+    width: 114%;
+    height: 144%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .doodle path {
+    fill: none;
+    stroke: hsl(var(--accent));
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.8s var(--ease-io);
+  }
+  .doodle-host:hover .doodle path,
+  .doodle-host:focus-visible .doodle path,
+  .doodle-trigger:hover .doodle path,
+  .doodle-trigger:focus-visible .doodle path,
+  .doodle-host.is-drawn .doodle path {
+    stroke-dashoffset: 0;
+  }
+
+  /* ── Letters roll up on hover. ── */
+  .roll {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 1.15em;
+    line-height: 1.15;
+    vertical-align: bottom;
+  }
+  .roll > span {
+    display: block;
+    transition: transform 0.6s var(--ease-expo);
+  }
+  :is(a, button):is(:hover, :focus-visible) .roll > span {
+    transform: translateY(-100%);
+  }
+
+  /* ── Underline that inks itself in. ── */
+  .u-line {
+    background: linear-gradient(currentColor, currentColor) 0 94% / 0% 0.06em no-repeat;
+    transition: background-size 1.2s var(--ease-expo) 0.2s;
+  }
+  .u-line.is-in {
+    background-size: 100% 0.06em;
+  }
+
+  /* ── Postage stamp: perforated edge, inked frame. ── */
+  .stamp {
+    padding: 5px;
+    background: hsl(var(--surface-raised));
+    -webkit-mask:
+      radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px,
+      linear-gradient(#000, #000) center / calc(100% - 9px) calc(100% - 9px) no-repeat;
+    mask:
+      radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px,
+      linear-gradient(#000, #000) center / calc(100% - 9px) calc(100% - 9px) no-repeat;
+    filter: drop-shadow(0 6px 10px hsl(var(--shadow) / 0.18));
+  }
+  .stamp-in {
+    height: 100%;
+    border: 1.5px solid currentColor;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent 0 5px,
+      hsl(var(--ink) / 0.05) 5px 6px
+    );
+  }
+
+  /* ── Cursor badge: an ink disc that follows the pointer over things that
+        ask for one (data-cursor). The system cursor stays as it is. ── */
+  .cursor-badge {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 80;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .cursor-badge > span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: hsl(var(--ink));
+    color: hsl(var(--page));
+    font-family: Melodrama, Georgia, serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    /* Beside the pointer, not under it, so it never hides what it names. */
+    transform: translate(16px, -50%) scale(0);
+    transform-origin: left center;
+    transition: transform 0.5s var(--ease-expo);
+  }
+  .cursor-badge.is-on > span {
+    transform: translate(16px, -50%) scale(1);
+  }
+  .cursor-badge.is-down > span {
+    transform: translate(16px, -50%) scale(0.86);
+  }
+}
+
+/* ── Paper grain: fibres + blotches over the whole page, like newsprint. ── */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  pointer-events: none;
+  mix-blend-mode: var(--grain-blend);
+  opacity: var(--grain-opacity);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.38 0 0 0 0 0.33 0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.5 0 0 0 0 0.42 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
 }
 
 /* Slim, paper-toned scrollbar. */

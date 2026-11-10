@@ -30,7 +30,7 @@ export default {
         'tier-limited': ch('--tier-limited'),
       },
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
+        display: ['Melodrama', 'Georgia', 'serif'],
         prose: ['Spectral', 'Georgia', 'serif'],
         mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
       },

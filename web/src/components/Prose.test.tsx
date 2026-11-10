@@ -114,3 +114,22 @@ describe('existing shapes still render', () => {
     expect(out).not.toContain('\\');
   });
 });
+
+describe('background blocks', () => {
+  it('sets a Background blockquote apart and says it is not from the textbooks', () => {
+    const out = html(
+      'ADT lowers testosterone [[1]].\n\n> **Background:** Hormones are chemical messengers.\n\nNext.',
+    );
+    expect(out).toContain('<aside');
+    expect(textOf(out)).toContain('not from the textbooks');
+    expect(textOf(out)).toContain('Hormones are chemical messengers.');
+    // The marker word itself is replaced by the label, not printed.
+    expect(textOf(out)).not.toContain('Background:');
+  });
+
+  it('leaves an ordinary note blockquote as a quote', () => {
+    const out = html('> **Note:** Check renal function [[2]].');
+    expect(out).toContain('<blockquote');
+    expect(out).not.toContain('<aside');
+  });
+});

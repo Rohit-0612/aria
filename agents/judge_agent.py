@@ -20,7 +20,8 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from llm.config import Role
+from llm.config import Role, judge_spare_model
+from llm.errors import AriaLLMError
 from llm.generator import format_passages
 from llm.llm_setup import invoke_role
 
@@ -34,6 +35,8 @@ JUDGE_PROMPT = """You are a quality judge for a medical assistant's answers. The
 3. RELEVANCE: Does the answer actually address the QUESTION?
 
 Lower the score for unsupported claims and for markers attached to passages that do not say what the answer claims.
+Blockquotes that begin with "> **Background:**" are general explanation, openly marked in the interface as not from the sources: do not count them against groundedness — but lower the score if one states a drug, dose, number, target or recommendation, because clinical specifics must always be cited.
+The CONTEXT may show only the passages the answer cites, under their original numbers.{withheld}
 
 CONTEXT:
 {context}
@@ -82,23 +85,107 @@ def _parse(raw: str) -> Judgment:
     )
 
 
+#: The Judge runs on Groq, which reserves prompt + max_tokens of an
+#: 8,000-token minute up front. A teaching answer cites up to ~14 passages;
+#: this keeps the passages near 3,500 tokens so the whole call fits.
+JUDGE_PASSAGE_CHARS = 12_000
+_MARKER = re.compile(r"\[\[(\d+)\]\]")
+
+
+def _judged_passages(answer: str, chunks: list[Any]) -> set[int] | None:
+    """Which passages (by original number) the Judge is shown.
+
+    The passages the answer cites, most relevant first, within the budget —
+    a passage nobody cites cannot ground anything. With no markers at all,
+    the most relevant passages that fit. `None` means "all of them", for the
+    short five-passage answers the budget always covered.
+    """
+    total = sum(len(c.page_content) for c in chunks)
+    if total <= JUDGE_PASSAGE_CHARS:
+        return None
+    cited = {int(m) for m in _MARKER.findall(answer) if 1 <= int(m) <= len(chunks)}
+    pool = sorted(
+        cited or range(1, len(chunks) + 1),
+        key=lambda n: (
+            -float((getattr(chunks[n - 1], "metadata", {}) or {}).get("relevance_score", 0.0))
+        ),
+    )
+    keep: set[int] = set()
+    used = 0
+    for n in pool:
+        size = len(chunks[n - 1].page_content)
+        if keep and used + size > JUDGE_PASSAGE_CHARS:
+            continue
+        keep.add(n)
+        used += size
+    return keep
+
+
+def _withheld_note(answer: str, chunks: list[Any], shown: set[int] | None) -> str:
+    """Name the cited passages the budget left out, so that a citation to one
+    is not mistaken for a citation to nothing. Without this the Judge read a
+    well-cited levothyroxine answer as citing "a passage that does not exist"
+    and scored it 0.4; the passage was real, it just did not fit."""
+    if shown is None:
+        return ""
+    cited = {int(m) for m in _MARKER.findall(answer) if 1 <= int(m) <= len(chunks)}
+    left_out = sorted(cited - shown)
+    if not left_out:
+        return ""
+    names = ", ".join(f"[{n}]" for n in left_out)
+    return (
+        f"\nPassages {names} are cited and do exist but are not shown, for length. "
+        "Do not count a citation to them as an error, and do not judge the claims "
+        "that rest only on them; judge the rest."
+    )
+
+
+def _is_rate_limited(exc: AriaLLMError) -> bool:
+    return "rate_limit" in (exc.code or "") or "rate limit" in str(exc).lower()
+
+
+def _ask(prompt: str, model: str | None = None) -> Judgment:
+    """One judgment. Groq's JSON mode occasionally rejects the model's own
+    output (`json_validate_failed`) — the same reply would have parsed. That
+    is retried once without JSON mode instead of leaving the answer unscored.
+
+    A rate-limited Judge model (its per-minute budget is shared with the
+    Groq fallback writer) hands over to the spare model: a score from the
+    small model is better than "Not adjudicated"."""
+    try:
+        return _parse(invoke_role(Role.JUDGE, prompt, json_mode=True, model=model))
+    except AriaLLMError as exc:
+        spare = judge_spare_model()
+        if _is_rate_limited(exc) and model is None and spare != exc.model:
+            logger.warning("judge %s rate limited — scoring on %s", exc.model, spare)
+            return _ask(prompt, spare)
+        if exc.code != "json_validate_failed":
+            raise
+        logger.info("judge JSON mode rejected its own reply — asking without it")
+        return _parse(invoke_role(Role.JUDGE, prompt, model=model))
+
+
 def judge_answer(query: str, answer: str, chunks: list[Any]) -> Judgment:
     """Score `answer` against the passages it was supposed to be grounded in.
 
     Raises:
         AriaLLMError: if the judge model cannot be reached.
     """
-    prompt = JUDGE_PROMPT.format(context=format_passages(chunks), query=query, answer=answer)
+    shown = _judged_passages(answer, chunks)
+    context = format_passages(chunks, shown)
+    prompt = JUDGE_PROMPT.format(
+        context=context, query=query, answer=answer, withheld=_withheld_note(answer, chunks, shown)
+    )
 
     # Asked twice at most. An unparseable reply is intermittent, not a
     # property of the answer: in the eval suite about one judgment in ten
     # came back without its JSON, and the same prompt re-asked parsed fine.
     # One retry (~0.5s on the small model) turns most "Not adjudicated"
     # turns into scored ones; a second failure is reported, not hidden.
-    judgment = _parse(invoke_role(Role.JUDGE, prompt, json_mode=True))
+    judgment = _ask(prompt)
     if not judgment.adjudicated:
         logger.info("judge reply unparseable (%s) — asking once more", judgment.reason)
-        judgment = _parse(invoke_role(Role.JUDGE, prompt, json_mode=True))
+        judgment = _ask(prompt)
 
     if judgment.adjudicated:
         logger.info("judge confidence: %s - %s", judgment.confidence, judgment.reason)

@@ -17,7 +17,9 @@ do that, so an empty retrieval is raised as a failure.
 from __future__ import annotations
 
 import logging
+import os
 import threading
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 from llm.config import Role
@@ -28,6 +30,8 @@ from llm.errors import (
     wrap_retrieval_error,
 )
 from llm.llm_setup import invoke_role
+from retrieval.context_window import complete_passages
+from retrieval.planner import plan_facets
 from retrieval.reranker import get_balanced_retriever
 from vectorstore.qdrant_store import collection_name
 
@@ -36,7 +40,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["navigator", "optimize_query"]
+__all__ = ["Retrieval", "facet_retrieval_enabled", "navigate", "navigator", "optimize_query"]
 
 OPTIMIZE_PROMPT = """You are a medical search query optimizer.
 Convert the user's question into a clear, concise medical search query.
@@ -104,16 +108,43 @@ def _get_retriever() -> BalancedRetriever:
     return _retriever
 
 
-def navigator(query: str) -> list[Any]:
-    """Retrieve the reranked passages that should ground the answer.
+@dataclass(frozen=True)
+class Retrieval:
+    """The passages, and the outline they were gathered for (empty when the
+    question was searched as one query)."""
+
+    chunks: list[Any]
+    outline: list[str] = field(default_factory=list)
+
+
+def facet_retrieval_enabled() -> bool:
+    """Outline-driven retrieval is the default; `ARIA_FACET_RETRIEVAL=0` turns
+    it off, which restores the single-search pipeline (rollback, and the
+    "before" arm of the coverage eval)."""
+    return os.getenv("ARIA_FACET_RETRIEVAL", "1").strip().lower() not in {"0", "false", "no", "off"}
+
+
+def navigate(query: str) -> Retrieval:
+    """Retrieve the passages that should ground the answer, and the outline.
+
+    With facet retrieval on, the question is planned into facets and each
+    is searched; if planning yields nothing usable, one optimised search is
+    run instead. Either way the passages' half-sentences are completed.
 
     Raises:
         AriaRetrievalError: if the evidence base is unreachable, or if it
-            yields no passages. Never returns an empty list — the caller
-            would have no way to tell "nothing matched" from "nothing was
-            asked", and the generator would answer ungrounded either way.
+            yields no passages. Never returns empty — the caller would have
+            no way to tell "nothing matched" from "nothing was asked", and the
+            generator would answer ungrounded either way.
     """
-    chunks = _get_retriever().invoke(optimize_query(query))
+    retriever = _get_retriever()
+    facets = plan_facets(query) if facet_retrieval_enabled() else []
+    if facets:
+        chunks = retriever.invoke_facets(query, [(f.name, f.query) for f in facets])
+        outline = [f.name for f in facets]
+    else:
+        chunks = retriever.invoke(optimize_query(query))
+        outline = []
     if not chunks:
         raise AriaRetrievalError(
             stage="navigator",
@@ -121,9 +152,16 @@ def navigator(query: str) -> list[Any]:
             message="no passages matched the query",
             code=EMPTY_RETRIEVAL_CODE,
         )
+    if facet_retrieval_enabled():
+        chunks = complete_passages(chunks, getattr(retriever, "vs", None))
 
     logger.info("%d relevant chunks retrieved", len(chunks))
-    return chunks
+    return Retrieval(chunks=chunks, outline=outline)
+
+
+def navigator(query: str) -> list[Any]:
+    """The passages alone — `navigate` without the outline."""
+    return navigate(query).chunks
 
 
 if __name__ == "__main__":

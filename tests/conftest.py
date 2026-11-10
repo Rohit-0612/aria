@@ -37,7 +37,29 @@ _MODEL_VARS = [
 def clean_model_env(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     for var in _MODEL_VARS:
         monkeypatch.delenv(var, raising=False)
+    # The outline planner and the Gemini generator both call a live model
+    # the moment they are reachable. Off by default here; tests of those
+    # paths switch them on explicitly, with the provider faked.
+    monkeypatch.setenv("ARIA_FACET_RETRIEVAL", "0")
+    monkeypatch.delenv("ARIA_GENERATOR_CASCADE", raising=False)
+    # Set empty rather than deleted: `load_dotenv()` runs when llm_setup is
+    # first imported and would otherwise put the real key back mid-test. It
+    # never overrides a variable that already exists, even an empty one.
+    monkeypatch.setenv("GEMINI_API_KEY", "")
+    monkeypatch.setenv("GOOGLE_API_KEY", "")
     yield
+
+
+def as_retrieval(fake: Any) -> Any:
+    """Adapt a fake `navigator(query) -> chunks` to `navigate(query) -> Retrieval`.
+
+    The node now receives the passages together with the teaching outline;
+    the fakes in these tests only care about the passages, so they keep
+    returning (or raising) exactly what they did, wrapped.
+    """
+    from agents.navigator_agent import Retrieval
+
+    return lambda q: Retrieval(chunks=fake(q))
 
 
 class FakeDoc:

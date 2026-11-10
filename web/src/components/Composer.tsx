@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from './Icon';
+import { Roll } from './fx';
 import { useIsDesktop } from '../hooks/useViewport';
 import { cn } from '../lib/utils';
 
 /*
   The composer — docked at the foot of the consultation surface.
 
-  A single field that grows with the question, framed by a hairline that
-  warms to the accent on focus. Enter submits, Shift+Enter breaks the line.
+  A single field that grows with the question, set like a correspondence
+  slip: an ink frame whose offset shadow warms to the accent on focus. Enter submits, Shift+Enter breaks the line.
   While ARIA is working the send control morphs into a stop, and a thin
   filament crawls the top edge of the field so the wait has a heartbeat.
 */
@@ -53,13 +54,13 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
   const ready = value.trim().length > 0;
 
   return (
-    <div className="relative shrink-0 border-t border-line/70 bg-page/80 px-2.5 pb-2.5 pt-2.5 backdrop-blur-sm sm:px-5 sm:pb-4 sm:pt-3">
+    <div className="relative shrink-0 border-t border-rule/40 bg-page px-2.5 pb-2.5 pt-2.5 sm:px-5 sm:pb-4 sm:pt-3.5">
       <div className="mx-auto w-full max-w-3xl">
         <div
           className={cn(
-            'group relative overflow-hidden rounded-[14px] border bg-surface-raised transition-all duration-300',
-            'border-line focus-within:border-accent/55',
-            'focus-within:shadow-[0_0_0_3px_hsl(var(--accent)/0.12),0_10px_30px_-24px_hsl(var(--shadow)/0.7)]',
+            'group relative overflow-hidden rounded-[2px] border bg-surface-raised transition-all duration-300',
+            'border-rule/45 focus-within:border-rule',
+            'shadow-[3px_4px_0_hsl(var(--ink)/0.06)] focus-within:shadow-[4px_5px_0_hsl(var(--accent)/0.28)]',
           )}
         >
           {/* Working filament along the top edge. */}
@@ -82,8 +83,8 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
           </AnimatePresence>
 
           <div className="flex items-end gap-2 px-2.5 py-2 sm:px-3 sm:py-2.5">
-            <span className="pointer-events-none mb-[11px] hidden select-none font-mono text-[0.72rem] text-accent/60 transition-colors group-focus-within:text-accent sm:mb-[9px] sm:block">
-              §
+            <span className="head pointer-events-none mb-[10px] hidden select-none text-[1.05rem] leading-none text-accent/70 transition-colors group-focus-within:text-accent sm:mb-[8px] sm:block">
+              Q.
             </span>
 
             <label htmlFor="aria-composer" className="sr-only">
@@ -115,7 +116,7 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
               className="max-h-[120px] flex-1 resize-none bg-transparent px-1 py-2 font-prose text-[1rem] leading-relaxed text-ink placeholder:text-ink-faint/75 focus:outline-none sm:max-h-[190px] sm:px-0 sm:py-1.5"
             />
 
-            <div className="mb-px grid h-10 w-10 shrink-0 place-items-center sm:h-9 sm:w-9">
+            <div data-magnetic="0.35" className="mb-px grid h-10 w-10 shrink-0 place-items-center sm:h-9 sm:w-9">
               <AnimatePresence mode="wait" initial={false}>
                 {busy ? (
                   <motion.button
@@ -128,7 +129,7 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
                     exit={{ scale: 0.7, opacity: 0 }}
                     transition={{ duration: 0.18, ease }}
                     whileTap={{ scale: 0.9 }}
-                    className="grid h-10 w-10 place-items-center rounded-full border border-line-strong sm:h-9 sm:w-9 text-ink-soft transition-colors hover:border-oxblood hover:text-oxblood"
+                    className="grid h-10 w-10 place-items-center rounded-[2px] border border-rule/50 text-ink-soft transition-colors hover:border-oxblood hover:text-oxblood sm:h-9 sm:w-9"
                   >
                     <Icon name="stop" size={13} />
                   </motion.button>
@@ -145,10 +146,10 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
                     transition={{ duration: 0.18, ease }}
                     whileTap={{ scale: 0.9 }}
                     className={cn(
-                      'grid h-10 w-10 place-items-center rounded-full transition-all duration-300 sm:h-9 sm:w-9',
+                      'grid h-10 w-10 place-items-center rounded-[2px] transition-colors duration-300 sm:h-9 sm:w-9',
                       ready
-                        ? 'bg-accent text-page shadow-[0_4px_14px_-6px_hsl(var(--accent)/0.9)] hover:brightness-105'
-                        : 'border border-line text-ink-faint/70',
+                        ? 'slab hover:bg-accent'
+                        : 'border border-rule/25 text-ink-faint/70',
                     )}
                   >
                     <Icon name="send" size={15} strokeWidth={2} />
@@ -169,7 +170,7 @@ export function Composer({ onSend, onStop, busy, onOpenPalette, autoFocusKey }: 
               ⌘K
             </kbd>
             <Icon name="book" size={11} className="sm:hidden" />
-            saved consults
+            <Roll>saved consults</Roll>
           </button>
           {/* The full disclaimer needs room; a phone gets the short form. */}
           <span className="truncate font-mono text-[0.54rem] text-ink-faint/80">

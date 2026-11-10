@@ -443,6 +443,11 @@ async def run_consultation(query: str, history: list[Turn] | None = None) -> Asy
         elif kind == "token":
             yield sse({"type": "token", "chunk": event["text"]})
 
+        elif kind == "restart":
+            # The model writing the answer stopped part-way; the next one
+            # starts over. The browser discards the prose it has so far.
+            yield sse({"type": "restart"})
+
         elif kind == "final":
             final = event["state"]
 

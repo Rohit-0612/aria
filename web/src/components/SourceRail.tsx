@@ -52,18 +52,18 @@ export function SourceRail({ citations }: { citations: Citation[] }) {
               onClick={() => setOpened(isOpen ? null : c.marker)}
               aria-expanded={isOpen}
               className={cn(
-                'group inline-flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 transition-colors duration-200',
+                'group inline-flex items-center gap-2 rounded-[2px] border py-1 pl-1 pr-3 transition-colors duration-200',
                 isOpen
-                  ? 'border-accent/50 bg-accent/[0.09]'
+                  ? 'border-accent/60 bg-accent/[0.09]'
                   : isActive
-                    ? 'border-line-strong bg-surface'
-                    : 'border-line bg-surface/50 hover:border-line-strong',
+                    ? 'border-rule/60 bg-surface'
+                    : 'border-rule/25 bg-surface/50 hover:border-rule/60',
               )}
             >
               <span
                 className={cn(
-                  'grid h-5 w-5 place-items-center rounded-full font-mono text-[0.6rem] tabular-nums transition-colors',
-                  isOpen ? 'bg-accent text-page' : 'bg-line/70 text-ink-soft',
+                  'grid h-5 w-5 place-items-center rounded-[1px] font-mono text-[0.6rem] tabular-nums transition-colors',
+                  isOpen ? 'bg-accent text-page' : 'slab',
                 )}
               >
                 {c.marker}
@@ -103,7 +103,7 @@ export function SourceRail({ citations }: { citations: Citation[] }) {
 function Passage({ cite }: { cite: Citation }) {
   const meta = tierOf(cite.tier);
   return (
-    <figure className="mt-2 rounded-[10px] border border-line bg-surface/60 p-3.5">
+    <figure className="mt-2 rounded-[2px] border border-rule/40 bg-surface/60 p-3.5 shadow-[3px_4px_0_hsl(var(--ink)/0.06)]">
       <figcaption className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
         <span className="font-prose text-[0.82rem] italic text-ink">{cite.source}</span>
         <span className="font-mono text-[0.6rem] text-ink-faint">

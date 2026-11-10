@@ -35,6 +35,7 @@ ignore = ["E402"]
 "llm/prompts.py" = ["E501", "RUF001"]
 "agents/guardrail_agent.py" = ["E501"]
 "agents/context_agent.py" = ["E501"]
+"retrieval/planner.py" = ["E501"]
 "agents/judge_agent.py" = ["E501"]
 # Eval prompts and labelled cases are data, for the same reason.
 "evals/*.py" = ["E501"]

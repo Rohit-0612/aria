@@ -109,13 +109,16 @@ async def stream_aria(
 ) -> AsyncIterator[dict[str, Any]]:
     """Run one consultation, yielding its progress as it happens.
 
-    This is the serving path. It emits four kinds of event, and the caller
+    This is the serving path. It emits five kinds of event, and the caller
     needs no knowledge of the pipeline to render them:
 
         {"type": "step",  ...}       an agent step changed status
         {"type": "sources", "chunks": [...]}  the passages the answer will
                                      be grounded in, before it is written
         {"type": "token", "text": s} a fragment of reply prose
+        {"type": "restart"}          the prose so far is withdrawn: the
+                                     model stopped part-way, another one
+                                     is starting the answer over
         {"type": "final", "state": AriaState}  the finished state
 
     `sources` comes before the prose so that the answer's inline citation
@@ -142,6 +145,8 @@ async def stream_aria(
                 yield {"type": "sources", "chunks": payload["chunks"]}
             elif kind == "token":
                 yield {"type": "token", "text": payload["text"]}
+            elif kind == "restart":
+                yield {"type": "restart"}
 
         elif mode == "values":
             final = payload

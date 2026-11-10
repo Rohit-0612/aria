@@ -26,7 +26,7 @@ from langgraph.config import get_stream_writer
 from agents.context_agent import resolve_followup
 from agents.guardrail_agent import Intent, classify_query
 from agents.judge_agent import judge_answer
-from agents.navigator_agent import navigator
+from agents.navigator_agent import navigate
 from graph.state import AriaState, record_failure
 from llm.errors import AriaStageError, wrap_provider_error, wrap_retrieval_error
 from llm.generator import stream_answer
@@ -172,9 +172,11 @@ def guardrail_node(state: AriaState) -> AriaState:
 
 
 def navigator_node(state: AriaState) -> AriaState:
-    write, t0 = _start("navigator", "Retrieving & reranking source passages")
+    write, t0 = _start("navigator", "Planning the topic & retrieving source passages")
     try:
-        state["chunks"] = navigator(state["query"])
+        retrieval = navigate(state["query"])
+        state["chunks"] = retrieval.chunks
+        state["outline"] = retrieval.outline
     except Exception as raw:  # noqa: BLE001 - normalised on the next line
         # Bare exceptions are wrapped as *retrieval* failures rather than
         # escaping the graph: anything unforeseen here is still the evidence
@@ -191,12 +193,21 @@ def navigator_node(state: AriaState) -> AriaState:
     # in the streamed prose have passages to resolve to as they arrive. The
     # order of this list is the numbering the generator is told to cite by.
     write({"kind": "sources", "chunks": state["chunks"]})
+    outline = state["outline"]
     _done(
         write,
         "navigator",
         t0,
-        detail="Top passages selected by relevance",
-        metric=f"{len(state['chunks'])} passages kept",
+        detail=(
+            "Passages gathered for: " + ", ".join(outline)
+            if outline
+            else "Top passages selected by relevance"
+        ),
+        metric=(
+            f"{len(outline)} topics · {len(state['chunks'])} passages"
+            if outline
+            else f"{len(state['chunks'])} passages kept"
+        ),
     )
     return state
 
@@ -220,8 +231,37 @@ def generator_node(state: AriaState) -> AriaState:
     """
     write, t0 = _start("generator", "Synthesizing a grounded answer")
     parts: list[str] = []
+
+    def on_model(model: str) -> None:
+        state["generator_model"] = model
+        write(
+            {
+                "kind": "step",
+                "id": "generator",
+                "status": "active",
+                "detail": f"Writing with {model}",
+            }
+        )
+
+    def on_restart(model: str) -> None:
+        # The reader has seen part of an answer that will not be finished.
+        # It is taken back, explicitly, before another model starts over —
+        # never continued by a different model mid-sentence.
+        parts.clear()
+        write({"kind": "restart"})
+        write(
+            {
+                "kind": "step",
+                "id": "generator",
+                "status": "active",
+                "detail": f"{model} stopped part-way — rewriting",
+            }
+        )
+
     try:
-        for piece in stream_answer(state["query"], state["chunks"]):
+        for piece in stream_answer(
+            state["query"], state["chunks"], state.get("outline") or None, on_model, on_restart
+        ):
             parts.append(piece)
             write({"kind": "token", "text": piece})
     except Exception as raw:  # noqa: BLE001 - normalised on the next line
@@ -235,8 +275,12 @@ def generator_node(state: AriaState) -> AriaState:
         write,
         "generator",
         t0,
-        detail="Answer grounded in retrieved passages",
-        metric=f"{len(state['chunks'])} sources cited",
+        detail=(
+            f"Answer written by {state['generator_model']}"
+            if state.get("generator_model")
+            else "Answer grounded in retrieved passages"
+        ),
+        metric=f"{len(state['chunks'])} sources",
     )
     return state
 

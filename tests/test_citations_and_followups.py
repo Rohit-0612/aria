@@ -31,7 +31,7 @@ from api.server import (
 )
 from llm.errors import AriaLLMError
 from llm.generator import format_passages
-from tests.conftest import FakeDoc
+from tests.conftest import FakeDoc, as_retrieval
 
 
 async def collect(query: str, history: list[Any] | None = None) -> list[dict[str, Any]]:
@@ -56,12 +56,12 @@ def pipeline(monkeypatch: pytest.MonkeyPatch, chunks: list[Any]) -> dict[str, li
         seen["navigator"].append(q)
         return chunks
 
-    def gen(q: str, c: list[Any]) -> Any:
+    def gen(q: str, c: list[Any], *_: Any) -> Any:
         seen["generator"].append(q)
         return iter(["Thiazides are first-line [[1]].", " ACE inhibitors help [[2]]."])
 
     monkeypatch.setattr("graph.nodes.classify_query", guard)
-    monkeypatch.setattr("graph.nodes.navigator", nav)
+    monkeypatch.setattr("graph.nodes.navigate", as_retrieval(nav))
     monkeypatch.setattr("graph.nodes.stream_answer", gen)
     monkeypatch.setattr("graph.nodes.judge_answer", lambda q, a, c: Judgment(0.9, "ok"))
     return seen

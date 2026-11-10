@@ -13,7 +13,7 @@ import { ErrorNotice } from './ErrorNotice';
 /*
   A turn in the consultation.
 
-  The reader's question is a light bubble tucked to the right; ARIA answers
+  The reader's question is an ink slip tucked to the right; ARIA answers
   in the open, left-aligned under its mark, the way a colleague writes back.
   Everything that used to be article furniture — the method box, the margin
   classification, the bibliography — now lives in the thin strip above the
@@ -21,35 +21,39 @@ import { ErrorNotice } from './ErrorNotice';
 */
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const expo = [0.19, 1, 0.22, 1] as const;
 
 const fmtTime = (ts: number) =>
   new Date(ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-export function MessageTurn({ message }: { message: Message }) {
+export function MessageTurn({ message, index = 0 }: { message: Message; index?: number }) {
   return message.role === 'user' ? (
-    <UserTurn message={message} />
+    <UserTurn message={message} number={Math.floor(index / 2) + 1} />
   ) : (
     <AssistantTurn message={message} />
   );
 }
 
-function UserTurn({ message }: { message: UserMessage }) {
+/* The reader's question, printed in reverse on an ink slip and numbered like
+   a query in the paper's correspondence column. */
+function UserTurn({ message, number }: { message: UserMessage; number: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12, scale: 0.985 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.45, ease }}
-      className="mt-8 flex justify-end first:mt-0 sm:mt-9"
+      initial={{ opacity: 0, y: 22, rotate: 0.6 }}
+      animate={{ opacity: 1, y: 0, rotate: 0 }}
+      transition={{ duration: 0.8, ease: expo }}
+      className="mt-9 flex justify-end first:mt-0 sm:mt-10"
     >
-      <div className="group flex max-w-[88%] flex-col items-end sm:max-w-[74%]">
-        <div className="bubble rounded-[16px] rounded-br-[5px] border border-accent/25 bg-accent/[0.07] px-3.5 py-2.5 sm:px-4">
-          <p className="whitespace-pre-wrap font-prose text-[0.97rem] leading-[1.6] text-ink sm:text-[1rem]">
+      <div className="flex max-w-[90%] flex-col items-end sm:max-w-[76%]">
+        <span className="mb-1.5 flex items-baseline gap-2 pr-0.5">
+          <span className="head text-[0.85rem] leading-none">Q. {String(number).padStart(2, '0')}</span>
+          <span className="ident">{fmtTime(message.createdAt)}</span>
+        </span>
+        <div className="slab rounded-[2px] px-3.5 py-2.5 shadow-[3px_4px_0_hsl(var(--ink)/0.12)] sm:px-4 sm:py-3">
+          <p className="whitespace-pre-wrap font-prose text-[0.98rem] leading-[1.55] sm:text-[1.02rem]">
             {message.content}
           </p>
         </div>
-        <span className="ident mt-1.5 pr-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          Asked {fmtTime(message.createdAt)}
-        </span>
       </div>
     </motion.div>
   );
@@ -80,9 +84,7 @@ function AssistantTurn({ message }: { message: AssistantMessage }) {
             <span className="sm:hidden">
               <AriaMark live={live} size={21} />
             </span>
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink">
-              ARIA
-            </span>
+            <span className="head text-[0.95rem] leading-none">ARIA</span>
             <span
               className={cn(
                 'ident truncate',
@@ -171,7 +173,7 @@ function AnswerSkeleton() {
       {[100, 92, 96, 64].map((w, i) => (
         <motion.div
           key={i}
-          className="h-3 rounded-[2px] bg-line"
+          className="h-3 rounded-[1px] bg-line"
           style={{ width: `${w}%` }}
           animate={{ opacity: [0.3, 0.65, 0.3] }}
           transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.12 }}

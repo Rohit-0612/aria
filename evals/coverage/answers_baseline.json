@@ -1,0 +1,366 @@
+{
+ "label": "baseline",
+ "generated_at": "2026-11-08T07:35:31.862880+00:00",
+ "rows": {
+  "prostate-local-vs-advanced": {
+   "question": "What is the difference between localized and non-localized (advanced or metastatic) prostate cancer, and how is each treated?",
+   "answer": "**Difference between localized and non\u2011localized (advanced/metastatic) prostate cancer**\n\n| Disease stage | Typical disease burden | Curability | Typical therapeutic goal |\n|---|---|---|---|\n| **Localized (confined to prostate)** | Tumor limited to the prostate gland (no distant spread) | >85\u202f% of patients can be cured\u202f[[2]] | Eradication of tumor (curative intent) |\n| **Advanced / Metastatic (non\u2011localized)** | Tumor has extended beyond the prostate (regional spread, bone or visceral metastases) | Not curable; treatment is palliative\u202f[[3]][[4]] | Disease control, symptom palliation, prolongation of survival |\n\n---\n\n## Treatment of Localized Prostate Cancer  \n\n- **Expectant (active surveillance) management** \u2013 monitor PSA, DRE, and imaging; intervene if disease progresses\u202f[[4]]  \n- **Radical surgery** (prostatectomy) \u2013 definitive removal of the gland\u202f[[4]]  \n- **Radiation therapy** \u2013 external\u2011beam or brachytherapy, often with curative intent\u202f[[4]]  \n- **Locally advanced disease** (tumor extends beyond capsule but no distant mets) \u2013 combine **ADT + antiandrogen** with radiation to improve outcomes over radiation alone\u202f[[2]]\n\n---\n\n## Treatment of Advanced / Metastatic Prostate Cancer  \n\n1. **Continue ADT** to keep testosterone\u202f<\u202f50\u202fng/dL (1.7\u202fnmol/L) in all cases\u202f[[1]][[5]]  \n2. **First\u2011line systemic options for treatment\u2011na\u00efve patients** (Table\u202f1)\u202f[[5]]  \n\n| Clinical setting | Systemic regimen (in addition to ADT) |\n|---|---|\n| **Castration\u2011na\u00efve, locally advanced / non\u2011metastatic** | \u2022 Abiraterone\u202f+\u202fcorticosteroid  <br>\u2022 Apalutamide  <br>\u2022 Enzalutamide  <br>\u2022 Docetaxel (less common) |\n| **Castration\u2011na\u00efve, metastatic** | \u2022 Abiraterone\u202f+\u202fcorticosteroid  <br>\u2022 Apalutamide  <br>\u2022 Docetaxel  <br>\u2022 Enzalutamide |\n| **Castration\u2011resistant (ADT continued)** | \u2022 Apalutamide  <br>\u2022 Darolutamide  <br>\u2022 Enzalutamide  <br>\u2022 Abiraterone\u202f+\u202fcorticosteroid  <br>\u2022 Docetaxel\u202f+\u202fprednisone  <br>\u2022 Radium\u2011223 (if symptomatic bone mets)  <br>\u2022 Sipuleucel\u2011T (immunotherapy) |\n\n3. **Bone\u2011directed therapy** \u2013 add **denosumab** or an **IV bisphosphonate** when bone metastases are present\u202f[[1]]  \n4. **Palliative radiation** to painful bony lesions for symptom relief\u202f[[1]]  \n5. **Best supportive care** is provided alongside disease\u2011directed therapy for metastatic castration\u2011resistant patients\u202f[[1]]\n\n---\n\n### Summary  \n\n- **Localized disease** is confined to the prostate and is potentially curable with surgery, radiation, or active surveillance; locally advanced cases also receive ADT plus antiandrogen with radiation.  \n- **Advanced/metastatic disease** is not curable; treatment focuses on continuous ADT plus systemic agents (abiraterone, apalutamide, enzalutamide, docetaxel, radium\u2011223, sipuleucel\u2011T) and supportive measures such as bone\u2011protective drugs and palliative radiation.",
+   "latency_s": 23.8,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "2942",
+     "chars": 931
+    },
+    {
+     "book": "dipiro",
+     "page": "2933",
+     "chars": 998
+    },
+    {
+     "book": "dipiro",
+     "page": "2950",
+     "chars": 746
+    },
+    {
+     "book": "dipiro",
+     "page": "2934",
+     "chars": 968
+    },
+    {
+     "book": "dipiro",
+     "page": "2941",
+     "chars": 946
+    }
+   ],
+   "markers": 13,
+   "words": 372,
+   "app_confidence": 0.98
+  },
+  "diabetes-t1-vs-t2": {
+   "question": "How do type 1 and type 2 diabetes differ, and how is each treated?",
+   "answer": "## Key Differences Between Type\u202f1 and Type\u202f2 Diabetes  \n\n| Feature | Type\u202f1 Diabetes | Type\u202f2 Diabetes |\n|---|---|---|\n| Typical age of onset | Can occur at any age, but most patients are diagnosed before age\u202f20 [[3]] | Usually adult\u2011onset, associated with progressive metabolic changes |\n| Primary pathophysiology | **Absolute deficiency of endogenous insulin** \u2013 the pancreas produces little or no insulin [[5]] | **Insulin resistance** (type\u202fA) with hyperinsulinemia, often accompanied by acanthosis nigricans, virilization, polycystic ovaries; \u03b2\u2011cell function declines over time [[3]][[2]] |\n| Clinical presentation | Sudden onset of hyperglycemia, often with ketoacidosis; no insulin\u2011mediated glucose uptake | Gradual rise in fasting and post\u2011prandial glucose; may have obesity, dyslipidemia, hypertension |\n| Need for insulin | Required from diagnosis; exogenous insulin is the cornerstone of therapy [[5]] | Insulin may be needed later; many patients are managed initially with oral agents and lifestyle changes [[2]] |\n\n---\n\n## Treatment of Type\u202f1 Diabetes  \n\n- **Intensive insulin therapy** is mandatory because of the absolute insulin deficiency [[5]].  \n  - **Basal\u2011bolus regimen**: a long\u2011acting (basal) insulin to control fasting glucose plus rapid\u2011acting (prandial) insulin for meals [[2]].  \n  - **Alternative delivery**: continuous subcutaneous insulin infusion (insulin pump) can be used in motivated individuals to mimic physiologic secretion [[2]].  \n- The goal is to achieve tight glycemic control while minimizing hypoglycemia, using multiple daily injections or pump therapy that provides basal insulin throughout the day and bursts of insulin after carbohydrate intake [[5]].\n\n---\n\n## Treatment of Type\u202f2 Diabetes  \n\n1. **Lifestyle modification** \u2013 Emphasize sustained weight loss and a balanced diet; carbohydrate counting is used to limit glucose excursions (moderate carbs per meal) [[4]].  \n\n2. **Oral antihyperglycemics (first\u2011line and add\u2011on)**  \n   - Metformin, sulfonylureas, thiazolidinediones (TZDs), GLP\u20111 receptor agonists, and SGLT2 inhibitors are among the agents mentioned as part of the therapeutic armamentarium [[3]].  \n   - Cost considerations may favor sulfonylureas or TZDs when appropriate [[1]].  \n\n3. **Combination (dual) therapy** is recommended when A1C\u202f>\u202f7.5\u202f% (58\u202fmmol/mol) [[5]].  \n\n4. **Injectable agents**  \n   - **GLP\u20111 receptor agonists** are preferred over insulin as the first injectable because they lower A1C at least as well as basal insulin, promote weight loss, and have a low hypoglycemia risk [[1]].  \n   - **Insulin** is reserved for:  \n     - Extreme hyperglycemia (A1C\u202f>\u202f10\u202f% or symptomatic) [[1]];  \n     - A1C\u202f>\u202f9\u202f% with symptoms per the AACE algorithm [[5]].  \n\n5. **Adjunctive therapy with insulin** may be added when glucose control remains erratic despite oral agents, using basal\u2011bolus or other intensive regimens as needed [[2]].\n\n---\n\n### Summary  \n\n- **Type\u202f1**: Autoimmune loss of insulin \u2192 requires intensive exogenous insulin (basal\u2011bolus or pump) from diagnosis.  \n- **Type\u202f2**: Insulin resistance with progressive \u03b2\u2011cell decline \u2192 begins with lifestyle changes and oral agents, escalates to GLP\u20111\u202fRA before insulin, and uses insulin only for markedly high or symptomatic hyperglycemia.  \n\nAll recommendations above are drawn directly from the cited textbook excerpts.",
+   "latency_s": 9.0,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1702",
+     "chars": 959
+    },
+    {
+     "book": "dipiro",
+     "page": "1679",
+     "chars": 952
+    },
+    {
+     "book": "dipiro",
+     "page": "1683",
+     "chars": 996
+    },
+    {
+     "book": "dipiro",
+     "page": "1690",
+     "chars": 893
+    },
+    {
+     "book": "dipiro",
+     "page": "1703",
+     "chars": 975
+    }
+   ],
+   "markers": 18,
+   "words": 485,
+   "app_confidence": 0.9
+  },
+  "seizures-focal-vs-generalized": {
+   "question": "What is the difference between focal and generalized seizures, and how does that change the choice of antiseizure medication?",
+   "answer": "**Difference between focal and generalized seizures**\n\n| Feature | Focal seizures | Generalized seizures |\n|---|---|---|\n| **Origin** | Begin on one side (or region) of the brain and may spread to the opposite side | Begin simultaneously in both cerebral hemispheres |\n| **Awareness (when focal)** | May be **aware** (formerly \u201csimple partial\u201d) or **impaired awareness** (formerly \u201ccomplex partial\u201d) [[4]] | Awareness is typically lost because the seizure involves the whole brain |\n| **Classification** | Classified as \u201cfocal\u2011onset\u201d seizures; further sub\u2011typed by level of awareness [[4]] | Classified as \u201cgeneralized\u2011onset\u201d seizures [[4]] |\n| **Implication for treatment** | Requires antiseizure medications (ASMs) that are effective for focal\u2011onset seizures; some ASMs are narrow\u2011spectrum and work only for focal seizures [[2]] | Requires ASMs that are effective for generalized seizures; broad\u2011spectrum ASMs cover both focal and generalized types [[2]] |\n\n**How seizure type guides antiseizure\u2011medication choice**\n\n- **Accurate seizure classification is essential** because the goal is seizure freedom with minimal adverse effects, and the choice of ASM depends heavily on whether the seizure is focal or generalized [[5]].\n- **Broad\u2011spectrum ASMs** (e.g., lamotrigine, levetiracetam, topiramate, valproic acid) are useful for **both** focal and generalized seizures, making them a common first\u2011line option when the seizure type is unclear or when a patient has mixed seizure types [[2]].\n- **Narrow\u2011spectrum ASMs** are primarily effective for **focal\u2011onset** seizures and are chosen when a patient has only focal seizures and a medication with a more limited spectrum is preferred [[2]].\n- **Syndrome\u2011specific selection**:  \n  - For **childhood absence epilepsy (a generalized syndrome)**, the preferred ASM is **ethosuximide**; drugs such as **phenytoin** or **carbamazepine** can worsen the seizures and should be avoided [[3]].  \n  - Conversely, a drug that is effective for a focal syndrome may be inappropriate for a generalized syndrome (e.g., carbamazepine can exacerbate absence seizures) [[1]][[3]].\n- **Patient\u2011specific factors** (age, sex, comorbidities, adherence, need for rapid therapeutic levels) also influence the final ASM choice, but seizure type remains the primary determinant [[5]].\n\n**Practical approach**\n\n1. **Identify seizure onset** (focal vs. generalized) using clinical history and EEG.  \n2. **Select an ASM**:  \n   - If **generalized** and the syndrome is known (e.g., absence), use the syndrome\u2011specific drug (ethosuximide) and avoid agents that may aggravate it.  \n   - If **focal**, consider a narrow\u2011spectrum ASM or a broad\u2011spectrum ASM if broader coverage is desired.  \n3. **Titrate dose** to achieve seizure freedom while monitoring for adverse effects; add a second ASM with a different mechanism if monotherapy fails [[5]].  \n\nThus, the distinction between focal and generalized seizures directly determines whether a narrow\u2011spectrum (focal\u2011only) or a broad\u2011spectrum (both) antiseizure medication is appropriate, and certain drugs are contraindicated in specific generalized syndromes.",
+   "latency_s": 7.2,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1301",
+     "chars": 953
+    },
+    {
+     "book": "rxprep",
+     "page": 861,
+     "chars": 987
+    },
+    {
+     "book": "dipiro",
+     "page": "1304",
+     "chars": 972
+    },
+    {
+     "book": "rxprep",
+     "page": 859,
+     "chars": 997
+    },
+    {
+     "book": "dipiro",
+     "page": "1299",
+     "chars": 963
+    }
+   ],
+   "markers": 13,
+   "words": 439,
+   "app_confidence": 0.95
+  },
+  "hfref-gdmt": {
+   "question": "How is heart failure with reduced ejection fraction treated, and why does each drug class help?",
+   "answer": "**Treatment of HFrEF (heart\u2011failure with reduced ejection fraction)**  \n\nGuideline\u2011directed medical therapy (GDMT) for HFrEF consists of four core drug classes that target the key neuro\u2011hormonal pathways driving disease progression, plus a diuretic when volume overload is present\u30101\u3011. The agents are usually started at low doses (simultaneously or sequentially) and titrated toward target doses as tolerated\u30101\u3011.\n\n| Drug class (GDMT) | Representative agents (when named) | Why it helps (neuro\u2011hormonal target) |\n|---|---|---|\n| **RAAS inhibitor** (ACE\u2011I, ARB, or ARNI) | ACE\u2011I or ARB (e.g., not named in the excerpt); ARNI (angiotensin\u2011receptor\u2011neprilysin inhibitor) | Blocks the renin\u2011angiotensin\u2011aldosterone system, reducing vasoconstriction, sodium\u2011water retention, and adverse cardiac remodeling\u30101\u3011 |\n| **Beta\u2011blocker** (evidence\u2011based) | Bisoprolol, carvedilol, metoprolol succinate (recommended for HFrEF)\u30102\u3011 | Inhibits sympathetic over\u2011activity, lowers heart rate and myocardial oxygen demand, and improves survival\u30102\u3011 |\n| **Aldosterone\u2011receptor antagonist** (mineralocorticoid receptor antagonist) | Not named in the excerpt, but class is listed as part of GDMT\u30101\u3011 | Blocks aldosterone\u2011mediated sodium retention and myocardial fibrosis, further attenuating maladaptive remodeling\u30101\u3011 |\n| **SGLT2 inhibitor** | Class listed in GDMT; specific agents not named in the excerpt\u30101\u3011 | Provides additional morbidity\u2011mortality benefit in HFrEF (mechanism not detailed in the excerpt)\u30101\u3011 |\n| **Loop diuretic** (symptom control) | Not named in the excerpt, but diuretics are mentioned for edema control\u30105\u3011 | Relieves volume overload, improves symptoms, and reduces pulmonary/congestive signs\u30105\u3011 |\n\n### How each class fits into the therapeutic sequence\n* **First line** \u2013 Start a RAAS inhibitor (ACE\u2011I, ARB, or ARNI) and a beta\u2011blocker; add a loop diuretic if the patient has edema\u30105\u3011.  \n* **Add\u2011on** \u2013 Once the patient is stable on the above, add an aldosterone\u2011receptor antagonist and an SGLT2 inhibitor to further reduce mortality and hospitalization risk\u30101\u3011.  \n\nAll four core agents are intended to be titrated to their target doses as tolerated, and they may be initiated together at low doses rather than waiting for each to reach target before adding the next\u30101\u3011. This approach addresses the three major compensatory pathways that become maladaptive in HFrEF: the renin\u2011angiotensin\u2011aldosterone system, the sympathetic nervous system, and excess aldosterone activity, while SGLT2 inhibition adds additional benefit beyond these pathways.",
+   "latency_s": 8.0,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "rxprep",
+     "page": 452,
+     "chars": 929
+    },
+    {
+     "book": "rxprep",
+     "page": 431,
+     "chars": 993
+    },
+    {
+     "book": "rxprep",
+     "page": 449,
+     "chars": 988
+    },
+    {
+     "book": "rxprep",
+     "page": 451,
+     "chars": 838
+    },
+    {
+     "book": "dipiro",
+     "page": "388",
+     "chars": 990
+    }
+   ],
+   "markers": 0,
+   "words": 351,
+   "app_confidence": 0.45
+  },
+  "warfarin-vs-doac-af": {
+   "question": "For stroke prevention in atrial fibrillation, how do warfarin and the DOACs compare?",
+   "answer": "**Comparison of warfarin with the direct\u2011acting oral anticoagulants (DOACs) for stroke prevention in atrial fibrillation (AF)**  \n\n| Agent | Stroke/ systemic\u2011embolism efficacy vs. warfarin | Major bleeding vs. warfarin | Intracranial hemorrhage (ICH) vs. warfarin | Renal\u2011function dosing considerations |\n|-------|-----------------------------------------------|-----------------------------|--------------------------------------------|--------------------------------------|\n| **Warfarin** | Reference standard; used when DOACs are contraindicated (e.g., mechanical valve, moderate\u2011to\u2011severe mitral stenosis) [[4]] | \u2013 | \u2013 | Preferred when CrCl\u202f<\u202f15\u202fmL/min or on hemodialysis [[1]] |\n| **Apixaban** | Non\u2011inferior and **superior** for stroke/systemic embolism; lower major\u2011bleeding rate; fewer ICHs [[3]][[4]] | Lower major bleeding than warfarin [[3]] | Significantly fewer ICHs [[3]] | Can be used in severe renal impairment (CrCl\u202f<\u202f15\u202fmL/min) as an alternative to warfarin [[1]] |\n| **Rivaroxaban** | Non\u2011inferior for stroke/systemic embolism [[3]] | Similar major and clinically relevant non\u2011major bleeding to warfarin [[3]] | Significantly fewer ICHs [[3]] | Dose must be adjusted according to renal function; patients with CrCl\u202f<\u202f15\u202fmL/min should receive warfarin or apixaban [[1]] |\n| **Edoxaban** | 60\u202fmg daily **superior** to warfarin for stroke/systemic embolism; 30\u202fmg non\u2011inferior [[2]] | Bleeding outcomes not detailed in the excerpts | Bleeding outcomes not detailed in the excerpts | Dose adjustment required for renal impairment; patients with CrCl\u202f<\u202f15\u202fmL/min should receive warfarin or apixaban [[1]] |\n| **Dabigatran** | Mentioned as a DOAC but no efficacy or safety data are provided in the excerpts | \u2013 | \u2013 | Dose adjustment required for renal impairment; patients with CrCl\u202f<\u202f15\u202fmL/min should receive warfarin or apixaban [[1]] |\n\n### Key Points Drawn from the Textbook Excerpts  \n\n- **Efficacy** \u2013 All four DOACs (dabigatran, rivaroxaban, apixaban, edoxaban) have been shown to be at least as effective as warfarin for reducing stroke risk in AF, with apixaban and edoxaban (60\u202fmg) demonstrating superiority in their pivotal trials [[1]][[2]][[3]].  \n- **Safety** \u2013 DOACs generally have lower rates of intracranial hemorrhage compared with warfarin; apixaban and rivaroxaban each showed significantly fewer ICHs, and apixaban also had a lower overall major\u2011bleeding rate [[3]].  \n- **Convenience** \u2013 DOACs require fixed dosing without routine INR monitoring, have fewer food and drug interactions, and have a shorter onset and duration of action than warfarin [[1]][[5]].  \n- **Renal Function** \u2013 Because DOACs are partially renally cleared, renal function must be assessed before initiation and dose\u2011adjusted as needed. For patients with creatinine clearance <\u202f15\u202fmL/min (or on hemodialysis), warfarin or apixaban is preferred [[1]].  \n- **Guideline Preference** \u2013 Major societies (e.g., ACC/AHA, CHEST) recommend DOACs over warfarin for stroke prevention in AF except in the presence of moderate\u2011to\u2011severe mitral stenosis or a mechanical heart valve, where warfarin remains the drug of choice [[4]].  \n\n**Bottom line:** In patients with non\u2011valvular AF, DOACs provide stroke\u2011prevention efficacy that is comparable to or better than warfarin, with a more favorable intracranial\u2011bleeding profile and greater ease of use. Warfarin is reserved for specific valve\u2011related indications or severe renal impairment where DOACs are not appropriate.",
+   "latency_s": 11.3,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "612",
+     "chars": 867
+    },
+    {
+     "book": "dipiro",
+     "page": "631",
+     "chars": 730
+    },
+    {
+     "book": "dipiro",
+     "page": "631",
+     "chars": 925
+    },
+    {
+     "book": "rxprep",
+     "page": 486,
+     "chars": 930
+    },
+    {
+     "book": "rxprep",
+     "page": 486,
+     "chars": 948
+    }
+   ],
+   "markers": 22,
+   "words": 492,
+   "app_confidence": 0.92
+  },
+  "htn-first-line": {
+   "question": "How should hypertension be treated initially, and what blood pressure targets are used?",
+   "answer": "**Initial treatment approach**\n\n- **Lifestyle modification** for every patient (diet, exercise, weight loss, sodium restriction) before or in addition to drug therapy.\u202f[[1]][[2]]\n- **When to start drug therapy**  \n  - *Low\u2011risk* (no ASCVD, CKD, diabetes, 10\u2011yr ASCVD risk\u202f<\u202f10\u202f%): begin drugs when BP\u202f\u2265\u202f140/90\u202fmm\u202fHg; goal\u202f<\u202f130/80\u202fmm\u202fHg.\u202f[[1]]\n  - *Higher\u2011risk* (ASCVD, CKD, diabetes, or 10\u2011yr ASCVD risk\u202f\u2265\u202f10\u202f%): begin drugs when BP\u202f\u2265\u202f130/80\u202fmm\u202fHg; goal\u202f<\u202f130/80\u202fmm\u202fHg.\u202f[[1]]\n- **Number of agents to start**  \n  - *Stage\u202f1 hypertension*: start **one** antihypertensive medication.\u202f[[2]]\n  - *Stage\u202f2 hypertension*: start **two** antihypertensive medications (often as a fixed\u2011dose combination).\u202f[[2]]\n- **Preferred first\u2011line drug classes** (when no compelling indication dictates otherwise):  \n  - Angiotensin\u2011converting enzyme inhibitors (ACEi)  \n  - Angiotensin\u202fII receptor blockers (ARBs)  \n  - Calcium\u2011channel blockers (CCBs)  \n  - Thiazide diuretics\u202f[[2]]\n- **Beta\u2011blockers** are **not** first\u2011line unless a specific compelling indication exists (e.g., prior myocardial infarction, certain arrhythmias).\u202f[[3]]\n\n**Blood\u2011pressure targets**\n\n- **Goal for most patients:** **<\u202f130/80\u202fmm\u202fHg** (applies to patients with or without ASCVD, diabetes, or chronic kidney disease).\u202f[[4]][[5]]\n- This target is used to guide titration and addition of agents until achieved.\u202f[[4]]\n\n---\n\n### Quick reference table\n\n| Patient group | When to start drugs | Initial regimen |\n|---|---|---|\n| Low\u2011risk (ASCVD\u2011free, CKD\u2011free, diabetes\u2011free, 10\u2011yr risk\u202f<\u202f10\u202f%) | BP\u202f\u2265\u202f140/90\u202fmm\u202fHg | 1 drug (ACEi, ARB, CCB, or thiazide) |\n| Higher\u2011risk (ASCVD, CKD, diabetes, or 10\u2011yr risk\u202f\u2265\u202f10\u202f%) | BP\u202f\u2265\u202f130/80\u202fmm\u202fHg | 1 drug for stage\u202f1; 2 drugs for stage\u202f2 (same first\u2011line classes) |\n\nAll patients are managed toward a **BP\u202f<\u202f130/80\u202fmm\u202fHg**.\u202f[[4]][[5]]",
+   "latency_s": 6.0,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "387",
+     "chars": 855
+    },
+    {
+     "book": "dipiro",
+     "page": "378",
+     "chars": 998
+    },
+    {
+     "book": "dipiro",
+     "page": "405",
+     "chars": 914
+    },
+    {
+     "book": "dipiro",
+     "page": "385",
+     "chars": 804
+    },
+    {
+     "book": "dipiro",
+     "page": "394",
+     "chars": 944
+    }
+   ],
+   "markers": 13,
+   "words": 284,
+   "app_confidence": 0.95
+  },
+  "asthma-vs-copd": {
+   "question": "What is the difference between asthma and COPD, and how are their inhaler treatments different?",
+   "answer": "**Differences between asthma and COPD**\n\n| Feature | Asthma | COPD |\n|---|---|---|\n| Typical age of onset | Usually\u202f<\u202f40\u202fyears [[3]] | Usually\u202f\u2248\u202f40\u202fyears or older [[3]] |\n| Smoking history | Uncommon [[3]] | Usually \u2265\u202f20\u202fyears of smoking [[3]] |\n| Sputum production | Infrequent [[3]] | Common [[3]] |\n| Allergies / atopy | Common [[3]] | Uncommon [[3]] |\n| Symptom pattern | Variable, often reversible | Persistent, progressive decline [[3]] |\n| Disease course | May be stable for long periods | Progressive, worsens over time [[3]] |\n| Exacerbations | Can occur but not the primary defining feature | Frequent exacerbations are a key complication [[3]] |\n\n**Inhaler treatment differences**\n\n- **Asthma (controller/maintenance therapy)**  \n  - Inhaled corticosteroids (ICS) alone or combined with a long\u2011acting \u03b2\u2082\u2011agonist (ICS/LABA) are the preferred controller agents [[1]].  \n  - LABA monotherapy is **not** recommended for asthma because of a boxed warning for increased asthma\u2011related death risk; LABAs should only be added to an inhaled corticosteroid in asthma patients who remain uncontrolled [[2]].  \n\n- **COPD (maintenance therapy)**  \n  - Preferred long\u2011acting agents are:  \n    - Long\u2011acting \u03b2\u2082\u2011agonists (LABA) **as monotherapy** (allowed for COPD, not asthma) [[2]].  \n    - Long\u2011acting muscarinic antagonists (LAMA) or LAMA/LABA combinations [[5]].  \n  - Short\u2011acting bronchodilators (SABA or SAMA) are used for occasional symptoms (category\u202fA) and to relieve acute dyspnea [[4]].  \n  - Muscarinic antagonists (e.g., ipratropium bromide, a short\u2011acting muscarinic antagonist) are commonly employed in COPD and are generally well tolerated [[5]].  \n\n**Comparative table of inhaler classes**\n\n| Inhaler class | Asthma use | COPD use |\n|---|---|---|\n| Inhaled corticosteroid (ICS) | First\u2011line controller (alone or with LABA) [[1]] | Not a primary controller; may be added for frequent exacerbations |\n| LABA (e.g., salmeterol, formoterol) | Added **only** to an ICS; monotherapy contraindicated [[2]] | Approved as monotherapy or in combination with LAMA [[2]] |\n| LAMA (long\u2011acting anticholinergic) | Not a standard controller | Preferred long\u2011acting bronchodilator; can be combined with LABA [[5]] |\n| SABA (short\u2011acting \u03b2\u2082\u2011agonist) | Relieve acute symptoms; \u201cquick\u2011relief\u201d inhaler | Relieve acute symptoms; also used for occasional COPD symptoms [[4]] |\n| SAMA (short\u2011acting muscarinic antagonist, e.g., ipratropium) | Not routinely used | Used for symptom relief, often combined with a SABA (e.g., Combivent) [[5]] |\n\n**Key points**\n\n- Asthma management centers on anti\u2011inflammatory therapy (ICS) with LABA added only when needed, whereas COPD management emphasizes bronchodilation (LABA, LAMA, or their combination) and uses short\u2011acting agents for intermittent relief.  \n- LABA monotherapy is acceptable in COPD but carries a boxed warning when used alone in asthma.  \n- Muscarinic antagonists are a mainstay for COPD but are not a standard component of asthma controller regimens.  ",
+   "latency_s": 7.0,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "rxprep",
+     "page": 562,
+     "chars": 602
+    },
+    {
+     "book": "rxprep",
+     "page": 577,
+     "chars": 983
+    },
+    {
+     "book": "rxprep",
+     "page": 573,
+     "chars": 974
+    },
+    {
+     "book": "dipiro",
+     "page": "760",
+     "chars": 928
+    },
+    {
+     "book": "rxprep",
+     "page": 576,
+     "chars": 982
+    }
+   ],
+   "markers": 23,
+   "words": 448,
+   "app_confidence": 0.95
+  },
+  "levothyroxine": {
+   "question": "How is hypothyroidism treated with levothyroxine, and how is the dose monitored?",
+   "answer": "**Treatment Overview**\n\n- Levothyroxine (synthetic T4) is the drug of choice for replacement therapy in primary hypothyroidism [[3]].\n- A full\u2011replacement dose is approximately **1.6\u202f\u00b5g/kg/day** of ideal body weight (IBW) [[5]].\n- In older adults or patients at risk for overtreatment, the dose is often started lower and titrated upward [[1]].\n\n**Initiating Therapy**\n\n| Considerations for Starting Dose | Typical Approach |\n|---|---|\n| Patient\u2019s weight, lean body mass, pregnancy status, etiology of hypothyroidism, degree of TSH elevation, age, overall clinical context | Choose a full replacement dose (\u22481.6\u202f\u00b5g/kg IBW) or a partial dose with gradual increments, then titrate upward using TSH as the goal [[2]] |\n| Need for rapid correction vs. safety | Full replacement can be given when rapid normalization is desired and no contraindications exist; otherwise start low and increase gradually [[2]] |\n\n**Dose Adjustment & Monitoring**\n\n- **Primary monitoring parameter:** Serum **TSH** concentration, the most sensitive and specific indicator of adequacy of levothyroxine therapy [[1]][[3]].\n- **Timing of assessment:** Check TSH **4\u20136\u202fweeks** after any dose change to allow the hormone levels to equilibrate [[2]][[4]].\n- **Interpretation:**  \n  - **Elevated TSH** \u2192 under\u2011replacement (increase dose).  \n  - **Suppressed TSH** \u2192 over\u2011replacement (decrease dose) [[3]].\n- **Clinical correlation:** Observe signs and symptoms of hypo\u2011 or hyperthyroidism alongside TSH values [[3]].\n- **Expected response:** TSH begins to fall within hours after a dose change and usually normalizes within **2\u202fweeks**, but may take up to **6\u202fweeks** in some patients, especially when baseline TSH is markedly elevated [[1]].\n- **Age\u2011related adjustments:** As patients age, the maintenance dose often needs to be reduced to avoid overtreatment [[1]].\n\n**Practical Steps**\n\n1. **Calculate starting dose** (\u22481.6\u202f\u00b5g/kg IBW) or a lower dose for elderly/at\u2011risk patients.  \n2. **Administer levothyroxine** on an empty stomach, separate from interacting substances (e.g., calcium, iron) as per the drug\u2011interaction table (not detailed here).  \n3. **Re\u2011measure TSH** 4\u20136\u202fweeks after the initial dose or any subsequent adjustment.  \n4. **Adjust dose** upward or downward in small increments (e.g., 12.5\u201325\u202f\u00b5g) based on TSH result and clinical picture.  \n5. **Repeat monitoring** every 4\u20136\u202fweeks after each change until TSH is within the target range and symptoms are resolved.  \n\nThis algorithm aligns with the recommendations and monitoring parameters presented in the cited textbook excerpts.",
+   "latency_s": 7.1,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1748",
+     "chars": 902
+    },
+    {
+     "book": "dipiro",
+     "page": "1746",
+     "chars": 799
+    },
+    {
+     "book": "dipiro",
+     "page": "1727",
+     "chars": 616
+    },
+    {
+     "book": "dipiro",
+     "page": "1746",
+     "chars": 881
+    },
+    {
+     "book": "rxprep",
+     "page": 615,
+     "chars": 915
+    }
+   ],
+   "markers": 13,
+   "words": 374,
+   "app_confidence": 0.95
+  },
+  "acetaminophen-overdose": {
+   "question": "How is acetaminophen (paracetamol) overdose managed?",
+   "answer": "**Management of acetaminophen (paracetamol) overdose**\n\n| Step | What to do | Rationale / Key points |\n|------|------------|------------------------|\n| 1. **Initial assessment** | \u2022 Obtain a focused history (time of ingestion, amount, co\u2011ingestants).  <br>\u2022 Bring the patient to the emergency department for evaluation and obtain a serum acetaminophen concentration. | The amount ingested, time since ingestion, and serum level determine need for antidote therapy [[1]]. |\n| 2. **Decontamination (if early)** | If presentation is **\u2264\u202f4\u202fh** after ingestion and no contraindication, give **one dose of activated charcoal**. | Charcoal can reduce absorption when given early [[1]]. |\n| 3. **Determine need for antidote** | Plot the serum concentration on the **Rumack\u2011Mathew nomogram**.  <br>\u2022 If the value falls **above the treatment line**, start N\u2011acetylcysteine (NAC).  <br>\u2022 If the result will be available **>\u202f8\u202fh** after ingestion, begin NAC empirically based on history and stop later if the level is non\u2011toxic. | The nomogram predicts probable hepatotoxicity; values above the line indicate treatment [[4]]. |\n| 4. **Antidote therapy \u2013 N\u2011acetylcysteine (NAC)** | **Standard IV regimen** (three\u2011bag method) is the usual approach.  <br>\u2022 Alternative **higher\u2011dose** regimens and **two\u2011bag** IV regimens have been described, but they lack validated criteria and are not widely adopted. [[2]] | NAC replenishes hepatic glutathione, binding the toxic metabolite NAPQI and preventing liver injury [[1]][[3]]. |\n| 5. **Monitoring** | \u2022 Serial liver function tests (AST/ALT, INR) to detect hepatotoxicity.  <br>\u2022 Observe for clinical phases of toxicity (Phase\u202f1: nonspecific symptoms; Phase\u202f2: lab evidence of liver injury; Phase\u202f3: fulminant jaundice, coagulopathy, renal failure; Phase\u202f4: recovery or transplant). [[3]] | The four\u2011phase clinical course guides ongoing assessment and need for continued NAC or supportive care. |\n| 6. **Special populations** | \u2022 **Young children** are managed with the same NAC regimen as adults when toxicity is probable. [[2]]  <br>\u2022 Some clinicians treat chronic alcoholics with NAC regardless of the nomogram result. [[4]] | Adjustments are based on risk factors rather than different dosing. |\n| 7. **Disposition** | Continue NAC for the full course (typically 20\u201321\u202fh for the standard regimen) and reassess liver labs. Discharge only after labs trend down and the patient is clinically stable. | Ensures complete detoxification and prevents delayed hepatic failure. |\n\n**Key points to remember**\n\n- Early identification and **prompt NAC administration (preferably within hours)** are critical to prevent hepatotoxicity [[3]].  \n- The **nomogram** is not useful for chronic or supratherapeutic exposures; clinical judgment is required in those scenarios [[4]].  \n- **Activated charcoal** is only indicated if the patient presents within 4\u202fh of ingestion and there are no contraindications [[1]].  \n- While **alternative two\u2011bag or higher\u2011dose NAC regimens** exist, they are not yet validated and the traditional three\u2011bag IV protocol remains the standard of care [[2]].  \n\n*The above management steps are derived directly from the provided textbook excerpts.*",
+   "latency_s": 8.0,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 965
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 869
+    },
+    {
+     "book": "rxprep",
+     "page": 959,
+     "chars": 910
+    },
+    {
+     "book": "dipiro",
+     "page": "90",
+     "chars": 943
+    },
+    {
+     "book": "rxprep",
+     "page": 738,
+     "chars": 927
+    }
+   ],
+   "markers": 13,
+   "words": 472,
+   "app_confidence": null
+  },
+  "ssri-depression": {
+   "question": "How do SSRIs treat depression, and what should a patient starting one be told?",
+   "answer": "**How SSRIs work in depression (as described in the textbook excerpts)**  \n- SSRIs are first\u2011line agents for major depressive disorder and are initiated at the same doses used for depression treatment in other conditions\u202f[[1]].  \n- Clinical benefit is not immediate: patients usually notice a modest improvement after **1\u20132\u202fweeks**, with the **full antidepressant effect** often requiring **6\u20138\u202fweeks** (or up to 12\u202fweeks) of continued therapy\u202f[[3]][[1]].  \n- Relapse\u2011prevention studies show that continued SSRI therapy markedly lowers relapse rates (4\u202f%\u201314\u202f%) compared with placebo (36\u202f%\u201339\u202f%)\u202f[[1]].\n\n**Key counseling points for a patient starting an SSRI**  \n\n| Topic | What to tell the patient | Source |\n|-------|--------------------------|--------|\n| **Onset of effect** | \u201cYou may not feel better right away. Some improvement can appear in the first 1\u20132\u202fweeks, but the full effect often takes 6\u20138\u202fweeks (up to 12\u202fweeks).\u201d | [[3]][[1]] |\n| **Dosing & titration** | \u201cWe will start with a low dose and increase it gradually as you tolerate it, aiming for a therapeutic dose similar to that used for depression. If you have panic symptoms, we may start at one\u2011quarter to one\u2011half the usual dose.\u201d | [[1]][[2]] |\n| **Duration of therapy** | \u201cA trial of 8\u201312\u202fweeks is needed to determine whether the medication is effective for you.\u201d | [[2]] |\n| **Common side effects** | \u201cPossible effects include sexual dysfunction and, rarely, serotonin syndrome. If you notice any unusual symptoms (e.g., agitation, rapid heart rate, high fever, confusion), seek medical help right away.\u201d | [[3]] |\n| **Serious warning** | \u201cAll antidepressants, including SSRIs, carry a risk of suicidal thoughts, especially when starting or changing dose. Contact your provider immediately if you experience worsening mood, new thoughts of self\u2011harm, or increased anxiety.\u201d | [[3]] |\n| **Administration tip (fluoxetine)** | \u201cIf you are prescribed fluoxetine, take it in the morning to avoid sleep disturbance.\u201d | [[3]] |\n| **Monitoring** | \u201cWe will follow your mood and any side effects regularly, and may adjust the dose based on response and tolerability.\u201d | [[2]] |\n\n**Summary for the patient**  \n- Expect a delayed therapeutic response; be patient and continue the medication as directed.  \n- Start low, increase gradually, and stay on the drug for at least 2\u20133\u202fmonths before judging effectiveness.  \n- Watch for sexual side effects, signs of serotonin syndrome, and any worsening mood or suicidal thoughts.  \n- Take fluoxetine in the morning; other SSRIs can be taken once daily at a convenient time.  \n- Regular follow\u2011up visits are essential to assess benefit and adjust dosing.  ",
+   "latency_s": 7.8,
+   "n_passages": 5,
+   "passages": [
+    {
+     "book": "dipiro",
+     "page": "1633",
+     "chars": 940
+    },
+    {
+     "book": "dipiro",
+     "page": "1643",
+     "chars": 469
+    },
+    {
+     "book": "rxprep",
+     "page": 816,
+     "chars": 894
+    },
+    {
+     "book": "rxprep",
+     "page": 808,
+     "chars": 996
+    },
+    {
+     "book": "dipiro",
+     "page": "1269",
+     "chars": 959
+    }
+   ],
+   "markers": 13,
+   "words": 425,
+   "app_confidence": 0.95
+  }
+ }
+}
